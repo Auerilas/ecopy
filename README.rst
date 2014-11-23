@@ -1,4 +1,4 @@
 EcoPy: Python for Ecological Data Analyses
 ==========================
 
-"``**EcoPy**``" provides tools for ecological data analyses. 
+**EcoPy** provides tools for ecological data analyses. 

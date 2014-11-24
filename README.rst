@@ -4,7 +4,10 @@ EcoPy: Python for Ecological Data Analyses
 
 What's New
 =======
-0.0.1 - New nls class for non-linear regression
+0.0.1
+-----
+- nls class for non-linear regression
+- pca class for principle components analysis
 
 License
 =====

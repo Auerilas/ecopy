@@ -19,7 +19,8 @@ class pca:
 
 	Parameters
 	----------
-	x:  Data for ordination. Should either be a pandas DataFrame or numpy array
+	x:  Data for ordination. Should either be a pandas DataFrame or numpy array.
+		Observations as rows and descriptors as columns
 	scale: Boolean for whether the data should be standardized prior to pca
 	varNames: If x is numpy array, pass a list of variable names corresponding to the columns
 

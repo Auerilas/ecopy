@@ -4,6 +4,11 @@ EcoPy: Python for Ecological Data Analyses
 
 What's New
 =======
+0.0.2
+-----
+- distance function for calculating distance matrices using a wide variety of coefficients and metrics
+- transform function for transforming matrices
+
 0.0.1
 -----
 - nls class for non-linear regression
@@ -15,11 +20,17 @@ License
 
 Version
 =====
-0.0.1 - Under development
+0.0.2 - Under development
 
 Examples
 ======
 
 TO-DO
 ====
-This is a really long list
+-Diversity
+-PCoA (MDS)
+-RDA
+-CCA
+-nMDS
+-ANOSIM
+-SIMPER

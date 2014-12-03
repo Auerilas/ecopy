@@ -38,12 +38,15 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 	Example
 	--------
 	import pandas.rpy.common as com
-	from ecopy import distance
+	from ecopy import transform
 	varespec = com.load_data('varespec', 'vegan')
 
 	# divide each element by row total
-	distance(varespec, method='total', axis=1)
+	transform(varespec, method='total', axis=1)
 	'''
+	if not isinstance(breakNA, bool):
+		msg = 'breakNA must be boolean'
+		raise ValueError(msg)
 	if not isinstance(x, (DataFrame, np.ndarray)):
 		msg = 'x must be either numpy array or dataframe'
 		raise ValueError(msg)

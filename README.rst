@@ -4,6 +4,11 @@ EcoPy: Python for Ecological Data Analyses
 
 What's New
 =======
+0.0.3
+-----
+- diversity function for calculation species diversity
+- rarefy function for rarefaction
+
 0.0.2
 -----
 - distance function for calculating distance matrices using a wide variety of coefficients and metrics
@@ -20,7 +25,7 @@ License
 
 Version
 =====
-0.0.2 - Under development
+0.0.3 - Under development
 
 Examples
 ======

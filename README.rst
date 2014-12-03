@@ -30,21 +30,23 @@ Version
 Examples
 ======
 Transforming a site x species matrix, dividing by site totals::
-import pandas.rpy.common as com
-import ecopy as ep
-varespec = com.load_data('varespec', 'vegan')
-newMat = ep.transform(varespec, method='total', axis=1)
+
+	import pandas.rpy.common as com
+	import ecopy as ep
+	varespec = com.load_data('varespec', 'vegan')
+	newMat = ep.transform(varespec, method='total', axis=1)
 
 Calculating Bray-Curtis dissimilarities on the new matrix::
-brayMat = ep.distance(newMat, method='bray')
-PCA on US Arrests data::
-USArrests = com.load_data('USArrests')
-prcomp = ep.pca(USArrests, scaled = True)
-prcomp.summary()
-prcomp.biplot(scale = 0)
-prcomp.biplot(scale = 1, obsNames = True)
 
-Full online documentation coming eventually (once the rest is complete)
+	brayMat = ep.distance(newMat, method='bray')
+	PCA on US Arrests data::
+	USArrests = com.load_data('USArrests')
+	prcomp = ep.pca(USArrests, scaled = True)
+	prcomp.summary()
+	prcomp.biplot(scale = 0)
+	prcomp.biplot(scale = 1, obsNames = True)
+
+Full online documentation is a work in progress
 
 TO-DO
 ====

@@ -21,7 +21,7 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 	method: particular transformation
 		total: divides by the column or row sum
 		max: divides by the column or row max
-		normalize: makes the sum of squares = 1 along columns or rows
+		normalize: makes the sum of squares = 1 along columns or rows (chord distance)
 		range: converts to a range of [0, 1]
 		standardize: calculates z-score along columns or rows
 		hellinger: square-root after transformation by total
@@ -53,7 +53,7 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 	if axis not in [0, 1]:
 		msg = 'Axis argument must be either 0 or 1'
 		raise ValueError(msg)
-	if method not in ['total', 'max', 'normalize', 'range', 'standardize', 'hellinger', 'log', 'pa', 'wisconsin']:
+	if method not in ['total', 'max', 'normalize', 'range', 'standardize', 'hellinger', 'log', 'logp1', 'pa', 'wisconsin']:
 		msg = '{0} not an accepted method'.format(method)
 		raise ValueError(msg)
 	if isinstance(x, DataFrame):
@@ -90,6 +90,12 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 				msg = 'Log of values between 0 and 1 will return negative numbers\nwhich cannot be used in subsequent distance calculations'
 				raise ValueError(msg)
 			data = x.applymap(lambda y: np.log(y+1))
+			return data
+		if method=='logp1':
+			if ((x > 0) & (x < 1)).any().any():
+				msg = 'Log of values between 0 and 1 will return negative numbers\nwhich cannot be used in subsequent distance calculations'
+				raise ValueError(msg)
+			data = x.applymap(lambda y: np.log(y) + 1 if y>0 else 0)
 			return data
 		if method=='wisconsin':
 			data = x.apply(maxTrans, axis=0)
@@ -130,12 +136,17 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 				raise ValueError(msg)
 			data = np.log(x + 1)
 			return data
+		if method=='logp1':
+			if ((x > 0) & (x < 1)).any():
+				msg = 'Log of values between 0 and 1 will return negative numbers\nwhich cannot be used in subsequent distance calculations'
+				raise ValueError(msg)
+			data = x.astype('float')
+			data[np.greater(data,0)] = np.log(data[np.greater(data,0)]) + 1
+			return data
 		if method=='wisconsin':
 			data = np.apply_along_axis(maxTrans, 0, x)
-			data = np.apply_along_axis(totTrans, 1, x)
+			data = np.apply_along_axis(totalTrans, 1, x)
 			return data
-
-
 
 def totalTrans(y):
 	notabs = ~np.isnan(y)
@@ -157,4 +168,3 @@ def rangeTrans(y):
 def standTrans(y):
 	notabs = ~np.isnan(y)
 	return (y - np.mean(y[notabs]))/np.std(y[notabs], ddof=1)
-

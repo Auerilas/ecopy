@@ -1,6 +1,6 @@
 EcoPy: Python for Ecological Data Analyses
 ******************************************
-**EcoPy** provides tools for ecological data analyses. Similar in functionality to the *vegan* package in R, albeit with a few additions. `The homepage, with full documentation and examples, can be found here <http://ecologicalpython.wordpress.com/>`_
+**EcoPy** provides tools for ecological data analyses. In general, it focuses on multivariate data analysis, which can be useful in any field, but with particular attention to those methods widely used in ecology. `The homepage, with full documentation and examples, can be found here <http://ecologicalpython.wordpress.com/>`_
 
 What's New
 =======
@@ -39,7 +39,9 @@ Transforming a site x species matrix, dividing by site totals::
 Calculating Bray-Curtis dissimilarities on the new matrix::
 
 	brayMat = ep.distance(newMat, method='bray')
-	PCA on US Arrests data::
+
+PCA on US Arrests data::
+	
 	USArrests = com.load_data('USArrests')
 	prcomp = ep.pca(USArrests, scaled = True)
 	prcomp.summary()
@@ -52,7 +54,13 @@ TO-DO
 ====
 - PCoA (MDS)
 - RDA
-- CCA
+- CCA (INCL. DETRENDED)
 - nMDS
 - ANOSIM
 - SIMPER
+- MINIMUM SPANNING TREE (PRIMM's)
+- PROCRUSTES ROTATION
+- LINEAR/SURFACE ENVIRONMENTAL FITTING
+- SPECIES POOLS (ACCUMULATION CURVES)
+- MAXENT WRAPPER
+- MANY MANY THINGS

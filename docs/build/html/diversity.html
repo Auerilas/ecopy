@@ -55,14 +55,13 @@
 <dl class="function">
 <dt id="diversity">
 <tt class="descname">diversity</tt><big>(</big><em>x</em>, <em>method='shannon'</em>, <em>breakNA=True</em><big>)</big><a class="headerlink" href="#diversity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parameters</p>
+<dd><p>Calculate species diversity for every site in a site x species matrix</p>
+<p><strong>Parameters</strong></p>
 <dl class="docutils">
-<dt><strong>x</strong>: numpy.ndarray or pandas.DataFrame (<em>required</em>)</dt>
+<dt>x: numpy.ndarray or pandas.DataFrame (<em>required</em>)</dt>
 <dd>A site x species matrix, where sites are rows and columns are species.</dd>
-</dl>
-<p><strong>method</strong>: [&#8216;shannon&#8217; | &#8216;simpson&#8217; | &#8216;invSimpson&#8217; | &#8216;dominance&#8217; | &#8216;spRich&#8217; | &#8216;even&#8217;]</p>
-<blockquote>
-<div><p><em>shannon</em>: Calculates Shannon&#8217;s H</p>
+<dt>method: [&#8216;shannon&#8217; | &#8216;simpson&#8217; | &#8216;invSimpson&#8217; | &#8216;dominance&#8217; | &#8216;spRich&#8217; | &#8216;even&#8217;]</dt>
+<dd><p class="first"><em>shannon</em>: Calculates Shannon&#8217;s H</p>
 <div class="math">
 <p><img src="_images/math/90e91269f2522b649743fba69364ae5d214d8cd2.png" alt="H = -\sum_1^k p_k \log p_k"/></p>
 </div><p>where <img class="math" src="_images/math/4508393135451dc6c41b01f36072dd16674586bc.png" alt="p_k"/> is the relative abundance of species <em>k</em></p>
@@ -72,12 +71,19 @@
 </div><p><em>invSimpson</em>: Inverse of Simpson&#8217;s D</p>
 <p><em>dominance</em> Dominance index. <img class="math" src="_images/math/0324802d33385d67910b46bcc4acea8ec0f3cdd0.png" alt="\max p_k"/></p>
 <p><em>spRich</em>: Species richness (# of non-zero columns)</p>
-<p><em>even</em>: Evenness of a site. Shannon&#8217;s H divided by log of species richness.</p>
-</div></blockquote>
-<dl class="docutils">
-<dt><strong>breakNA</strong>: [True | False]</dt>
+<p class="last"><em>even</em>: Evenness of a site. Shannon&#8217;s H divided by log of species richness.</p>
+</dd>
+<dt>breakNA: [True | False]</dt>
 <dd>Whether null values should halt the process. If False, then null values are removed from all calculations.</dd>
 </dl>
+<p><strong>Example</strong></p>
+<p>Calculate Shannon diversity of the &#8216;varespec&#8217; dataset from R:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
+<span class="kn">import</span> <span class="nn">ecopy</span> <span class="kn">as</span> <span class="nn">ep</span>
+<span class="n">varespec</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s">&#39;varespec&#39;</span><span class="p">,</span> <span class="s">&#39;vegan&#39;</span><span class="p">)</span>
+<span class="n">shannonH</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">diversity</span><span class="p">(</span><span class="n">varespec</span><span class="p">,</span> <span class="s">&#39;shannon&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

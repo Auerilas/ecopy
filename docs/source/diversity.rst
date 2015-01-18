@@ -3,15 +3,6 @@ Species Diversity
 
 EcoPy contains several methods for estimating species diversity.
 
-.. autosummary::
-   diversity
-
-.. automodule:: ecopy
-   :members: diversity
-
-  test
-
-
 .. py:function:: diversity(x, method='shannon', breakNA=True)
 	
 	Calculate species diversity for every site in a site x species matrix
@@ -55,3 +46,22 @@ EcoPy contains several methods for estimating species diversity.
 		import ecopy as ep
 		varespec = com.load_data('varespec', 'vegan')
 		shannonH = ep.diversity(varespec, 'shannon')
+
+.. py.function:: rarefy(x, method='rarefy', size=None, breakNA=True)
+	
+	Returns either rarefied species richness or draws a rarefaction curve for each row. Rarefied species richness is calculated based on the smallest sample (default) or allows user-specified sample sizes.
+
+	**Parameters**
+
+	x: numpy.ndarray or pandas.DataFrame (*required*)
+		A site x species matrix, where sites are rows and columns are species.
+
+	method: ['rarefy' | 'rarecurve']
+
+		*rarefy*: Returns rarefied species richness.
+
+		.. math::
+
+			S = \sum_1^k 1 - \frac{ \binom{N-N_i} } {\binom{N, size}}
+
+		where *N* is the total number of individuals in the site, :math:`N_i` is the number of individuals of species *i*, and *size* is the sample size for rarefaction

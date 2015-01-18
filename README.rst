@@ -4,6 +4,18 @@ EcoPy: Python for Ecological Data Analyses
 
 What's New
 =======
+0.0.5
+-------
+-poca class for princple coordinate analysis
+-MDS class for multidimensional scaling (uses isotonic regression from scikit-learn)
+-small changes and fixes to previous functions
+
+Version History
+==========
+0.0.4
+-----
+- ca class for simple correspondance analysis
+
 0.0.3
 -----
 - diversity function for calculation species diversity
@@ -25,7 +37,7 @@ License
 
 Version
 =====
-0.0.3 - Under development
+0.0.4 - Under development
 
 Examples
 ======

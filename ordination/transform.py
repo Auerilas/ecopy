@@ -149,22 +149,17 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 			return data
 
 def totalTrans(y):
-	notabs = ~np.isnan(y)
-	return y/np.sum(y[notabs])
+	return y/np.nansum(y)
 
 def maxTrans(y):
-	notabs = ~np.isnan(y)
-	return y/np.max(y[notabs])
+	return y/np.nanmax(y)
 
 def normTrans(y):
-	notabs = ~np.isnan(y)
-	denom = np.sqrt(np.sum(y[notabs]**2))
+	denom = np.nansqrt(np.nansum(y**2))
 	return y/denom
 
 def rangeTrans(y):
-	notabs = ~np.isnan(y)
-	return (y - np.min(y[notabs]))/(np.max(y[notabs]) - np.min(y[notabs]))
+	return (y - np.nanmin(y))/(np.nanmax(y) - np.nanmin(y))
 
 def standTrans(y):
-	notabs = ~np.isnan(y)
-	return (y - np.mean(y[notabs]))/np.std(y[notabs], ddof=1)
+	return (y - np.nanmean(y))/np.nanstd(y, ddof=1)

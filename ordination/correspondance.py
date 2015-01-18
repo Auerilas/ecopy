@@ -7,13 +7,11 @@ class ca:
 	Docstring for function ecopy.ca
 	====================
 	Conducts correspondance analysis (CA). User supplies 
-		an observation x descriptor matrix. NOTE: Only
-		positive integers and 0 allowed. An error will 
-		be raised for non-integer (float) numbers
+		an observation x descriptor matrix.
 
 	Use
 	----
-	ca(x)
+	ca(x, siteNames=None, spNames=None)
 
 	Returns an object of class ca
 
@@ -21,7 +19,9 @@ class ca:
 	----------
 	x:  Data for ordination. Should either be a pandas DataFrame or numpy.ndarray.
 		Observations as rows and descriptors as columns. Only
-		positive integer data (and zeros) allowed.
+		positive numbers and 0's allowed.
+	siteNames: A list of site names
+	spNames: A list of species names
 
 	Attributes (see online documentation for descriptions)
 	---------
@@ -38,8 +38,8 @@ class ca:
 	Methods
 	--------
 	summary(): provides a pandas.DataFrame summary table of CA axes
-	biplot(coords=False, type=1, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None):
-		Produces a biplot of the first two CA axes.
+	biplot(coords=False, xax=1, yax=2, type=1, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None):
+		Produces a biplot of the given CA axes.
 		showSp: Whether species should be plotted
 		showSite: Whether site should be plotted
 		spCol: Color of species text
@@ -50,6 +50,8 @@ class ca:
 		ylim: Provide a ylim list to override default limits
 		type: What type of biplot to produce. See online documentation
 		coords: Should the plotting coordinates be returned
+		xax: Integer specifying CA Axes to be plotted on the x-axis (Defaults to 1)
+		yax: Integer specifying CA Axes to be plotted on the y-axis (Defaults to 2)
 
 	Example
 	--------
@@ -61,7 +63,7 @@ class ca:
 	print bci_ca.summary()
 	bci_ca.biplot()
 	'''
-	def __init__(self, x, scale = True, varNames = None):
+	def __init__(self, x, siteNames=None, spNames=None):
 		# if the data is not a dataframe or array, raise error
 		if not isinstance(x, (DataFrame, np.ndarray)):
 			msg = 'Data must either be pandas.DataFrame or nump.ndarray'
@@ -88,10 +90,6 @@ class ca:
 		if y.any() < 0:
 			msg ='Matrix cannot contain negative values'
 			raise ValueError(msg)
-		# check for integer
-		if y.dtype.kind is not 'i':
-			msg = 'Matrix contains floats, convert to  integers prior to correspondance analysis'
-			raise ValueError(msg)
 		if y.shape[0] < y.shape[1]:
 			y = y.T
 			self.Trans = True
@@ -111,13 +109,15 @@ class ca:
 		self.evals = self.evals[:-1]
 		self.U = self.U[:,:-1]
 		self.Uhat = self.Uhat[:,:-1]
+		self.siteLabs = ['Site ' + str(x) for x in range(1, y.shape[0]+1)]
+		self.spLabs = ['Sp ' + str(x) for x in range(1, y.shape[1] + 1)]
 		if isinstance(x, DataFrame):
 			self.siteLabs = x.index
 			self.spLabs = x.columns
-		else:
-			self.siteLabs = ['Site ' + str(x) for x in range(1, y.shape[0]+1)]
-			self.spLabs = ['Sp ' + str(x) for x in range(1, y.shape[1] + 1)]
-
+		if siteNames is not None:
+			self.siteLabs = siteNames
+		if spNames is not None:
+			self.spLabs = spNames
 		U2 = self.U.dot(np.diag(self.evals**0.5))
 		Uhat2 = self.Uhat.dot(np.diag(self.evals**0.5))
 		if self.Trans:
@@ -137,11 +137,11 @@ class ca:
 		props = self.evals / np.sum(self.evals)
 		cumSums = np.cumsum(self.evals) / np.sum(self.evals)
 		colNames = ['CA Axis ' + str(x) for x in range(1, len(self.evals)+1)]
-		sumTable = DataFrame(np.vstack((sds, props, cumSums)), index=['Std. Dev', 'Prop.', 'Cum. Prop.'])
+		sumTable = DataFrame(np.vstack((sds, props, cumSums)), index=['Inertia', 'Prop.', 'Cum. Prop.'])
 		sumTable.columns = colNames
 		return sumTable
 		
-	def biplot(self, coords=False, type=1, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None):
+	def biplot(self, coords=False, xax=1, yax=2, type=1, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None):
 		if type not in [1,2]:
 			msg = 'type parameter must be 1 or 2'
 			raise ValueError(msg)
@@ -159,70 +159,72 @@ class ca:
 			spCent = Fhat
 			siteOut = Vhat
 			spOut = V
-		f, ax = py.subplots()
-		ax.axvline(0, color='k')
-		ax.axhline(0, color='k')
-		if type==1:
-			if showSite:
-				ax.plot(siteCent[:,0], siteCent[:,1], 'ko', ms=0)
-				[ax.text(x, y, s, fontsize=siteSize, color=siteCol, ha='center', va='center') for x,y,s in zip(siteCent[:,0], siteCent[:,1], self.siteLabs)]
-			if showSp:
-				ax.plot(spOut[:,0], spOut[:,1], 'k^', ms=0)
-				[ax.text(x,y,s, fontsize=spSize, color=spCol, ha='center', va='center') for x,y,s in zip(spOut[:,0], spOut[:,1], self.spLabs)]
-				xmax = max(np.amax(siteCent[:,0]), np.amax(spOut[:,0]))
-				xmin = min(np.amin(siteCent[:,0]), np.amin(spOut[:,0]))
-				ymax = max(np.amax(siteCent[:,1]), np.amax(spOut[:,1]))
-				ymin = min(np.min(siteCent[:,1]), np.min(spOut[:,1]))
-			else:
-				xmin = np.min(siteCent[:,0])
-				xmax = np.max(siteCent[:,0])
-				ymin = np.min(siteCent[:,1])
-				ymax = np.max(siteCent[:,1])
-			ax.set_xlim([xmin+0.15*xmin, xmax+0.15*xmax])
-			ax.set_ylim([ymin+0.15*ymin, ymax+0.15*ymax])
-			if xlim is not None:
-				if not isinstance(xlim, list):
-					msg = "xlim must be a list"
-					raise ValueError(msg)
-				ax.set_xlim(xlim)
-			if ylim is not None:
-				if not isinstance(ylim, list):
-					msg = 'ylim must be a list'
-					raise ValueError(msg)
-				ax.set_ylim(ylim)
-		if type==2:
-			if showSp:
-				ax.plot(spCent[:,0], spCent[:,1], 'ko', ms=0)
-				[ax.text(x, y, s, fontsize=spSize, color=spCol, ha='center', va='center') for x,y,s in zip(spCent[:,0], spCent[:,1], self.spLabs)]
-			if showSite:
-				ax.plot(siteOut[:,0], siteOut[:,1], 'k^', ms=0)
-				[ax.text(x, y, s, fontsize=siteSize, color=siteCol, ha='center', va='center') for x,y,s in zip(siteOut[:,0], siteOut[:,1], self.siteLabs)]
-				xmax = max(np.amax(spCent[:,0]), np.amax(siteOut[:,0]))
-				xmin = min(np.amin(spCent[:,0]), np.amin(siteOut[:,0]))
-				ymax = max(np.amax(spCent[:,1]), np.amax(siteOut[:,1]))
-				ymin = min(np.min(spCent[:,1]), np.min(siteOut[:,1]))
-			else:
-				xmax = np.amax(spCent[:,0])
-				xmin = np.amin(spCent[:,0])
-				ymax = np.amax(spCent[:,1])
-				ymin = np.min(spCent[:,1])
-			ax.set_xlim([xmin+0.15*xmin, xmax+0.15*xmax])
-			ax.set_ylim([ymin+0.15*ymin, ymax+0.15*ymax])
-			if xlim is not None:
-				if not isinstance(xlim, list):
-					msg = "xlim must be a list"
-					raise ValueError(msg)
-				ax.set_xlim(xlim)
-			if ylim is not None:
-				if not isinstance(ylim, list):
-					msg = 'ylim must be a list'
-					raise ValueError(msg)
-				ax.set_ylim(ylim)
-		ax.set_xlabel('CA Axis 1')
-		ax.set_ylabel('CA Axis 2')
-		py.show()
-		if coords:
-			return {'F': siteCent, 'Fhat': spCent, 'V': spOut, 'Vhat': siteOut}
+		if not coords:
+			f, ax = py.subplots()
+			ax.axvline(0, color='k')
+			ax.axhline(0, color='k')
+			if type==1:
+				if showSite:
+					ax.plot(siteCent[:,xax-1], siteCent[:,yax-1], 'ko', ms=0)
+					[ax.text(x, y, s, fontsize=siteSize, color=siteCol, ha='center', va='center') for x,y,s in zip(siteCent[:,xax-1], siteCent[:,yax-1], self.siteLabs)]
+				if showSp:
+					ax.plot(spOut[:,xax-1], spOut[:,yax-1], 'k^', ms=0)
+					[ax.text(x,y,s, fontsize=spSize, color=spCol, ha='center', va='center') for x,y,s in zip(spOut[:,xax-1], spOut[:,yax-1], self.spLabs)]
+					xmax = max(np.amax(siteCent[:,xax-1]), np.amax(spOut[:,xax-1]))
+					xmin = min(np.amin(siteCent[:,xax-1]), np.amin(spOut[:,xax-1]))
+					ymax = max(np.amax(siteCent[:,yax-1]), np.amax(spOut[:,yax-1]))
+					ymin = min(np.min(siteCent[:,yax-1]), np.min(spOut[:,yax-1]))
+				else:
+					xmin = np.min(siteCent[:,xax-1])
+					xmax = np.max(siteCent[:,xax-1])
+					ymin = np.min(siteCent[:,yax-1])
+					ymax = np.max(siteCent[:,yax-1])
+				ax.set_xlim([xmin+0.15*xmin, xmax+0.15*xmax])
+				ax.set_ylim([ymin+0.15*ymin, ymax+0.15*ymax])
+				if xlim is not None:
+					if not isinstance(xlim, list):
+						msg = "xlim must be a list"
+						raise ValueError(msg)
+					ax.set_xlim(xlim)
+				if ylim is not None:
+					if not isinstance(ylim, list):
+						msg = 'ylim must be a list'
+						raise ValueError(msg)
+					ax.set_ylim(ylim)
+			if type==2:
+				if showSp:
+					ax.plot(spCent[:,xax-1], spCent[:,yax-1], 'ko', ms=0)
+					[ax.text(x, y, s, fontsize=spSize, color=spCol, ha='center', va='center') for x,y,s in zip(spCent[:,xax-1], spCent[:,yax-1], self.spLabs)]
+				if showSite:
+					ax.plot(siteOut[:,xax-1], siteOut[:,yax-1], 'k^', ms=0)
+					[ax.text(x, y, s, fontsize=siteSize, color=siteCol, ha='center', va='center') for x,y,s in zip(siteOut[:,xax-1], siteOut[:,yax-1], self.siteLabs)]
+					xmax = max(np.amax(spCent[:,xax-1]), np.amax(siteOut[:,xax-1]))
+					xmin = min(np.amin(spCent[:,xax-1]), np.amin(siteOut[:,xax-1]))
+					ymax = max(np.amax(spCent[:,yax-1]), np.amax(siteOut[:,yax-1]))
+					ymin = min(np.min(spCent[:,yax-1]), np.min(siteOut[:,yax-1]))
+				else:
+					xmax = np.amax(spCent[:,xax-1])
+					xmin = np.amin(spCent[:,xax-1])
+					ymax = np.amax(spCent[:,yax-1])
+					ymin = np.min(spCent[:,yax-1])
+				ax.set_xlim([xmin+0.15*xmin, xmax+0.15*xmax])
+				ax.set_ylim([ymin+0.15*ymin, ymax+0.15*ymax])
+				if xlim is not None:
+					if not isinstance(xlim, list):
+						msg = "xlim must be a list"
+						raise ValueError(msg)
+					ax.set_xlim(xlim)
+				if ylim is not None:
+					if not isinstance(ylim, list):
+						msg = 'ylim must be a list'
+						raise ValueError(msg)
+					ax.set_ylim(ylim)
+			ax.set_xlabel('CA Axis {!s}'.format(xax))
+			ax.set_ylabel('CA Axis {!s}'.format(yax))
+			py.show()
+		else:
+			slices = [xax-1, yax-1]
+			return {'F': siteCent[:,slices], 'Fhat': spCent[:,slices], 'V': spOut[:,slices], 'Vhat': siteOut[:,slices]}
 
 
 

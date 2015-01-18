@@ -1,4 +1,4 @@
 from version import version as __version__
-from .nls import nls
+from .regression import *
 from .ordination import *
 from .diversity import *

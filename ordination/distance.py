@@ -111,9 +111,6 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		if np.isnan(np.sum(x)):
 			msg = 'Matrix contains NA values'
 			raise ValueError(msg)
-	if (x < 0).any():
-		msg = 'Matrix contains negative values'
-		raise ValueError(msg)
 	if np.min(np.sum(x, axis=1))==0:
 		msg = 'One row is entirely zeros, distance calculations will be meaningless'
 		raise ValueError(msg)
@@ -124,9 +121,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		if np.any((x != 0) & (x != 1)):
 			msg = 'For method {0}, data must be binary'.format(method)
 			raise ValueError(msg)
-	if (x<0).any():
-		msg = 'Distances are meaningless for negative numbers'
-		raise ValueError(msg)
+	x = x.astype('float')
 	if method == 'euclidean':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in xrange(0, distMat.shape[0]):
@@ -204,20 +199,10 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[i,j] = sorenSim(A, B, C, D, transform)
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
-	if method == 'sorensen':
-		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
-			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
-				x1 = x[i,~np.isnan(x[i,:])]
-				x2 = x[j,~np.isnan(x[i,:])]
-				x1 = x1[~np.isnan(x2)]
-				x2 = x2[~np.isnan(x2)]
-				A, B, C, D = matchMat(x1, x2)
-				distMat[i,j] = sorenSim(A, B, C, D, transform)
-				distMat[j,i] = distMat[i,j]
-		return(distMat)
 	if method == 'kulczynski':
+		if (x<0).any():
+			msg = 'Distances are meaningless for negative numbers'
+			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in xrange(0, distMat.shape[0]):
 			distMat[i,i] = 0
@@ -230,6 +215,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
 	if method == 'bray':
+		if (x<0).any():
+			msg = 'Distances are meaningless for negative numbers'
+			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in xrange(0, distMat.shape[0]):
 			distMat[i,i] = 0
@@ -242,6 +230,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
 	if method == 'gower':
+		if (x<0).any():
+			msg = 'Distances are meaningless for negative numbers'
+			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		R = np.apply_along_axis(lambda z: np.max(z) - np.min(z), 0, x)
 		for i in xrange(0, distMat.shape[0]):
@@ -293,6 +284,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
 	if method == 'whittaker':
+		if (x<0).any():
+			msg = 'Distances are meaningless for negative numbers'
+			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in xrange(0, distMat.shape[0]):
 			distMat[i,i] = 0
@@ -305,6 +299,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
 	if method == 'canberra':
+		if (x<0).any():
+			msg = 'Distances are meaningless for negative numbers'
+			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in xrange(0, distMat.shape[0]):
 			distMat[i,i] = 0
@@ -329,6 +326,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
 	if method == 'mod_gower':
+		if (x<0).any():
+			msg = 'Distances are meaningless for negative numbers'
+			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in xrange(0, distMat.shape[0]):
 			distMat[i,i] = 0

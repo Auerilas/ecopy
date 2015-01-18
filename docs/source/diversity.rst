@@ -1,7 +1,10 @@
 Species Diversity
 ==============
 
-EcoPy contains several methods for estimating species diversity.
+EcoPy contains several methods for estimating species diversity:
+
+	- :py:func:`diversity`
+	- :py:func:`rarefy`
 
 .. py:function:: diversity(x, method='shannon', breakNA=True)
 	
@@ -66,4 +69,26 @@ EcoPy contains several methods for estimating species diversity.
 
 		where *N* is the total number of individuals in the site, :math:`N_i` is the number of individuals of species *i*, and *size* is the sample size for rarefaction
 
-Next
+		*rarecurve*: Plots a rarefaction curve for each site (row). The curve is calculated as
+
+		.. math::
+
+			S_n - \frac{\sum_1^i \binom{N-N_i}{size}}{\binom{N}{size}}
+
+		where :math:`S_n` is the total number of species in the matrix and *size* ranges from 0 to the total number of individuals in each site
+
+	**Example**
+
+	Calculate rarefied species richness for the BCI dataset::
+
+		import pandas.rpy.common as com
+		import ecopy as ep
+		varespec = com.load_data('BCI', 'vegan')
+		rareRich = ep.rarefy(varespec, 'rarefy')
+
+	Show rarefaction curves for each site::
+
+		ep.rarefy(varespec, 'rarecurve')
+
+	.. figure::  images/rarecurve.png
+		:align:   center

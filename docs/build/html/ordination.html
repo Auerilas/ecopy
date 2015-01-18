@@ -56,6 +56,7 @@
 <div><ul class="simple">
 <li><a class="reference internal" href="#pca" title="pca"><tt class="xref py py-class docutils literal"><span class="pre">pca</span></tt></a> (Principle Components Analysis)</li>
 <li><a class="reference internal" href="#ca" title="ca"><tt class="xref py py-class docutils literal"><span class="pre">ca</span></tt></a> (Correspondance Analysis)</li>
+<li><a class="reference internal" href="#pcoa" title="pcoa"><tt class="xref py py-class docutils literal"><span class="pre">pcoa</span></tt></a> (Principle Coordinates Analysis)</li>
 </ul>
 </div></blockquote>
 <dl class="class">
@@ -91,33 +92,33 @@
 </dd></dl>
 
 <p><strong>Methods</strong></p>
-<dl class="method">
+<dl class="classmethod">
 <dt id="pca.summary_imp">
-<tt class="descname">summary_imp</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_imp" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">summary_imp</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_imp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a data frame containing information about the principle axes.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pca.summary_rot">
-<tt class="descname">summary_rot</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_rot" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">summary_rot</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_rot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a data frame containing information on axes rotations (i.e. the eigenvectors).</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pca.summary_corr">
-<tt class="descname">summary_corr</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_corr" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">summary_corr</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_corr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a data frame containing the correlation of each variable (column) with each principle axis. For example, the correlation of variable <em>i</em> with axis <em>k</em> is calculated as <img class="math" src="_images/math/b4fbc001fe1faedca4fbe93ec14fcaf19c900dcc.png" alt="r_{ik} = u_{ik} \sqrt{\lambda_k} / \sqrt{s_i^2}"/> where <img class="math" src="_images/math/7a72e41c1b2934c12e2340be76876e9d09a1e5b4.png" alt="\lambda_k"/> is the eigenvalue (i.e. variance) associated with axis <em>k</em> and <img class="math" src="_images/math/cb857581c6b7ed6181a37ff77c23fbbd93389521.png" alt="s_i^2"/> is the variance of variable <em>i</em>.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pca.summary_desc">
-<tt class="descname">summary_desc</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_desc" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">summary_desc</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_desc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a data frame containing the cumulative variance explained for each predictor along each principle axis</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="classmethod">
 <dt id="pca.biplot">
-<tt class="descname">biplot</tt><big>(</big><em>xax=1</em>, <em>yax=2</em>, <em>type='distance'</em>, <em>obsNames=False</em><big>)</big><a class="headerlink" href="#pca.biplot" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">biplot</tt><big>(</big><em>xax=1</em>, <em>yax=2</em>, <em>type='distance'</em>, <em>obsNames=False</em><big>)</big><a class="headerlink" href="#pca.biplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a biplot using a specified transformation.</p>
 <dl class="docutils">
 <dt>xax: integer</dt>
@@ -240,15 +241,15 @@ Rape 0.732461 0.760170 0.998626 1</pre>
 </dd></dl>
 
 <p><strong>Methods</strong></p>
-<dl class="method">
+<dl class="classmethod">
 <dt id="ca.summary">
-<tt class="descname">summary</tt><big>(</big><big>)</big><a class="headerlink" href="#ca.summary" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">summary</tt><big>(</big><big>)</big><a class="headerlink" href="#ca.summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a pandas.DataFrame of summary information for each correspondence axis, including SD&#8217;s (square-root of each eigenvalue), proportion of inertia explained, and cumulative inertia explained.</p>
 </dd></dl>
 
-<dl class="method">
-<dt>
-<tt class="descname">biplot(coords=False, type=1, xax=1, yax=2, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None):</tt></dt>
+<dl class="classmethod">
+<dt id="ca.biplot">
+<em class="property">classmethod </em><tt class="descname">biplot</tt><big>(</big><em>coords=False</em>, <em>type=1</em>, <em>xax=1</em>, <em>yax=2</em>, <em>showSp=True</em>, <em>showSite=True</em>, <em>spCol='r'</em>, <em>siteCol='k'</em>, <em>spSize=12</em>, <em>siteSize=12</em>, <em>xlim=None</em>, <em>ylim=None</em><big>)</big><a class="headerlink" href="#ca.biplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces a biplot of the given CA axes.</p>
 <dl class="docutils">
 <dt>coords: [True | False]</dt>
@@ -356,6 +357,129 @@ L3 0.967209 1</pre>
 </div>
 <div class="figure align-center">
 <img alt="_images/ca3.png" src="_images/ca3.png" />
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pcoa">
+<em class="property">class </em><tt class="descname">pcoa</tt><big>(</big><em>x</em>, <em>correction=None</em>, <em>siteNames=None</em><big>)</big><a class="headerlink" href="#pcoa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a square-symmetric distance matrix with no negative values as input. <strong>NOTE:</strong> This will not work with missing observations. Returns an object of class <a class="reference internal" href="#pcoa" title="pcoa"><tt class="xref py py-class docutils literal"><span class="pre">pcoa</span></tt></a>.</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>x: a numpy.ndarray or pandas.DataFrame</dt>
+<dd><p class="first">A square, symmetric distance matrix with no negative values and no missing observations. Diagonal entries should be 0.</p>
+<p class="last">For PCoA, distance matrix <img class="math" src="_images/math/5f61118f2ae912f86e683687c005145b5eb54aec.png" alt="\mathbf{x}"/> is first corrected to a new matrix <img class="math" src="_images/math/f3e830722dede854af533bfa96d549c68ed5997f.png" alt="\mathbf{A}"/>, where <img class="math" src="_images/math/1a37289cb23474d28df3bf14ef9b8ce14bcd5a87.png" alt="a_{ij} = -0.5*x_{ij}^2"/>. Elements of the new matrix <img class="math" src="_images/math/f3e830722dede854af533bfa96d549c68ed5997f.png" alt="\mathbf{A}"/> are centered by row and column means using the equation <img class="math" src="_images/math/285a942494a501338e87062021745028e5b875ca.png" alt="\mathbf{\Delta_1} = \mathbf{(I - \frac{1'1}{n})A(I - \frac{1'1}{n})}"/>. PCoA is eigenanalysis of <img class="math" src="_images/math/84e114a222cafeefb0026c1cfb0cfb405f9a3fce.png" alt="\mathbf{\Delta_1}"/>. Eigenvectors <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/> are scaled by the square root of each eigenvalue <img class="math" src="_images/math/73e427852c98fb6ce863c8dbeaf20f0448267a59.png" alt="\mathbf{U_{scl}} = \mathbf{U}\mathbf{\Lambda^{0.5}}"/> where <img class="math" src="_images/math/e3c83ee2789162e0cccd010dd3f482f78cb4c535.png" alt="\mathbf{\Lambda}"/> is a diagonal matrix of the eigenvalues.</p>
+</dd>
+<dt>correction: [None | 1 | 2]</dt>
+<dd><p class="first">Which correction should be applied for negative eigenvalues. Accepts either &#8216;1&#8217; or &#8216;2&#8217; (must be a string). By default, no correction is applied.</p>
+<p><em>Correction 1</em>: Computes PCoA as described above. Adds the absolute value of the largest negative eigenvalue to the square original distance matrix (while keeping diagonals as 0) and then re-runs PCoA from the beginning.</p>
+<p><em>Correction 2</em>: Constructs a special matrix</p>
+<div class="math">
+<p><img src="_images/math/5c53e09e956f9f22903bec5855c7cf3d97f9883a.png" alt="\begin{bmatrix} \mathbf{0} &amp; 2\mathbf{\Delta_1} \\ -\mathbf{I} &amp; -4\mathbf{\Delta_2} \end{bmatrix}"/></p>
+</div><p class="last"><img class="math" src="_images/math/b775759b9856a36d4215166128950d35a26ff892.png" alt="\Delta_1"/> is the centered, corrected distance matrix as described above and <img class="math" src="_images/math/8b8338250c7835a01448391b413fdb03939b9d74.png" alt="\Delta_2"/> is a centered matrix (uncorrected) of <img class="math" src="_images/math/8a0990c859c315621d8ba5de872b0b69d2e8a4f8.png" alt="-0.5\mathbf{x}"/>. The largest, positive eigenvalue of this matrix is then added the original distances and PCoA run from the beginning.</p>
+</dd>
+<dt>siteNames: list</dt>
+<dd>A list of site names. If not passed, inherits from the DataFrame index or assigns integer values.</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="pcoa.evals">
+<tt class="descname">evals</tt><a class="headerlink" href="#pcoa.evals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eigenvalues of each principle coordinate axis</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pcoa.U">
+<tt class="descname">U</tt><a class="headerlink" href="#pcoa.U" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eignevectors describing each axis. These have already been scaled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pcoa.correction">
+<tt class="descname">correction</tt><a class="headerlink" href="#pcoa.correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>The correction factor applied to correct for negative eignvalues.</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="classmethod">
+<dt id="pcoa.summary">
+<em class="property">classmethod </em><tt class="descname">summary</tt><big>(</big><big>)</big><a class="headerlink" href="#pcoa.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pandas.DataFrame summarizing the variance explained by each principle coordinate axis.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt>
+<tt class="descname">biplot(coords=False, xax=1, yax=2, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12):</tt></dt>
+<dd><p>Produces a biplot of the given PCoA axes.</p>
+<dl class="docutils">
+<dt>coords: [True | False]</dt>
+<dd>If True, returns a dictionary of the plotted axes, where &#8216;Objects&#8217; gives the coordinates of objects and &#8216;Descriptors&#8217; gives the coordinates of the descriptors, if any.</dd>
+<dt>xax: integer</dt>
+<dd>Specifies CA axis to plot on the x-axis</dd>
+<dt>yax: integer</dt>
+<dd>Specifies CA axis to plot on the y-axis (Default=2)</dd>
+<dt>descriptors:  numpy.ndarray or pandas.DataFrame</dt>
+<dd><p class="first">An n x m matrix of descriptors to plot on the biplot. These can be the original descriptors used to calculate distances among objects or an entirely new set. Descriptors must be quantitative. It will work for binary descriptors, but may be meaningless.</p>
+<p>Given a new matrix $latex mathbf{Y}$ of descriptors, the matrix is standardized by columns to produce a new matrix $latex mathbf{Y_{scl}}$. The given principle coordinate axes denoted by xax and yax are placed into an n x 2 matrix $latex mathbf{V}$, which is also standardized by column. The covariance between the new descriptors and principle coordinates is given by</p>
+<div class="math">
+<p><img src="_images/math/681b89f9020ea4d6acbdab746327bf6cb9697446.png" alt="\mathbf{S} = \frac{1}{n-1}\mathbf{Y'_{scl}V}"/></p>
+</div><p>The covariance $latex mathbf{S}$ is then scaled by the eigenvalues corresponding to the given eigenvectors:</p>
+<div class="math">
+<p><img src="_images/math/bb504f96111788f0e8eebf76a5c1c29bb9acd221.png" alt="\mathbf{Y_{proj}} = \sqrt{n-1}\mathbf{S\Lambda^{-0.5}}"/></p>
+</div><p class="last">Matrix $latex Y_{proj}$ contains the coordinates of each descriptor and is what is returns as &#8216;Descriptors&#8217; if coords=True.</p>
+</dd>
+<dt>descripNames: list</dt>
+<dd>A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.</dd>
+<dt>spCol: string</dt>
+<dd>Color of species text</dd>
+<dt>siteCol: string</dt>
+<dd>Color of site text</dd>
+<dt>spSize: integer</dt>
+<dd>Size of species text</dd>
+<dt>siteSize: integer</dt>
+<dd>Size of site text</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt>
+<tt class="descname">shepard(xax=1, yax=2):</tt></dt>
+<dt>
+<tt class="descname">Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.</tt></dt>
+<dd></dd></dl>
+
+<p><strong>Examples</strong></p>
+<p>Run PCoA on the &#8216;BCI&#8217; data:</p>
+<div class="highlight-python"><pre>import pandas.rpy.common as com
+import ecopy as ep
+
+BCI = com.load_data('BCI', 'vegan')
+brayD = ep.distance(BCI, method='bray', transform='sqrt')
+pc1 = ep.pcoa(brayD)
+print pc1.summary()[['PCoA Axis 1', 'PCoA Axis 2']]
+
+        PCoA Axis 1 PCoA Axis 2
+Std. Dev 1.094943 0.962549
+Prop. 0.107487 0.083065
+Cum. Prop. 0.107487 0.190552
+
+pc1.biplot()</pre>
+</div>
+<div class="figure align-center">
+<img alt="_images/pcoa1.png" src="_images/pcoa1.png" />
+</div>
+<p>Attempting to show species on the above biplot results in a messy graph. To better illustrate its use, run PCoA on the USArrests data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">USA</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s">&#39;USArrests&#39;</span><span class="p">)</span>
+<span class="c"># standardize columns first</span>
+<span class="n">USA</span> <span class="o">=</span> <span class="n">USA</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">eucD</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">USA</span><span class="p">,</span> <span class="s">&#39;euclidean&#39;</span><span class="p">)</span>
+
+<span class="n">pc2</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">pcoa</span><span class="p">(</span><span class="n">eucD</span><span class="p">,</span> <span class="n">siteNames</span><span class="o">=</span><span class="n">USA</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pc2</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="n">descriptors</span><span class="o">=</span><span class="n">USA</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="_images/pcoa_arrests.png" src="_images/pcoa_arrests.png" />
 </div>
 </dd></dl>
 

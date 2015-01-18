@@ -5,6 +5,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	- :py:class:`pca` (Principle Components Analysis)
 	- :py:class:`ca` (Correspondance Analysis)
+	- :py:class:`pcoa` (Principle Coordinates Analysis)
 
 .. py:class:: pca(x, scale=True, varNames=None)
 
@@ -324,3 +325,136 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	.. figure::  images/ca3.png
 		:align:   center
+
+.. py:class:: pcoa(x, correction=None, siteNames=None)
+
+	Takes a square-symmetric distance matrix with no negative values as input. **NOTE:** This will not work with missing observations. Returns an object of class :py:class:`pcoa`. 
+
+	**Parameters**
+
+	x: a numpy.ndarray or pandas.DataFrame
+		A square, symmetric distance matrix with no negative values and no missing observations. Diagonal entries should be 0.
+
+		For PCoA, distance matrix :math:`\mathbf{x}` is first corrected to a new matrix :math:`\mathbf{A}`, where :math:`a_{ij} = -0.5*x_{ij}^2`. Elements of the new matrix :math:`\mathbf{A}` are centered by row and column means using the equation :math:`\mathbf{\Delta_1} = \mathbf{(I - \frac{1'1}{n})A(I - \frac{1'1}{n})}`. PCoA is eigenanalysis of :math:`\mathbf{\Delta_1}`. Eigenvectors :math:`\mathbf{U}` are scaled by the square root of each eigenvalue :math:`\mathbf{U_{scl}} = \mathbf{U}\mathbf{\Lambda^{0.5}}` where :math:`\mathbf{\Lambda}` is a diagonal matrix of the eigenvalues.
+
+	correction: [None | 1 | 2]
+		Which correction should be applied for negative eigenvalues. Accepts either '1' or '2' (must be a string). By default, no correction is applied.
+
+		*Correction 1*: Computes PCoA as described above. Adds the absolute value of the largest negative eigenvalue to the square original distance matrix (while keeping diagonals as 0) and then re-runs PCoA from the beginning.
+
+		*Correction 2*: Constructs a special matrix
+
+		.. math::
+
+			\begin{bmatrix} \mathbf{0} & 2\mathbf{\Delta_1} \\ -\mathbf{I} & -4\mathbf{\Delta_2} \end{bmatrix}
+
+		:math:`\Delta_1` is the centered, corrected distance matrix as described above and :math:`\Delta_2` is a centered matrix (uncorrected) of :math:`-0.5\mathbf{x}`. The largest, positive eigenvalue of this matrix is then added the original distances and PCoA run from the beginning.
+
+	siteNames: list 
+		A list of site names. If not passed, inherits from the DataFrame index or assigns integer values.
+	
+	**Attributes**
+
+	.. py:attribute:: evals
+		
+		Eigenvalues of each principle coordinate axis
+		
+	.. py:attribute:: U
+		
+		Eignevectors describing each axis. These have already been scaled.
+
+	.. py:attribute:: correction
+		
+		The correction factor applied to correct for negative eignvalues.
+
+	**Methods**
+
+	.. py:classmethod:: summary()
+
+		Returns a pandas.DataFrame summarizing the variance explained by each principle coordinate axis.
+
+	.. py:classmethod:: biplot(coords=False, xax=1, yax=2, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12):
+
+		Produces a biplot of the given PCoA axes.
+
+		coords: [True | False]
+			 If True, returns a dictionary of the plotted axes, where 'Objects' gives the coordinates of objects and 'Descriptors' gives the coordinates of the descriptors, if any.
+
+		xax: integer 
+			Specifies CA axis to plot on the x-axis
+
+		yax: integer 
+			Specifies CA axis to plot on the y-axis (Default=2)
+
+		descriptors:  numpy.ndarray or pandas.DataFrame
+			An n x m matrix of descriptors to plot on the biplot. These can be the original descriptors used to calculate distances among objects or an entirely new set. Descriptors must be quantitative. It will work for binary descriptors, but may be meaningless.
+
+			Given a new matrix :math:`\mathbf{Y}` of descriptors, the matrix is standardized by columns to produce a new matrix :math:`\mathbf{Y_{scl}}`. The given principle coordinate axes denoted by xax and yax are placed into an n x 2 matrix :math:`\mathbf{V}`, which is also standardized by column. The covariance between the new descriptors and principle coordinates is given by
+
+			.. math::
+
+				\mathbf{S} = \frac{1}{n-1}\mathbf{Y'_{scl}V}
+
+			The covariance :math:`\mathbf{S}` is then scaled by the eigenvalues corresponding to the given eigenvectors:
+
+			.. math::
+
+				\mathbf{Y_{proj}} = \sqrt{n-1}\mathbf{S\Lambda^{-0.5}}
+
+			Matrix :math:`Y_{proj}` contains the coordinates of each descriptor and is what is returns as 'Descriptors' if coords=True.
+
+		descripNames: list
+			A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.
+
+		spCol: string
+			Color of species text
+
+		siteCol: string
+			Color of site text
+
+		spSize: integer
+			Size of species text
+
+		siteSize: integer
+			Size of site text
+
+	.. py:classmethod:: shepard(xax=1, yax=2): 
+		
+		Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.
+
+	**Examples**
+
+	Run PCoA on the 'BCI' data::
+
+		import pandas.rpy.common as com
+		import ecopy as ep
+
+		BCI = com.load_data('BCI', 'vegan')
+		brayD = ep.distance(BCI, method='bray', transform='sqrt')
+		pc1 = ep.pcoa(brayD)
+		print pc1.summary()[['PCoA Axis 1', 'PCoA Axis 2']]
+
+		        PCoA Axis 1 PCoA Axis 2
+		Std. Dev 1.094943 0.962549
+		Prop. 0.107487 0.083065
+		Cum. Prop. 0.107487 0.190552
+
+		pc1.biplot()
+
+	.. figure:: images/pcoa1.png
+		:align: center
+
+	Attempting to show species on the above biplot results in a messy graph. To better illustrate its use, run PCoA on the USArrests data::
+
+		USA = com.load_data('USArrests')
+		# standardize columns first
+		USA = USA.apply(lambda x: (x - x.mean())/x.std(), axis=0)
+		eucD = ep.distance(USA, 'euclidean')
+
+		pc2 = ep.pcoa(eucD, siteNames=USA.index.values)
+		pc2.biplot(descriptors=USA)
+
+	.. figure::  images/pcoa_arrests.png
+		:align:   center
+
+

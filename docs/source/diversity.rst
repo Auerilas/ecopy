@@ -47,7 +47,7 @@ EcoPy contains several methods for estimating species diversity.
 		varespec = com.load_data('varespec', 'vegan')
 		shannonH = ep.diversity(varespec, 'shannon')
 
-.. py.function:: rarefy(x, method='rarefy', size=None, breakNA=True)
+.. py:function:: rarefy(x, method='rarefy', size=None, breakNA=True)
 	
 	Returns either rarefied species richness or draws a rarefaction curve for each row. Rarefied species richness is calculated based on the smallest sample (default) or allows user-specified sample sizes.
 

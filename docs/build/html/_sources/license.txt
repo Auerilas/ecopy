@@ -1,0 +1,9 @@
+License
+======
+
+EcoPy is distributed under the GNU GPL
+
+Contact
+======
+
+If you need help or want to contribute, you can contact me at lemoine.nathan@gmail.com. 

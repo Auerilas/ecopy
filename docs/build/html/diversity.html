@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Species Diversity &mdash; ecopy 0.0.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="ecopy 0.0.5 documentation" href="index.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="EcoPy - Ecological Data Analysis in Python" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="EcoPy - Ecological Data Analysis in Python"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">ecopy 0.0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="species-diversity">
+<h1>Species Diversity<a class="headerlink" href="#species-diversity" title="Permalink to this headline">¶</a></h1>
+<p>EcoPy contains several methods for estimating species diversity.</p>
+<dl class="function">
+<dt id="diversity">
+<tt class="descname">diversity</tt><big>(</big><em>x</em>, <em>method='shannon'</em>, <em>breakNA=True</em><big>)</big><a class="headerlink" href="#diversity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters</p>
+<dl class="docutils">
+<dt><strong>x</strong>: numpy.ndarray or pandas.DataFrame (<em>required</em>)</dt>
+<dd>A site x species matrix, where sites are rows and columns are species.</dd>
+</dl>
+<p><strong>method</strong>: [&#8216;shannon&#8217; | &#8216;simpson&#8217; | &#8216;invSimpson&#8217; | &#8216;dominance&#8217; | &#8216;spRich&#8217; | &#8216;even&#8217;]</p>
+<blockquote>
+<div><p><em>shannon</em>: Calculates Shannon&#8217;s H</p>
+<div class="math">
+<p><img src="_images/math/90e91269f2522b649743fba69364ae5d214d8cd2.png" alt="H = -\sum_1^k p_k \log p_k"/></p>
+</div><p>where <img class="math" src="_images/math/4508393135451dc6c41b01f36072dd16674586bc.png" alt="p_k"/> is the relative abundance of species <em>k</em></p>
+<p><em>simpson</em>: Calculates Simpson&#8217;s D</p>
+<div class="math">
+<p><img src="_images/math/7e03acc64d9f3f32a751ee65b661c28de74f4bab.png" alt="D = 1 - \sum_1^k p_k^2"/></p>
+</div><p><em>invSimpson</em>: Inverse of Simpson&#8217;s D</p>
+<p><em>dominance</em> Dominance index. <img class="math" src="_images/math/0324802d33385d67910b46bcc4acea8ec0f3cdd0.png" alt="\max p_k"/></p>
+<p><em>spRich</em>: Species richness (# of non-zero columns)</p>
+<p><em>even</em>: Evenness of a site. Shannon&#8217;s H divided by log of species richness.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>breakNA</strong>: [True | False]</dt>
+<dd>Whether null values should halt the process. If False, then null values are removed from all calculations.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">EcoPy - Ecological Data Analysis in Python</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">License</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/diversity.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="EcoPy - Ecological Data Analysis in Python"
+             >previous</a> |</li>
+        <li><a href="index.html">ecopy 0.0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Nathan Lemoine.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+  </body>
+</html>

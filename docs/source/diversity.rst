@@ -5,13 +5,15 @@ EcoPy contains several methods for estimating species diversity.
 
 
 .. py:function:: diversity(x, method='shannon', breakNA=True)
+	
+	Calculate species diversity for every site in a site x species matrix
 
 	**Parameters**
 	
 	x: numpy.ndarray or pandas.DataFrame (*required*)
 		A site x species matrix, where sites are rows and columns are species.
 
-	**method**: ['shannon' | 'simpson' | 'invSimpson' | 'dominance' | 'spRich' | 'even']
+	method: ['shannon' | 'simpson' | 'invSimpson' | 'dominance' | 'spRich' | 'even']
 		*shannon*: Calculates Shannon's H
 		
 		.. math::
@@ -34,5 +36,14 @@ EcoPy contains several methods for estimating species diversity.
 
 		*even*: Evenness of a site. Shannon's H divided by log of species richness.
 
-	**breakNA**: [True | False]
+	breakNA: [True | False]
 		Whether null values should halt the process. If False, then null values are removed from all calculations.
+
+	**Example**
+
+	Calculate Shannon diversity of the 'varespec' dataset from R::
+
+		import pandas.rpy.common as com
+		import ecopy as ep
+		varespec = com.load_data('varespec', 'vegan')
+		shannonH = ep.diversity(varespec, 'shannon')

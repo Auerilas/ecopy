@@ -11,7 +11,7 @@ EcoPy contains several methods for estimating species diversity.
 	**x**: numpy.ndarray or pandas.DataFrame (*required*)
 		A site x species matrix, where sites are rows and columns are species.
 
-	**method**: ['shannon' | 'simpson' | 'invSimpson' | 'dominance' | 'spRich' | 'even']
+	**x**: ['shannon' | 'simpson' | 'invSimpson' | 'dominance' | 'spRich' | 'even']
 		
 		*shannon*: Calculates Shannon's H
 		

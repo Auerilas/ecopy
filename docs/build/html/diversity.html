@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="ecopy 0.0.5 documentation" href="index.html" />
-    <link rel="next" title="License" href="license.html" />
+    <link rel="next" title="Matrix Transformations" href="matrices.html" />
     <link rel="prev" title="EcoPy - Ecological Data Analysis in Python" href="index.html" /> 
   </head>
   <body>
@@ -35,7 +35,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="license.html" title="License"
+          <a href="matrices.html" title="Matrix Transformations"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="EcoPy - Ecological Data Analysis in Python"
@@ -100,18 +100,17 @@
 <dl class="docutils">
 <dt>x: numpy.ndarray or pandas.DataFrame (<em>required</em>)</dt>
 <dd>A site x species matrix, where sites are rows and columns are species.</dd>
-</dl>
-<p>method: [&#8216;rarefy&#8217; | &#8216;rarecurve&#8217;]</p>
-<blockquote>
-<div><p><em>rarefy</em>: Returns rarefied species richness.</p>
+<dt>method: [&#8216;rarefy&#8217; | &#8216;rarecurve&#8217;]</dt>
+<dd><p class="first"><em>rarefy</em>: Returns rarefied species richness.</p>
 <div class="math">
 <p><img src="_images/math/e9daab5d1e582c915812a10ca6b181f3fce2bcbe.png" alt="S = \sum_1^i 1 - \frac{\binom{N-N_i}{size}}{\binom{N}{size}}"/></p>
 </div><p>where <em>N</em> is the total number of individuals in the site, <img class="math" src="_images/math/9f09d622cd7ebd49e20b2e20717869bf2ee2aa5a.png" alt="N_i"/> is the number of individuals of species <em>i</em>, and <em>size</em> is the sample size for rarefaction</p>
 <p><em>rarecurve</em>: Plots a rarefaction curve for each site (row). The curve is calculated as</p>
 <div class="math">
 <p><img src="_images/math/eabbf35cb7c76f20b0cb7e93788cc9dc9687095c.png" alt="S_n - \frac{\sum_1^i \binom{N-N_i}{size}}{\binom{N}{size}}"/></p>
-</div><p>where <img class="math" src="_images/math/c74a070eea97d9363f58a257e05e75fc69efa753.png" alt="S_n"/> is the total number of species in the matrix and <em>size</em> ranges from 0 to the total number of individuals in each site</p>
-</div></blockquote>
+</div><p class="last">where <img class="math" src="_images/math/c74a070eea97d9363f58a257e05e75fc69efa753.png" alt="S_n"/> is the total number of species in the matrix and <em>size</em> ranges from 0 to the total number of individuals in each site</p>
+</dd>
+</dl>
 <p><strong>Example</strong></p>
 <p>Calculate rarefied species richness for the BCI dataset:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
@@ -141,8 +140,8 @@
   <p class="topless"><a href="index.html"
                         title="previous chapter">EcoPy - Ecological Data Analysis in Python</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="license.html"
-                        title="next chapter">License</a></p>
+  <p class="topless"><a href="matrices.html"
+                        title="next chapter">Matrix Transformations</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/diversity.txt"
@@ -172,7 +171,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="license.html" title="License"
+          <a href="matrices.html" title="Matrix Transformations"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="EcoPy - Ecological Data Analysis in Python"

@@ -60,7 +60,6 @@ EcoPy contains several methods for estimating species diversity:
 		A site x species matrix, where sites are rows and columns are species.
 
 	method: ['rarefy' | 'rarecurve']
-
 		*rarefy*: Returns rarefied species richness.
 
 		.. math::

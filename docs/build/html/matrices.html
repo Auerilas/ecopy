@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Matrix Transformations &mdash; ecopy 0.0.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="ecopy 0.0.5 documentation" href="index.html" />
+    <link rel="next" title="Ordination" href="ordination.html" />
+    <link rel="prev" title="Species Diversity" href="diversity.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ordination.html" title="Ordination"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="diversity.html" title="Species Diversity"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">ecopy 0.0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="matrix-transformations">
+<h1>Matrix Transformations<a class="headerlink" href="#matrix-transformations" title="Permalink to this headline">¶</a></h1>
+<p>EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices have observations as rows (<em>i.e.</em> sites) and descriptors as columns (<em>i.e.</em> species). Although designed for site x species analyses, these techniques can apply to any matrix.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-func docutils literal"><span class="pre">tranform()</span></tt></li>
+<li><a class="reference internal" href="#distance" title="distance"><tt class="xref py py-func docutils literal"><span class="pre">distance()</span></tt></a></li>
+</ul>
+</div></blockquote>
+<dl class="function">
+<dt id="transform">
+<tt class="descname">transform</tt><big>(</big><em>x</em>, <em>method='wisconsin'</em>, <em>axis=1</em>, <em>breakNA=True</em><big>)</big><a class="headerlink" href="#transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an input matrix, performs a transformation, and returns an output matrix. It will accept with pandas.DataFrame or numpy.ndarray, and will return an object of the same class. Matrices consist of <em>i</em> rows and <em>k</em> columns.</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>x: a numpy.ndarray or pandas.DataFrame (<em>required</em>)</dt>
+<dd>A site x species matrix, where sites are rows and columns are species.</dd>
+<dt>method: [&#8216;total&#8217; | &#8216;max&#8217; | &#8216;normalize&#8217;, &#8216;range&#8217;, &#8216;standardize&#8217;, &#8216;hellinger&#8217;, &#8216;log&#8217;, &#8216;logp1&#8217;, &#8216;pa&#8217;, &#8216;wisconsin&#8217;]</dt>
+<dd><p class="first"><em>total</em>: Divides each observation by row or column sum.</p>
+<p><em>max</em>: Divides each observation by row or column max.</p>
+<p><em>normalize</em>: Chord transformation, also euclidean normalization, making the length of each row or column 1.</p>
+<div class="math">
+<p><img src="_images/math/2822d041b38e65f7587a62aafc8077525f301dba.png" alt="y_{ik} = \frac{y_{ik}} { \sqrt{ \sum_1^k y_{ik}^2 } }"/></p>
+</div><p><em>range</em>: Converts the range of the data to 0 and 1.</p>
+<p><em>standardize</em>: Standardizes each observation (<em>i.e.</em> z-score).</p>
+<p><em>hellinger</em>: Square-root of the <em>total</em> transformation.</p>
+<p><em>log</em>: Returns ln(x+1)</p>
+<p><em>logp1</em>: Returns ln(x) + 1, if x &gt; 0. Otherwise returns 0.</p>
+<p><em>pa</em>: Converts data to binary absence (0) presence (1) data.</p>
+<p class="last"><em>wisconsin</em>: First divides an observation by the max of the column, then the sum of the row. That is, it applies &#8216;max&#8217; down columns then &#8216;total&#8217; across rows.</p>
+</dd>
+<dt>axis: [0 | 1]</dt>
+<dd>Axis for the transformation</dd>
+<dt>breakNA: [True | False]</dt>
+<dd>Whether NA values should halt the transformation</dd>
+</dl>
+<p><strong>Example</strong></p>
+<p>Convert the &#8216;varespec&#8217; data to relative abundance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
+<span class="kn">import</span> <span class="nn">ecopy</span> <span class="kn">as</span> <span class="nn">ep</span>
+<span class="n">varespec</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s">&#39;varespec&#39;</span><span class="p">,</span> <span class="s">&#39;vegan&#39;</span><span class="p">)</span>
+<span class="n">relAbund</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">varespec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;total&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="distance">
+<tt class="descname">distance</tt><big>(</big><em>x</em>, <em>method='euclidean'</em>, <em>transform=&quot;1&quot;</em>, <em>breakNA=True</em><big>)</big><a class="headerlink" href="#distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an input matrix and returns a square-symmetric array of distances among rows. <strong>NOTE:</strong> Be sure the appropriate transformation has already been applied. This function contains a variety of both similarity (S) and distance (D) metrics. However, for consistency all similarities are converted to distances D = 1 - S. Methods annotated with SIMILARITY follow this procedure.</p>
+<p>In the case of binary 0/1 data, the two rows are converted to a contingency table, where A is the number of double presences, B and C are the number of single presences in <img class="math" src="_images/math/ccada11db7b2b90693e2fac4f887a57fce6f96bf.png" alt="x_1"/> and :math`x_2`, respectively, and D is the number of double absences. Matrices consist of i rows and k species. Methods that only work on binary data will result in an error if non-binary data is passed. However, binary data can be passed to all methods, and sometimes give equivalent results (i.e. passing binary data to method &#8216;bray&#8217; is identical to using method &#8216;sorensen&#8217;).</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>x: a numpy.ndarray or pandas.DataFrame (<em>required</em>)</dt>
+<dd>A site x species matrix, where sites are rows and columns are species.</dd>
+<dt>method: [&#8216;euclidean&#8217; | &#8216;chord&#8217; | &#8216;manhattan&#8217; | &#8216;meanChar&#8217; | &#8216;whittaker&#8217; | &#8216;canberra&#8217; | &#8216;hellinger&#8217; | &#8216;mod_gower&#8217; | &#8216;bray&#8217; | &#8216;kulcznski&#8217; | &#8216;gower&#8217; | &#8216;simple&#8217; | &#8216;rogers&#8217; | &#8216;sokal&#8217; | &#8216;jaccard&#8217; | &#8216;sorensen&#8217;]</dt>
+<dd><p class="first">Note, some methods do not allow negative values.</p>
+<p><em>euclidean</em>: Calculates euclidean distance between rows.</p>
+<p><em>chord</em>: Euclidean distance of normalized rows.</p>
+<p><em>manhattahn</em>: &#8216;City-block&#8217; distance</p>
+<div class="math">
+<p><img src="_images/math/3d84b5a1e1beec59ba7b435d304406407df83fdb.png" alt="D_{1,2} = \sum_1^k |x_{1k} - x_{2k}|"/></p>
+</div><p><em>meanChar</em>: Czekanowski&#8217;s mean character difference, where M is the number of columns.</p>
+<div class="math">
+<p><img src="_images/math/0da062117791adfc0f44eef7d262bbd7b6ade301.png" alt="D_{1,2} = \frac{1}{M} \sum_1^k |x_{1k} - x_{2k}|"/></p>
+</div><p><em>whittaker</em>: Whittaker&#8217;s index of association. Rows are first standardized by row totals (if the transformation as already been applied above, this will not affect it as row totals will equal 1)</p>
+<div class="math">
+<p><img src="_images/math/98a00489b3da4e64e2b4af11e27da58ce7e6f258.png" alt="D_{1,2} = 0.5 \sum_1^k |x_{1k} - x_{2k}|"/></p>
+</div><p><em>canberra</em>: Canberra metric</p>
+<div class="math">
+<p><img src="_images/math/3696099406d42c53acfe5c3e4d590320ca312a3d.png" alt="\frac{1}{M} \sum_1^k \frac{x_{1k} - x_{2k}}{x_{1k} + x_{2k}}"/></p>
+</div><p><em>hellinger</em>: Hellinger distance. This is the same as &#8216;chord&#8217;, but square-root transformed first.</p>
+<p><em>mod_gower</em>: Modified Gower distance. This is the same as &#8216;meanChar&#8217;, except M is the number of columns that are not double zero. This discounts double-absences from the &#8216;meanChar&#8217; method.</p>
+<p><em>bray</em>: Bray-Curtis percentage dissimilarity coefficient</p>
+<div class="math">
+<p><img src="_images/math/382bfe3ea5b98fdbaaf227ca2eb11722d4e3a714.png" alt="D_{1,2} = 1 - \frac{ 2*\sum_1^k \min (x_{1k}, x_{2k}) }{ \sum x_1 + \sum x_2 }"/></p>
+</div><p><em>kulcznski</em>: Kulcznski&#8217;s coefficient (SIMILARITY)</p>
+<div class="math">
+<p><img src="_images/math/652232c0e1f5fbf52fc31cde6eac6bb3f09f379d.png" alt="S_{1,2} = 0.5 (\frac{\sum_1^k \min (x_{1k}, x_{2k})}{\sum x_1} + \frac{\sum_1^k \min (x_{1k}, x_{2k})}{\sum x_2} )"/></p>
+</div><p><em>gower</em>: Gower asymmetrical coefficient (SIMILARITY)</p>
+<div class="math">
+<p><img src="_images/math/b0cc194a8a3e4e13b46f63d687993891a38352b7.png" alt="S_{1,2} = \frac{1}{M} (1 - \sum_1^k \frac{ |x_{1k} - x_{2k}| }{\max x_k - \min x_k} )"/></p>
+</div><p>The denominator is the maximum of column k minus the minimum of column k in the entire matrix. Double zeroes are excluded in this calculation.</p>
+<p><em>simple</em>: simple matching of BINARY data (SIMILARITY)</p>
+<div class="math">
+<p><img src="_images/math/42faabbcd156bd1726fe4bbca8f268d9d62b2da2.png" alt="S_{1,2} = \frac{A+D}{A+B+C+D}"/></p>
+</div><p><em>rogers</em>: Rogers and Tanimoto coefficient for BINARY data (SIMILARITY)</p>
+<div class="math">
+<p><img src="_images/math/883b1525d83215725c0443ce33e98a66352b65c2.png" alt="S_{1,2} = \frac{A+D}{A +2B + 2C + D}"/></p>
+</div><p><em>sokal</em>: Sokal and Sneath coefficient for BINARY data (SIMILARITY)</p>
+<div class="math">
+<p><img src="_images/math/400926857610254b13c3f071fcde9a4377225632.png" alt="S_{1,2} = \frac{2A + 2D}{2A + B + C + 2D}"/></p>
+</div><p><em>jaccard</em>: Jaccard&#8217;s coefficient for BINARY data (SIMILARITY)</p>
+<div class="math">
+<p><img src="_images/math/0f887a7019d1521051abd6169fa27743c416a170.png" alt="S_{1,2} = \frac{A}{A+B+C}"/></p>
+</div><p><em>sorensen</em>: Sorensen&#8217;s coefficient for BINARY data (SIMILARITY)</p>
+<div class="last math">
+<p><img src="_images/math/9b982f22dbe8d426bde30aab7547750d54b500b7.png" alt="S_{1,2} = \frac{2A}{2A + B + C}"/></p>
+</div></dd>
+<dt>transform: [&#8220;1&#8221; | &#8220;sqrt&#8221;]</dt>
+<dd>Determines the final transformation of the distance metric. &#8220;1&#8221; returns the raw distance D. &#8220;sqrt&#8221; returns sqrt(D). Sometimes sqrt(D) has more desirable properties, depending on the subsequent analyses (see Legendre and Legendre - Numerical Ecology).</dd>
+<dt>breakNA: [True | False]</dt>
+<dd>Whether null values should halt the process</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p>Calculate the Bray-Curtis dissimilarity among rows of the &#8216;varespec&#8217; data:</p>
+<div class="highlight-python"><pre>import pandas.rpy.common as com
+import ecopy as ep
+varespec = com.load_data('varespec', 'vegan')
+brayDist = ep.distance(varespec, method='bray)</pre>
+</div>
+<p>If attempting a binary method with non-binary data, an error will be raise:</p>
+<div class="highlight-python"><pre>jacDist = ep.transform(varespec, method='jaccard')
+
+&gt;&gt;ValueError: For method jaccard, data must be binary
+
+varespec2 = ep.transform(varespec, method='pa')
+jacDist = distance(varespec2, method='jaccard')</pre>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="diversity.html"
+                        title="previous chapter">Species Diversity</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ordination.html"
+                        title="next chapter">Ordination</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/matrices.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="ordination.html" title="Ordination"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="diversity.html" title="Species Diversity"
+             >previous</a> |</li>
+        <li><a href="index.html">ecopy 0.0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Nathan Lemoine.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.
+    </div>
+  </body>
+</html>

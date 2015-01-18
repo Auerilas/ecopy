@@ -15,6 +15,8 @@ Documentation
    :maxdepth: 1
    
    diversity
+   matrices
+   ordination
    license
    changelog
 

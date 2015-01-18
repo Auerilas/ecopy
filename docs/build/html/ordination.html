@@ -52,10 +52,16 @@
   <div class="section" id="ordination">
 <h1>Ordination<a class="headerlink" href="#ordination" title="Permalink to this headline">¶</a></h1>
 <p>Ecopy contains numerous methods for ordination, that is, plotting points in reduced space. Techniques include, but are not limited to, principle components analysis (PCA), correspondence analysis (CA), principle coordinates analysis (PCoA), and multidimensional scaling (nMDS).</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#pca" title="pca"><tt class="xref py py-class docutils literal"><span class="pre">pca</span></tt></a> (Principle Components Analysis)</li>
+<li><a class="reference internal" href="#ca" title="ca"><tt class="xref py py-class docutils literal"><span class="pre">ca</span></tt></a> (Correspondance Analysis)</li>
+</ul>
+</div></blockquote>
 <dl class="class">
 <dt id="pca">
 <em class="property">class </em><tt class="descname">pca</tt><big>(</big><em>x</em>, <em>scale=True</em>, <em>varNames=None</em><big>)</big><a class="headerlink" href="#pca" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class &#8216;pca&#8217;, with several methods and attributes. This function uses eigenanalysis of covariance matrices rather than SVD decomposition. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those.</p>
+<dd><p>Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class &#8216;pca&#8217;, with several methods and attributes. This function uses eigenanalysis of covariance matrices rather than SVD decomposition. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class <a class="reference internal" href="#pca" title="pca"><tt class="xref py py-class docutils literal"><span class="pre">pca</span></tt></a>.</p>
 <p><strong>Parameters</strong></p>
 <dl class="docutils">
 <dt>x: a numpy.ndarray or pandas.DataFrame</dt>
@@ -115,9 +121,9 @@
 <dd><p>Create a biplot using a specified transformation.</p>
 <dl class="docutils">
 <dt>xax: integer</dt>
-<dd>Specifyies which PC axis to plot on the x-axis</dd>
+<dd>Specifies which PC axis to plot on the x-axis</dd>
 <dt>yax: integer</dt>
-<dd>Specifyies which PC axis to plot on the y-axis</dd>
+<dd>Specifies which PC axis to plot on the y-axis</dd>
 <dt>type: [&#8216;distance&#8217; | &#8216;correlation&#8217;]</dt>
 <dd><p class="first">Type &#8216;distance&#8217; plots the raw scores <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/> and the raw vectors <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/> of the first two principle axes.</p>
 <p class="last">Type &#8216;correlation&#8217; plots scores and vectors scaled by the eigenvalues corresponding to each axis: <img class="math" src="_images/math/44a66cfe07579ce7d67b76edee8ec03e66619414.png" alt="\mathbf{F\Lambda}^{-0.5}"/> and <img class="math" src="_images/math/e600f19c3a15f3106cd0c67597991ce227af8759.png" alt="\mathbf{U\Lambda}^{0.5}"/>, where <img class="math" src="_images/math/e3c83ee2789162e0cccd010dd3f482f78cb4c535.png" alt="\mathbf{\Lambda}"/> is a diagonal matrix containing the eigenvalues.</p>
@@ -177,6 +183,179 @@ Rape 0.732461 0.760170 0.998626 1</pre>
 </div>
 <div class="figure align-center">
 <img alt="_images/corrpca.png" src="_images/corrpca.png" />
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="ca">
+<em class="property">class </em><tt class="descname">ca</tt><big>(</big><em>x</em>, <em>siteNames=None</em>, <em>spNames=None</em><big>)</big><a class="headerlink" href="#ca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an input matrix and performs principle simple correspondence analysis. It will accept either pandas.DataFrames or numpy.ndarrays. Data MUST be 0&#8217;s or positive numbers. <strong>NOTE:</strong> Will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns on object of class <a class="reference internal" href="#ca" title="ca"><tt class="xref py py-class docutils literal"><span class="pre">ca</span></tt></a>.</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>x: a numpy.ndarray or pandas.DataFrame</dt>
+<dd><p class="first">A matrix for ordination, where objects are rows and descriptors/variables as columns. Can be either a pandas.DataFrame or numpy.ndarray. <strong>NOTE:</strong> If the matrix has more variables (columns) than objects (rows), the matrix will be transposed prior to analysis, which reverses the meanings of the matrices as noted.</p>
+<p>The matrix is first scaled to proportions by dividing each element by the matrix sum, <img class="math" src="_images/math/6064d092655f8c7f5d0933af8266d03a741e9a29.png" alt="p_{ik} = y_{ik} / \sum_1^i \sum_1^k"/>. Row (site) weights <img class="math" src="_images/math/535b2bfbb0a587e261a0d0af9b7b53e42629b14d.png" alt="w_i"/> are calculated as the sums of row probabilities and column (species) weights <img class="math" src="_images/math/57a4f4616d39cde10b899b1e6369a1ca22e34e79.png" alt="w_k"/> are the sum of column probabilities. NOTE: If <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/> in the original matrix, then row weights give species weights and column weights give site weights due to transposition.</p>
+<p>A matrix of chi-squared deviations is then calculated as:</p>
+<div class="math">
+<p><img src="_images/math/351c1ee24fed1b6d09591a257570bed38be25d9e.png" alt="\mathbf{Q} = \frac{p_{ik} - w_i w_k}{\sqrt{w_i w_k}}"/></p>
+</div><p>This is then converted into a sum-of-squared deviations as</p>
+<div class="math">
+<p><img src="_images/math/576db2860782ae60aef53e57328cbfb439d1c521.png" alt="\mathbf{QQ} = \mathbf{Q'Q}"/></p>
+</div><p class="last">Eigen-decomposition of <img class="math" src="_images/math/f3306a27b229b096e4c7371aa14675eeb49a8ba4.png" alt="\mathbf{QQ}"/> yields a diagonal matrix of eigenvalues <img class="math" src="_images/math/e3c83ee2789162e0cccd010dd3f482f78cb4c535.png" alt="\mathbf{\Lambda}"/> and a matrix of eigenvectors <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/>. Left-hand eigenvectors <img class="math" src="_images/math/a9af02f8312576eff64b05a7479bfcd320e07a76.png" alt="\mathbf{\hat{U}}"/> (as determined by SVD) are calculated as  <img class="math" src="_images/math/56673805cbc27d5d69df14289f5f2fbf4837e72c.png" alt="\mathbf{\hat{U}} = \mathbf{QU\Lambda}^{-0.5}"/>. <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/> gives the column (species) loadings and <img class="math" src="_images/math/a9af02f8312576eff64b05a7479bfcd320e07a76.png" alt="\mathbf{\hat{U}}"/> gives the row (site) loadings. NOTE: If <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/> in the original matrix, the roles of these matrices are reversed.</p>
+</dd>
+<dt>siteNames: list</dt>
+<dd>A list of site names. If left blank, site names are taken as the index of the pandas.DataFrame or the row index from the numpy.ndarray.</dd>
+<dt>spNames: list</dt>
+<dd>A list of species names. If left blank, species names are taken as the column names of the pandas.DataFrame or the column index from the numpy.ndarray.</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="ca.w_col">
+<tt class="descname">w_col</tt><a class="headerlink" href="#ca.w_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Column weights in the proportion matrix. Normally species weights unless <img class="math" src="_images/math/2d022082951bb4cc397d7d79a930c931fb07af10.png" alt="r&lt;c"/>, in which case they are site weights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ca.w_row">
+<tt class="descname">w_row</tt><a class="headerlink" href="#ca.w_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Row weights in the proportion matrix. Normally site weights unless <img class="math" src="_images/math/2d022082951bb4cc397d7d79a930c931fb07af10.png" alt="r&lt;c"/>, in which case they are species weights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ca.U">
+<tt class="descname">U</tt><a class="headerlink" href="#ca.U" title="Permalink to this definition">¶</a></dt>
+<dd><p>Column (species) eigenvectors (see above note on transposition)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ca.Uhat">
+<tt class="descname">Uhat</tt><a class="headerlink" href="#ca.Uhat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Row (site) eigenvectors (see above note on transposition)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ca.cumDesc_Sp">
+<tt class="descname">cumDesc_Sp</tt><a class="headerlink" href="#ca.cumDesc_Sp" title="Permalink to this definition">¶</a></dt>
+<dd><p>pandas.DataFrame of the cumulative contribution of each eigenvector to each species. Matrix <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/> is scaled by eigenvalues <img class="math" src="_images/math/769931d512182d99c50923aafa7f9e39f0488898.png" alt="\mathbf{U_2} = \mathbf{U\Lambda}^{0.5}"/>. Then, the cumulative sum of each column is divided by the column total for every row. If <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/> in the original data, then this operation is performed on <img class="math" src="_images/math/a9af02f8312576eff64b05a7479bfcd320e07a76.png" alt="\mathbf{\hat{U}}"/> automatically.</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="method">
+<dt id="ca.summary">
+<tt class="descname">summary</tt><big>(</big><big>)</big><a class="headerlink" href="#ca.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pandas.DataFrame of summary information for each correspondence axis, including SD&#8217;s (square-root of each eigenvalue), proportion of inertia explained, and cumulative inertia explained.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">biplot(coords=False, type=1, xax=1, yax=2, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None):</tt></dt>
+<dd><p>Produces a biplot of the given CA axes.</p>
+<dl class="docutils">
+<dt>coords: [True | False]</dt>
+<dd>If True, returns a dictionary of plotted coordinates. Type 1 plots can be reproduced using F and V, Type 2 plots can be reproduced using Fhat and Vhat (see below). Note: This only returns the axes specified by xax and yax (see below).</dd>
+<dt>xax: integer</dt>
+<dd>Specifies CA axis to plot on the x-axis</dd>
+<dt>yax: integer</dt>
+<dd>Specifies CA axis to plot on the y-axis (Default=2)</dd>
+<dt>showSp: [True | False]</dt>
+<dd>Whether or not to show species in the plot</dd>
+<dt>showSite: [True | False]</dt>
+<dd>Whether or not to show sites in the plot</dd>
+<dt>spCol: string</dt>
+<dd>Color of species text</dd>
+<dt>siteCol: string</dt>
+<dd>Color of site text</dd>
+<dt>spSize: integer</dt>
+<dd>Size of species text</dd>
+<dt>siteSize: integer</dt>
+<dd>Size of site text</dd>
+<dt>xlim: list</dt>
+<dd>A list of x-axis limits to override default</dd>
+<dt>ylim: list</dt>
+<dd>A list of y-axis limits to override default</dd>
+<dt>type: [1 | 2]</dt>
+<dd><p class="first">Which type of biplot to produce. 1 produces a site biplot, 2 produces a species biplot. In biplots, only the first two axes are shown. The plots are constructed as follows:</p>
+<p>Four matrices are constructed. Outer species (column) locations on CA axes <img class="math" src="_images/math/9d5b9321f67eecfa2013fa6f3891ba1f2e335946.png" alt="\mathbf{V}"/> are given by the species (column) weights multiplied by the species (column) eigenvalues:</p>
+<div class="math">
+<p><img src="_images/math/40bde3dfe732255a10797d6a23c6e692ca34ef55.png" alt="\mathbf{V} = \mathbf{D_k}^{-0.5}\mathbf{U}"/></p>
+</div><p>where <img class="math" src="_images/math/304d6317211eefb68f1c69535cc6594f7242111b.png" alt="\mathbf{D_k}"/> is a diagonal matrix of species (column) weights <cite>w_k</cite>.  Likewise, outer site (row) locations are given by:</p>
+<div class="math">
+<p><img src="_images/math/fd72ea3cfb53eec81597155487fcc4a5f03d0026.png" alt="\mathbf{\hat{V}} = \mathbf{D_i}^{-0.5}\mathbf{\hat{U}}"/></p>
+</div><p>Inner site locations <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/> are given as:</p>
+<div class="math">
+<p><img src="_images/math/ce9b8e635339bd3394e2fd31e7a7721e1d7dd382.png" alt="\mathbf{F} = \mathbf{\hat{V}}\mathbf{\Lambda^{0.5}}"/></p>
+</div><p>Inner species locations are given as:</p>
+<div class="math">
+<p><img src="_images/math/d07ae72f0b646d2fe70b4627f92c9ec35b4058c7.png" alt="\mathbf{\hat{F}} = \mathbf{V}\mathbf{\Lambda^{0.5}}"/></p>
+</div><p>Type 1 Biplot: Type 1 shows the relationships among sites within the centroids of the species. This plot is useful for examining relationships among sites and how sites are composed of species. In this, the first two columns of inner site locations <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/> are plotted against the first two columns of the outer species locations <img class="math" src="_images/math/9d5b9321f67eecfa2013fa6f3891ba1f2e335946.png" alt="\mathbf{V}"/>. NOTE: If <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/> in the original matrix, this will be <img class="math" src="_images/math/7db7f812bd594ded792fe1396d363f8aff65c087.png" alt="\mathbf{\hat{F}}"/> and <img class="math" src="_images/math/530822ae6a52e8826fe6aedff7102c392975d2c4.png" alt="\mathbf{\hat{V}}"/>.</p>
+<p>Type 2 Biplot: Type 2 shows the relationships among species within the centroids of the sites. This plot is useful for examining relationships among species and how species are distributed among sites. In this, the first two columns of inner species locations <img class="math" src="_images/math/7db7f812bd594ded792fe1396d363f8aff65c087.png" alt="\mathbf{\hat{F}}"/>  are plotted against the first two columns of the outer site locations <img class="math" src="_images/math/530822ae6a52e8826fe6aedff7102c392975d2c4.png" alt="\mathbf{\hat{V}}"/>. NOTE: If <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/> in the original matrix, this will be <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/> and <img class="math" src="_images/math/9d5b9321f67eecfa2013fa6f3891ba1f2e335946.png" alt="\mathbf{V}"/>.</p>
+<dl class="last docutils">
+<dt>coords: [True | False]</dt>
+<dd>If True, then return a dictionary of the <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/>, <img class="math" src="_images/math/7db7f812bd594ded792fe1396d363f8aff65c087.png" alt="\mathbf{\hat{F}}"/>, <img class="math" src="_images/math/9d5b9321f67eecfa2013fa6f3891ba1f2e335946.png" alt="\mathbf{V}"/>, and <img class="math" src="_images/math/530822ae6a52e8826fe6aedff7102c392975d2c4.png" alt="\mathbf{\hat{V}}"/> matrices so the user can customize plots. See above for description of these matrices. Dictionary keys are &#8216;F&#8217;, &#8216;Fhat&#8217;, &#8216;V&#8217;, and &#8216;Vhat&#8217;. NOTE: Any adjustments for matrix transposition have already taken place, so &#8216;F&#8217; gives site inner coordinates, &#8216;V&#8217; gives species outer coordinates, &#8216;Fhat&#8217; gives species inner coordinates, and &#8216;Vhat&#8217; gives site outer coordinates regardless of matrix shape. Type 1 plot can always be reproduced using &#8216;F&#8217; (sites) and &#8216;V&#8217; (species) and Type 2 plot can always be reproduced using &#8216;Fhat&#8217; (species) and &#8216;Vhat&#8217; (sites).</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Examples</strong></p>
+<p>In Legendre and Legendre (2012), there is an example of three species varying among three lakes. Write in that data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ecopy</span> <span class="kn">as</span> <span class="nn">ep</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">Lakes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="n">Lakes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Lakes</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;L1&#39;</span><span class="p">,</span> <span class="s">&#39;L2&#39;</span><span class="p">,</span> <span class="s">&#39;L3&#39;</span><span class="p">])</span>
+<span class="n">Lakes</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sp1&#39;</span><span class="p">,</span> <span class="s">&#39;Sp2&#39;</span><span class="p">,</span> <span class="s">&#39;Sp3&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Next, run the CA:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lakes_CA</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">ca</span><span class="p">(</span><span class="n">Lakes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Check the variance explained by each CA axis (there will only be two):</p>
+<div class="highlight-python"><pre>CA_summary = lakes_CA.summary()
+print CA_summary
+          CA Axis 1 CA Axis 2
+Std. Dev 0.310053 0.202341
+Prop. 0.701318 0.298682
+Cum. Prop. 0.701318 1.000000</pre>
+</div>
+<p>Next, see how well the two axes explained variance in species and sites:</p>
+<div class="highlight-python"><pre>rotPC = arrests_PCA.summary_rot()
+print rotPC
+         PC1       PC2     PC3        PC4
+Murder 0.535899 0.418181 -0.341233 0.649228
+Assault 0.583184 0.187986 -0.268148 -0.743407
+UrbanPop 0.278191 -0.872806 -0.378016 0.133878
+Rape 0.543432 -0.167319 0.817778 0.089024</pre>
+</div>
+<p>Although the loadings are informative, showing the correlations of each variable with each axis might ease interpretation:</p>
+<div class="highlight-python"><pre>print lakes_CA.cumDesc_Sp
+   CA Axis 1 CA Axis 2
+Sp1 0.971877 1
+Sp2 0.129043 1
+Sp3 0.732340 1
+
+print lakes_CA.cumDesc_site
+    CA Axis 1 CA Axis 2
+L1 0.684705 1
+L2 0.059355 1
+L3 0.967209 1</pre>
+</div>
+<p>Make a Type 1 biplot to look at the relationship among sites:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lakes_CA</span><span class="o">.</span><span class="n">biplot</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="_images/ca_1.png" src="_images/ca_1.png" />
+</div>
+<p>In a bigger example, run CA on the BCI dataset. <strong>NOTE: This is an example where</strong> <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
+<span class="n">BCI</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s">&#39;BCI&#39;</span><span class="p">,</span> <span class="s">&#39;vegan&#39;</span><span class="p">)</span>
+<span class="n">bci_ca</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">ca</span><span class="p">(</span><span class="n">BCI</span><span class="p">)</span>
+<span class="n">bci_ca</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="n">showSp</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="_images/ca3.png" src="_images/ca3.png" />
 </div>
 </dd></dl>
 

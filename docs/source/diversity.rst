@@ -6,9 +6,9 @@ EcoPy contains several methods for estimating species diversity.
 
 .. py:function:: diversity(x, method='shannon', breakNA=True)
 
-	Parameters
+	**Parameters**
 	
-	**x**: numpy.ndarray or pandas.DataFrame (*required*)
+	x: numpy.ndarray or pandas.DataFrame (*required*)
 		A site x species matrix, where sites are rows and columns are species.
 
 	**method**: ['shannon' | 'simpson' | 'invSimpson' | 'dominance' | 'spRich' | 'even']

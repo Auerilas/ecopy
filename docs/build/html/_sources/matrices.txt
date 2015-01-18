@@ -3,7 +3,7 @@ Matrix Transformations
 
 EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices have observations as rows (*i.e.* sites) and descriptors as columns (*i.e.* species). Although designed for site x species analyses, these techniques can apply to any matrix.
 
-	- :py:func:`tranform`
+	- :py:func:`transform`
 	- :py:func:`distance`
 
 .. py:function:: transform(x, method='wisconsin', axis=1, breakNA=True)

@@ -51,6 +51,32 @@
             
   <div class="section" id="ordination">
 <h1>Ordination<a class="headerlink" href="#ordination" title="Permalink to this headline">¶</a></h1>
+<p>Ecopy contains numerous methods for ordination, that is, plotting points in reduced space. Techniques include, but are not limited to, principle components analysis (PCA), correspondence analysis (CA), principle coordinates analysis (PCoA), and multidimensional scaling (nMDS).</p>
+<dl class="class">
+<dt id="pca">
+<em class="property">class </em><tt class="descname">pca</tt><big>(</big><em>x</em>, <em>scale=True</em>, <em>varNames=None</em><big>)</big><a class="headerlink" href="#pca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class &#8216;pca&#8217;, with several methods and attributes. This function uses eigenanalysis of covariance matrices rather than SVD decomposition. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those.</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>x: a numpy.ndarray or pandas.DataFrame</dt>
+<dd>A matrix for ordination, where objects are rows and descriptors/variables as columns. Can be either a pandas.DataFrame or numpy. ndarray</dd>
+<dt>scale: [True | False]</dt>
+<dd>Whether or not the columns should be standardized prior to PCA. If &#8216;True&#8217;, the PCA then operates on a correlation matrix, which is appropriate if variables are on different measurement scales. If variables are on the same scale, use &#8216;False&#8217; to have PCA operate on the covariance matrix.</dd>
+<dt>varNames: list</dt>
+<dd>If using a numpy.ndarray, pass a list of column names for to help make PCA output easier to interpret. Column names should be in order of the columns in the matrix. Otherwise, column names are represented as integers during summary.</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="pca.evals">
+<tt class="descname">evals</tt><a class="headerlink" href="#pca.evals" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descname">Eigenvalues in order of largest to smallest</tt></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>evecs: Normalized eigenvectors corresponding to each eigenvalue (i.e. the principle axes)</p>
+<p>scores: Principle component scores of each object (row) on each principle axis. This returns the raw scores $latex mathbf{F}$ calculates as $latex mathbf{F} = mathbf{YU}$ where $latex mathbf{U}$ is the matrix of eigenvectors and $latex mathbf{Y}$ is the original observations.</p>
 </div>
 
 

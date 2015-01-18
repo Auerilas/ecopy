@@ -5,6 +5,7 @@ EcoPy contains several methods for estimating species diversity.
 
 
 .. py:function:: diversity(x, method='shannon', breakNA=True)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	
 	Calculate species diversity for every site in a site x species matrix
 

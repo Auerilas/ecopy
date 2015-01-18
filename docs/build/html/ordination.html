@@ -69,14 +69,117 @@
 <dl class="attribute">
 <dt id="pca.evals">
 <tt class="descname">evals</tt><a class="headerlink" href="#pca.evals" title="Permalink to this definition">¶</a></dt>
-<dt>
-<tt class="descname">Eigenvalues in order of largest to smallest</tt></dt>
-<dd></dd></dl>
-
+<dd><p>Eigenvalues in order of largest to smallest</p>
 </dd></dl>
 
-<p>evecs: Normalized eigenvectors corresponding to each eigenvalue (i.e. the principle axes)</p>
-<p>scores: Principle component scores of each object (row) on each principle axis. This returns the raw scores $latex mathbf{F}$ calculates as $latex mathbf{F} = mathbf{YU}$ where $latex mathbf{U}$ is the matrix of eigenvectors and $latex mathbf{Y}$ is the original observations.</p>
+<dl class="attribute">
+<dt id="pca.evecs">
+<tt class="descname">evecs</tt><a class="headerlink" href="#pca.evecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized eigenvectors corresponding to each eigenvalue (i.e. the principle axes)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pca.scores">
+<tt class="descname">scores</tt><a class="headerlink" href="#pca.scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Principle component scores of each object (row) on each principle axis. This returns the raw scores <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/> calculated as <img class="math" src="_images/math/c79cc93d909f71aa88d4abf2aefb3061507a2d18.png" alt="\mathbf{F} = \mathbf{YU}"/> where <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/> is the matrix of eigenvectors and <img class="math" src="_images/math/669fb203c2329b8b404de01e7a228bd7c8ca1461.png" alt="\mathbf{Y}"/> are the original observations.</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="method">
+<dt id="pca.summary_imp">
+<tt class="descname">summary_imp</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_imp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data frame containing information about the principle axes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pca.summary_rot">
+<tt class="descname">summary_rot</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_rot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data frame containing information on axes rotations (i.e. the eigenvectors).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pca.summary_corr">
+<tt class="descname">summary_corr</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data frame containing the correlation of each variable (column) with each principle axis. For example, the correlation of variable <em>i</em> with axis <em>k</em> is calculated as <img class="math" src="_images/math/b4fbc001fe1faedca4fbe93ec14fcaf19c900dcc.png" alt="r_{ik} = u_{ik} \sqrt{\lambda_k} / \sqrt{s_i^2}"/> where <img class="math" src="_images/math/7a72e41c1b2934c12e2340be76876e9d09a1e5b4.png" alt="\lambda_k"/> is the eigenvalue (i.e. variance) associated with axis <em>k</em> and <img class="math" src="_images/math/cb857581c6b7ed6181a37ff77c23fbbd93389521.png" alt="s_i^2"/> is the variance of variable <em>i</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pca.summary_desc">
+<tt class="descname">summary_desc</tt><big>(</big><big>)</big><a class="headerlink" href="#pca.summary_desc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data frame containing the cumulative variance explained for each predictor along each principle axis</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pca.biplot">
+<tt class="descname">biplot</tt><big>(</big><em>xax=1</em>, <em>yax=2</em>, <em>type='distance'</em>, <em>obsNames=False</em><big>)</big><a class="headerlink" href="#pca.biplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a biplot using a specified transformation.</p>
+<dl class="docutils">
+<dt>xax: integer</dt>
+<dd>Specifyies which PC axis to plot on the x-axis</dd>
+<dt>yax: integer</dt>
+<dd>Specifyies which PC axis to plot on the y-axis</dd>
+<dt>type: [&#8216;distance&#8217; | &#8216;correlation&#8217;]</dt>
+<dd><p class="first">Type &#8216;distance&#8217; plots the raw scores <img class="math" src="_images/math/a01b1c51e370cb2f12af2152cd3c9d61e9fec928.png" alt="\mathbf{F}"/> and the raw vectors <img class="math" src="_images/math/c9eadbff3f359c41e6ac5b6bd382a29bb0415c4f.png" alt="\mathbf{U}"/> of the first two principle axes.</p>
+<p class="last">Type &#8216;correlation&#8217; plots scores and vectors scaled by the eigenvalues corresponding to each axis: <img class="math" src="_images/math/44a66cfe07579ce7d67b76edee8ec03e66619414.png" alt="\mathbf{F\Lambda}^{-0.5}"/> and <img class="math" src="_images/math/e600f19c3a15f3106cd0c67597991ce227af8759.png" alt="\mathbf{U\Lambda}^{0.5}"/>, where <img class="math" src="_images/math/e3c83ee2789162e0cccd010dd3f482f78cb4c535.png" alt="\mathbf{\Lambda}"/> is a diagonal matrix containing the eigenvalues.</p>
+</dd>
+<dt>obsNames: [True | False]</dt>
+<dd>Denotes whether to plot a scatterplot of points (False) or to actually show the names of the observations, as taken from the DataFrame index (True).</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Examples</strong></p>
+<p>Principle components analysis of the USArrests data. First, load the data from R using pandas:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ecopy</span> <span class="kn">as</span> <span class="nn">ep</span>
+<span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
+<span class="n">USArrests</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s">&#39;USArrests&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, run the PCA:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">arrests_PCA</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="n">USArrests</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Check the importance of the different axes by examining the standard deviations, which are the square root of the eigenvalues, and the proportions of variance explained by each axis:</p>
+<div class="highlight-python"><pre>impPC = arrests_PCA.summary_imp()
+print impPC
+            PC1     PC2       PC3     PC4
+Std Dev 1.574878 0.994869 0.597129 0.416449
+Proportion 0.620060 0.247441 0.089141 0.043358
+Cum Prop 0.620060 0.867502 0.956642 1.000000</pre>
+</div>
+<p>Next, examine the eigenvectors and loadings to determine which variables contribute to which axes:</p>
+<div class="highlight-python"><pre>rotPC = arrests_PCA.summary_rot()
+print rotPC
+         PC1       PC2     PC3        PC4
+Murder 0.535899 0.418181 -0.341233 0.649228
+Assault 0.583184 0.187986 -0.268148 -0.743407
+UrbanPop 0.278191 -0.872806 -0.378016 0.133878
+Rape 0.543432 -0.167319 0.817778 0.089024</pre>
+</div>
+<p>Although the loadings are informative, showing the correlations of each variable with each axis might ease interpretation:</p>
+<div class="highlight-python"><pre>print arrests_PCA.summary_corr()
+           PC1      PC2      PC3     PC4
+Murder 0.843976 0.658584 -0.537400 1.022455
+Assault 0.580192 0.187021 -0.266773 -0.739593
+UrbanPop 0.166116 -0.521178 -0.225724 0.079942
+Rape 0.226312 -0.069680 0.340563 0.037074</pre>
+</div>
+<p>Then, look to see how much of the variance among predictors is explained by the first two axes:</p>
+<div class="highlight-python"><pre>print arrests_PCA.summary_desc()
+           PC1      PC2     PC3  PC4
+Murder 0.712296 0.885382 0.926900 1
+Assault 0.843538 0.878515 0.904153 1
+Urban Pop 0.191946 0.945940 0.996892 1
+Rape 0.732461 0.760170 0.998626 1</pre>
+</div>
+<p>Show the biplot using the &#8216;correlation&#8217; scaling. Instead of just a scatterplot, use obsNames=True to show the actual names of observations:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">arrests_PCA</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;correlation&#39;</span><span class="p">,</span> <span class="n">obsNames</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="_images/corrpca.png" src="_images/corrpca.png" />
+</div>
+</dd></dl>
+
 </div>
 
 

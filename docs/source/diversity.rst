@@ -9,6 +9,8 @@ EcoPy contains several methods for estimating species diversity.
 .. automodule:: ecopy
    :members: diversity
 
+  test
+
 
 .. py:function:: diversity(x, method='shannon', breakNA=True)
 	

@@ -65,3 +65,5 @@ EcoPy contains several methods for estimating species diversity.
 			S = \sum_1^k 1 - \frac{ \binom{N-N_i} } {\binom{N, size}}
 
 		where *N* is the total number of individuals in the site, :math:`N_i` is the number of individuals of species *i*, and *size* is the sample size for rarefaction
+
+Next

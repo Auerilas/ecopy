@@ -190,7 +190,8 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		Returns a pandas.DataFrame of summary information for each correspondence axis, including SD's (square-root of each eigenvalue), proportion of inertia explained, and cumulative inertia explained.
 
-	.. py:classmethod:: biplot(coords=False, type=1, xax=1, yax=2, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None): 
+	.. py:classmethod:: biplot(coords=False, type=1, xax=1, yax=2, 
+		showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None)
 
 		Produces a biplot of the given CA axes.
 

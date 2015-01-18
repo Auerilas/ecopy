@@ -37,23 +37,23 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	**Methods**
 
-	.. py:method:: summary_imp()
+	.. py:classmethod:: summary_imp()
 
 		Returns a data frame containing information about the principle axes.
 
-	.. py:method:: summary_rot()
+	.. py:classmethod:: summary_rot()
 
 		Returns a data frame containing information on axes rotations (i.e. the eigenvectors).
 
-	.. py:method:: summary_corr()
+	.. py:classmethod:: summary_corr()
 
 		 Returns a data frame containing the correlation of each variable (column) with each principle axis. For example, the correlation of variable *i* with axis *k* is calculated as :math:`r_{ik} = u_{ik} \sqrt{\lambda_k} / \sqrt{s_i^2}` where :math:`\lambda_k` is the eigenvalue (i.e. variance) associated with axis *k* and :math:`s_i^2` is the variance of variable *i*.
 
-	.. py:method:: summary_desc()
+	.. py:classmethod:: summary_desc()
 
 		Returns a data frame containing the cumulative variance explained for each predictor along each principle axis
 
-	.. py:method:: biplot(xax=1, yax=2, type='distance', obsNames=False)
+	.. py:classmethod:: biplot(xax=1, yax=2, type='distance', obsNames=False)
 
 		Create a biplot using a specified transformation.
 
@@ -186,11 +186,11 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	**Methods**
 
-	.. py:method:: summary()
+	.. py:classmethod:: summary()
 
 		Returns a pandas.DataFrame of summary information for each correspondence axis, including SD's (square-root of each eigenvalue), proportion of inertia explained, and cumulative inertia explained.
 
-	.. py:method:: biplot(coords=False, type=1, xax=1, yax=2, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None): 
+	.. py:classmethod:: biplot(coords=False, type=1, xax=1, yax=2, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None): 
 
 		Produces a biplot of the given CA axes.
 

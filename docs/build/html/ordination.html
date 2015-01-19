@@ -57,6 +57,7 @@
 <li><a class="reference internal" href="#pca" title="pca"><tt class="xref py py-class docutils literal"><span class="pre">pca</span></tt></a> (Principle Components Analysis)</li>
 <li><a class="reference internal" href="#ca" title="ca"><tt class="xref py py-class docutils literal"><span class="pre">ca</span></tt></a> (Correspondance Analysis)</li>
 <li><a class="reference internal" href="#pcoa" title="pcoa"><tt class="xref py py-class docutils literal"><span class="pre">pcoa</span></tt></a> (Principle Coordinates Analysis)</li>
+<li><a class="reference internal" href="#MDS" title="MDS"><tt class="xref py py-class docutils literal"><span class="pre">MDS</span></tt></a> (Multidimensional Scaling)</li>
 </ul>
 </div></blockquote>
 <dl class="class">
@@ -182,8 +183,8 @@ Rape 0.732461 0.760170 0.998626 1</pre>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">arrests_PCA</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;correlation&#39;</span><span class="p">,</span> <span class="n">obsNames</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-center">
-<img alt="_images/corrpca.png" src="_images/corrpca.png" />
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/corrpca.png"><img alt="_images/corrpca.png" src="_images/corrpca.png" style="width: 75%;" /></a>
 </div>
 </dd></dl>
 
@@ -345,8 +346,8 @@ L3 0.967209 1</pre>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">lakes_CA</span><span class="o">.</span><span class="n">biplot</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="figure align-center">
-<img alt="_images/ca_1.png" src="_images/ca_1.png" />
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/ca_1.png"><img alt="_images/ca_1.png" src="_images/ca_1.png" style="width: 75%;" /></a>
 </div>
 <p>In a bigger example, run CA on the BCI dataset. <strong>NOTE: This is an example where</strong> <img class="math" src="_images/math/14555ceddb79c166bda85ed43806250d8695cc3f.png" alt="r &lt; c"/>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
@@ -355,8 +356,8 @@ L3 0.967209 1</pre>
 <span class="n">bci_ca</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="n">showSp</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-center">
-<img alt="_images/ca3.png" src="_images/ca3.png" />
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/ca3.png"><img alt="_images/ca3.png" src="_images/ca3.png" style="width: 75%;" /></a>
 </div>
 </dd></dl>
 
@@ -408,8 +409,8 @@ L3 0.967209 1</pre>
 </dd></dl>
 
 <dl class="classmethod">
-<dt>
-<tt class="descname">biplot(coords=False, xax=1, yax=2, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12):</tt></dt>
+<dt id="pcoa.biplot">
+<em class="property">classmethod </em><tt class="descname">biplot</tt><big>(</big><em>coords=False</em>, <em>xax=1</em>, <em>yax=2</em>, <em>descriptors=None</em>, <em>descripNames=None</em>, <em>spCol='r'</em>, <em>siteCol='k'</em>, <em>spSize=12</em>, <em>siteSize=12</em><big>)</big><a class="headerlink" href="#pcoa.biplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces a biplot of the given PCoA axes.</p>
 <dl class="docutils">
 <dt>coords: [True | False]</dt>
@@ -420,13 +421,13 @@ L3 0.967209 1</pre>
 <dd>Specifies CA axis to plot on the y-axis (Default=2)</dd>
 <dt>descriptors:  numpy.ndarray or pandas.DataFrame</dt>
 <dd><p class="first">An n x m matrix of descriptors to plot on the biplot. These can be the original descriptors used to calculate distances among objects or an entirely new set. Descriptors must be quantitative. It will work for binary descriptors, but may be meaningless.</p>
-<p>Given a new matrix $latex mathbf{Y}$ of descriptors, the matrix is standardized by columns to produce a new matrix $latex mathbf{Y_{scl}}$. The given principle coordinate axes denoted by xax and yax are placed into an n x 2 matrix $latex mathbf{V}$, which is also standardized by column. The covariance between the new descriptors and principle coordinates is given by</p>
+<p>Given a new matrix <img class="math" src="_images/math/669fb203c2329b8b404de01e7a228bd7c8ca1461.png" alt="\mathbf{Y}"/> of descriptors, the matrix is standardized by columns to produce a new matrix <img class="math" src="_images/math/8c7973c21123fac40126311b4661b072284f84a3.png" alt="\mathbf{Y_{scl}}"/>. The given principle coordinate axes denoted by xax and yax are placed into an n x 2 matrix <img class="math" src="_images/math/9d5b9321f67eecfa2013fa6f3891ba1f2e335946.png" alt="\mathbf{V}"/>, which is also standardized by column. The covariance between the new descriptors and principle coordinates is given by</p>
 <div class="math">
 <p><img src="_images/math/681b89f9020ea4d6acbdab746327bf6cb9697446.png" alt="\mathbf{S} = \frac{1}{n-1}\mathbf{Y'_{scl}V}"/></p>
-</div><p>The covariance $latex mathbf{S}$ is then scaled by the eigenvalues corresponding to the given eigenvectors:</p>
+</div><p>The covariance <img class="math" src="_images/math/86f70b0603b82669bfb2995ffa6cd1dd775fd200.png" alt="\mathbf{S}"/> is then scaled by the eigenvalues corresponding to the given eigenvectors:</p>
 <div class="math">
 <p><img src="_images/math/bb504f96111788f0e8eebf76a5c1c29bb9acd221.png" alt="\mathbf{Y_{proj}} = \sqrt{n-1}\mathbf{S\Lambda^{-0.5}}"/></p>
-</div><p class="last">Matrix $latex Y_{proj}$ contains the coordinates of each descriptor and is what is returns as &#8216;Descriptors&#8217; if coords=True.</p>
+</div><p class="last">Matrix <img class="math" src="_images/math/1bb9d3e6dff77fbfe2df108e460acbe9892b46c3.png" alt="Y_{proj}"/> contains the coordinates of each descriptor and is what is returns as &#8216;Descriptors&#8217; if coords=True.</p>
 </dd>
 <dt>descripNames: list</dt>
 <dd>A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.</dd>
@@ -442,11 +443,10 @@ L3 0.967209 1</pre>
 </dd></dl>
 
 <dl class="classmethod">
-<dt>
-<tt class="descname">shepard(xax=1, yax=2):</tt></dt>
-<dt>
-<tt class="descname">Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.</tt></dt>
-<dd></dd></dl>
+<dt id="pcoa.shepard">
+<em class="property">classmethod </em><tt class="descname">shepard</tt><big>(</big><em>xax=1</em>, <em>yax=2</em><big>)</big><a class="headerlink" href="#pcoa.shepard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.</p>
+</dd></dl>
 
 <p><strong>Examples</strong></p>
 <p>Run PCoA on the &#8216;BCI&#8217; data:</p>
@@ -465,8 +465,8 @@ Cum. Prop. 0.107487 0.190552
 
 pc1.biplot()</pre>
 </div>
-<div class="figure align-center">
-<img alt="_images/pcoa1.png" src="_images/pcoa1.png" />
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/pcoa1.png"><img alt="_images/pcoa1.png" src="_images/pcoa1.png" style="width: 75%;" /></a>
 </div>
 <p>Attempting to show species on the above biplot results in a messy graph. To better illustrate its use, run PCoA on the USArrests data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">USA</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s">&#39;USArrests&#39;</span><span class="p">)</span>
@@ -478,8 +478,140 @@ pc1.biplot()</pre>
 <span class="n">pc2</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="n">descriptors</span><span class="o">=</span><span class="n">USA</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-center">
-<img alt="_images/pcoa_arrests.png" src="_images/pcoa_arrests.png" />
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/pcoa_arrests.png"><img alt="_images/pcoa_arrests.png" src="_images/pcoa_arrests.png" style="width: 75%;" /></a>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="MDS">
+<em class="property">class </em><tt class="descname">MDS</tt><big>(</big><em>distmat</em>, <em>siteNames=None</em>, <em>naxes=2</em>, <em>transform='monotone'</em>, <em>ntry=20</em>, <em>tolerance=1E-4</em>, <em>maxiter=3000</em>, <em>init=None</em><big>)</big><a class="headerlink" href="#MDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a square-symmetric distance matrix with no negative values as input. After finding the solution that provide the lowest stress, ecopy.MDS scales the fitted distances to have a maximum equal to the maximum observed distance. Afterwards, it uses PCA to rotate the object (site) scores so that variance is maximized along the x-axis. Returns an object of class <a class="reference internal" href="#MDS" title="MDS"><tt class="xref py py-class docutils literal"><span class="pre">MDS</span></tt></a>.</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>distmat: np.nndarray or pandas.DataFrame</dt>
+<dd>A square-symmetric distance matrix.</dd>
+<dt>siteNames:  list</dt>
+<dd>A list of names for each object. If none, takes on integer values or the index of the pandas.DataFrame</dd>
+<dt>naxes: integer</dt>
+<dd>Number of ordination axes. Default = 2</dd>
+<dt>transform: [&#8216;absolute&#8217; | &#8216;ratio&#8217; | &#8216;linear&#8217; | &#8216;monotone&#8217;]</dt>
+<dd><p class="first">Which transformation should be used during scaling.</p>
+<p><em>absolute</em>: Conducts absolute MDS. Distances between points in ordination space should be as close as possible to observed distances.</p>
+<p><em>ratio&#8217;</em> Ordination distances are proportional to observed distances.</p>
+<p><em>linear</em>: Ordination distances are a linear function of observed distances. Uses the technique of Heiser (1991) to avoid negative ordination distances.</p>
+<p class="last"><em>monotone</em>: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. <strong>Uses isotonic regression from scikit-learn.</strong></p>
+</dd>
+<dt>ntry: integer</dt>
+<dd>Number of random starts used to avoid local minima. The returned solution is the one with the lowest final stress.</dd>
+<dt>tolerance: float</dt>
+<dd>Minimum step size causing a break in the minimization of stress. Default = 1E-4.</dd>
+<dt>maxiter: integer</dt>
+<dd>Maximum number of iterations to attempt before breaking if no solution is found.</dd>
+<dt>init: numpy.ndarray</dt>
+<dd>Initial positions for the first random start. If none, the initial position of the first try is taken as the site locations from classical scaling, Principle Coordinates Analysis.</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="MDS.scores">
+<tt class="descname">scores</tt><a class="headerlink" href="#MDS.scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Final scores for each object along the ordination axes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MDS.stress">
+<tt class="descname">stress</tt><a class="headerlink" href="#MDS.stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Final stress</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MDS.obs">
+<tt class="descname">obs</tt><a class="headerlink" href="#MDS.obs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The observed distance matrix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MDS.transform">
+<tt class="descname">transform</tt><a class="headerlink" href="#MDS.transform" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descname">Which transformation was used</tt></dt>
+<dd></dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="classmethod">
+<dt id="MDS.biplot">
+<em class="property">classmethod </em><tt class="descname">biplot</tt><big>(</big><em>coords=False</em>, <em>xax=1</em>, <em>yax=2</em>, <em>siteNames=True</em>, <em>descriptors=None</em>, <em>descripNames=None</em>, <em>spCol='r'</em>, <em>siteCol='k'</em>, <em>spSize=12</em>, <em>siteSize=12</em><big>)</big><a class="headerlink" href="#MDS.biplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces a biplot of the given MDS axes.</p>
+<dl class="docutils">
+<dt>coords: [True | False]</dt>
+<dd>If True, returns a dictionary of the plotted axes, where &#8216;Objects&#8217; gives the coordinates of objects and &#8216;Descriptors&#8217; gives the coordinates of the descriptors, if any.</dd>
+<dt>xax: integer</dt>
+<dd>Specifies CA axis to plot on the x-axis</dd>
+<dt>yax: integer</dt>
+<dd>Specifies CA axis to plot on the y-axis (Default=2)</dd>
+<dt>descriptors:  numpy.ndarray or pandas.DataFrame</dt>
+<dd>A matrix of the original descriptors used to create the distance matrix. Descriptors (<em>i.e.</em> species) scores are calculated as the weighted average of site scores</dd>
+<dt>descripNames: list</dt>
+<dd>A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.</dd>
+<dt>spCol: string</dt>
+<dd>Color of species text</dd>
+<dt>siteCol: string</dt>
+<dd>Color of site text</dd>
+<dt>spSize: integer</dt>
+<dd>Size of species text</dd>
+<dt>siteSize: integer</dt>
+<dd>Size of site text</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="MDS.shepard">
+<em class="property">classmethod </em><tt class="descname">shepard</tt><big>(</big><em>xax=1</em>, <em>yax=2</em><big>)</big><a class="headerlink" href="#MDS.shepard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="MDS.correlations">
+<em class="property">classmethod </em><tt class="descname">correlations</tt><big>(</big><big>)</big><a class="headerlink" href="#MDS.correlations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pandas.Series of correlations between observed and fitted distances for each site.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="MDS.correlationPlots">
+<em class="property">classmethod </em><tt class="descname">correlationPlots</tt><big>(</big><em>site=None</em><big>)</big><a class="headerlink" href="#MDS.correlationPlots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces a plot of observed vs. fitted distances for a given site. If site=None, then all sites are plotted on a single graph.</p>
+</dd></dl>
+
+<p><strong>Examples</strong></p>
+<p>Conduct nMDS on the &#8216;dune&#8217; data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas.rpy.common</span> <span class="kn">as</span> <span class="nn">com</span>
+<span class="kn">import</span> <span class="nn">ecopy</span> <span class="kn">as</span> <span class="nn">ep</span>
+<span class="n">dunes</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s">&#39;dune&#39;</span><span class="p">,</span> <span class="s">&#39;vegan&#39;</span><span class="p">)</span>
+<span class="n">dunes_T</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">dunes</span><span class="p">,</span> <span class="s">&#39;wisconsin&#39;</span><span class="p">)</span>
+<span class="n">dunes_D</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">dunes_T</span><span class="p">,</span> <span class="s">&#39;bray&#39;</span><span class="p">)</span>
+<span class="n">dunesMDS</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">MDS</span><span class="p">(</span><span class="n">dunes_D</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="s">&#39;monotone&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Plot the Shepard diagram:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dunesMDS</span><span class="o">.</span><span class="n">shepard</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/duneshepard.png"><img alt="_images/duneshepard.png" src="_images/duneshepard.png" style="width: 75%;" /></a>
+</div>
+<p>Check the correlations for observed vs. fitted distances:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dunesMDS</span><span class="o">.</span><span class="n">correlationPlots</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/dunecorrs.png"><img alt="_images/dunecorrs.png" src="_images/dunecorrs.png" style="width: 75%;" /></a>
+</div>
+<p>Make a biplot, showing species locations:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dunesMDS</span><span class="o">.</span><span class="n">biplot</span><span class="p">(</span><span class="n">descriptors</span><span class="o">=</span><span class="n">dunes_T</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" style="width: 75%">
+<a class="reference internal image-reference" href="_images/dunesbiplot.png"><img alt="_images/dunesbiplot.png" src="_images/dunesbiplot.png" style="width: 75%;" /></a>
 </div>
 </dd></dl>
 

@@ -6,6 +6,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	- :py:class:`pca` (Principle Components Analysis)
 	- :py:class:`ca` (Correspondance Analysis)
 	- :py:class:`pcoa` (Principle Coordinates Analysis)
+	- :py:class:`MDS` (Multidimensional Scaling)
 
 .. py:class:: pca(x, scale=True, varNames=None)
 
@@ -126,6 +127,8 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		arrests_PCA.biplot(type='correlation', obsNames=True)
 
 	.. figure::  images/corrpca.png
+		:figwidth: 75 %
+		:width: 75 %
 		:align:   center
 
 .. py:class:: ca(x, siteNames=None, spNames=None)
@@ -314,6 +317,8 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		lakes_CA.biplot()
 
 	.. figure:: images/ca_1.png
+		:figwidth: 75 %
+		:width: 75 %
 		:align: center
 
 	In a bigger example, run CA on the BCI dataset. **NOTE: This is an example where** :math:`r < c`::
@@ -324,6 +329,8 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		bci_ca.biplot(showSp=False)
 
 	.. figure::  images/ca3.png
+		:figwidth: 75 %
+		:width: 75 %
 		:align:   center
 
 .. py:class:: pcoa(x, correction=None, siteNames=None)
@@ -373,7 +380,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		Returns a pandas.DataFrame summarizing the variance explained by each principle coordinate axis.
 
-	.. py:classmethod:: biplot(coords=False, xax=1, yax=2, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12):
+	.. py:classmethod:: biplot(coords=False, xax=1, yax=2, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12)
 
 		Produces a biplot of the given PCoA axes.
 
@@ -418,7 +425,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		siteSize: integer
 			Size of site text
 
-	.. py:classmethod:: shepard(xax=1, yax=2): 
+	.. py:classmethod:: shepard(xax=1, yax=2)
 		
 		Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.
 
@@ -442,6 +449,8 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		pc1.biplot()
 
 	.. figure:: images/pcoa1.png
+		:figwidth: 75 %
+		:width: 75 %
 		:align: center
 
 	Attempting to show species on the above biplot results in a messy graph. To better illustrate its use, run PCoA on the USArrests data::
@@ -455,6 +464,150 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		pc2.biplot(descriptors=USA)
 
 	.. figure::  images/pcoa_arrests.png
+		:figwidth: 75 %
+		:width: 75 %
 		:align:   center
+
+.. py:class:: MDS(distmat, siteNames=None, naxes=2, transform='monotone', ntry=20, tolerance=1E-4, maxiter=3000, init=None)
+
+	Takes a square-symmetric distance matrix with no negative values as input. After finding the solution that provide the lowest stress, ecopy.MDS scales the fitted distances to have a maximum equal to the maximum observed distance. Afterwards, it uses PCA to rotate the object (site) scores so that variance is maximized along the x-axis. Returns an object of class :py:class:`MDS`. 
+
+	**Parameters**
+
+	distmat: np.nndarray or pandas.DataFrame
+	 	A square-symmetric distance matrix.
+
+	siteNames:  list
+		A list of names for each object. If none, takes on integer values or the index of the pandas.DataFrame
+
+	naxes: integer
+		Number of ordination axes. Default = 2
+
+	transform: ['absolute' | 'ratio' | 'linear' | 'monotone']
+		Which transformation should be used during scaling.
+
+		*absolute*: Conducts absolute MDS. Distances between points in ordination space should be as close as possible to observed distances.
+
+   		*ratio'* Ordination distances are proportional to observed distances.
+
+		*linear*: Ordination distances are a linear function of observed distances. Uses the technique of Heiser (1991) to avoid negative ordination distances.
+
+		*monotone*: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. **Uses isotonic regression from scikit-learn.**
+
+	ntry: integer
+		Number of random starts used to avoid local minima. The returned solution is the one with the lowest final stress.
+
+	tolerance: float
+		Minimum step size causing a break in the minimization of stress. Default = 1E-4.
+
+	maxiter: integer
+		Maximum number of iterations to attempt before breaking if no solution is found.
+
+	init: numpy.ndarray
+		Initial positions for the first random start. If none, the initial position of the first try is taken as the site locations from classical scaling, Principle Coordinates Analysis.
+	
+	**Attributes**
+
+	.. py:attribute:: scores
+		
+		Final scores for each object along the ordination axes
+		
+	.. py:attribute:: stress
+		
+		Final stress
+
+	.. py:attribute:: obs
+		
+		The observed distance matrix
+
+	.. py:attribute:: transform
+		Which transformation was used
+
+	**Methods**
+
+	.. py:classmethod:: biplot(coords=False, xax=1, yax=2, siteNames=True, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12)
+
+		Produces a biplot of the given MDS axes.
+
+		coords: [True | False]
+			 If True, returns a dictionary of the plotted axes, where 'Objects' gives the coordinates of objects and 'Descriptors' gives the coordinates of the descriptors, if any.
+
+		xax: integer 
+			Specifies CA axis to plot on the x-axis
+
+		yax: integer 
+			Specifies CA axis to plot on the y-axis (Default=2)
+
+		descriptors:  numpy.ndarray or pandas.DataFrame
+			A matrix of the original descriptors used to create the distance matrix. Descriptors (*i.e.* species) scores are calculated as the weighted average of site scores
+
+		descripNames: list
+			A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.
+
+		spCol: string
+			Color of species text
+
+		siteCol: string
+			Color of site text
+
+		spSize: integer
+			Size of species text
+
+		siteSize: integer
+			Size of site text
+
+	.. py:classmethod:: shepard(xax=1, yax=2)
+		
+		Plots a Shepard diagram of Euclidean distances among objects in reduced space vs. original distance calculations. xax and yax as above.
+
+	.. py:classmethod:: correlations()
+
+		Returns a pandas.Series of correlations between observed and fitted distances for each site.
+
+	.. py:classmethod:: correlationPlots(site=None) 
+
+		Produces a plot of observed vs. fitted distances for a given site. If site=None, then all sites are plotted on a single graph.
+
+	**Examples**
+
+	Conduct nMDS on the 'dune' data::
+
+		import pandas.rpy.common as com
+		import ecopy as ep
+		dunes = com.load_data('dune', 'vegan')
+		dunes_T = ep.transform(dunes, 'wisconsin')
+		dunes_D = ep.distance(dunes_T, 'bray')
+		dunesMDS = ep.MDS(dunes_D, transform='monotone')
+
+	Plot the Shepard diagram::
+
+		dunesMDS.shepard()
+
+	.. figure:: images/duneshepard.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align: center
+
+	Check the correlations for observed vs. fitted distances::
+
+		dunesMDS.correlationPlots()
+
+	.. figure:: images/dunecorrs.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align: center
+
+	Make a biplot, showing species locations::
+
+		dunesMDS.biplot(descriptors=dunes_T)
+
+	.. figure:: images/dunesbiplot.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align: center
+
+
+
+	
 
 

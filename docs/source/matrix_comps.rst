@@ -1,3 +1,6 @@
+Matrix Comparisons
+================
+
 Ecopy contains several methods for comparing matrices. Some of these are similar to ordination, while others are more traditional null hypothesis testing.
 
 	- :py:class:`Mantel` (Mantel test)

@@ -22,7 +22,7 @@ Documentation
    diversity
    matrices
    ordination
-   matrx_comps
+   matrix_comps
    references
    license
    changelog

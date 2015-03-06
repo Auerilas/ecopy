@@ -5,6 +5,7 @@ Version History
 - procrustes test of matrix associations
 - anosim class for analysis of similarity
 - mantel class for Mantel tests
+- corner4 class for fourth corner analysis
 - load_data function for importing datasets
 
 0.0.5

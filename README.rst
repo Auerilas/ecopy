@@ -10,6 +10,7 @@ What's New
 - load_data function for loading data
 - anosim class for analysis of similarity
 - mantel class for Mantel tests
+- corner4 class for fourth corner analysis
 
 License
 =====

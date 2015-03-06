@@ -50,16 +50,15 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 
 	Convert the 'varespec' data to relative abundance::
 
-		import pandas.rpy.common as com
 		import ecopy as ep
-		varespec = com.load_data('varespec', 'vegan')
+		varespec = ep.load_data('varespec')
 		relAbund = ep.transform(varespec, method='total', axis=1)
 
 .. py:function:: distance(x, method='euclidean', transform="1", breakNA=True)
 
 	Takes an input matrix and returns a square-symmetric array of distances among rows. **NOTE:** Be sure the appropriate transformation has already been applied. This function contains a variety of both similarity (S) and distance (D) metrics. However, for consistency all similarities are converted to distances D = 1 - S. Methods annotated with SIMILARITY follow this procedure.
 
-	In the case of binary 0/1 data, the two rows are converted to a contingency table, where A is the number of double presences, B and C are the number of single presences in :math:`x_1` and :math`x_2`, respectively, and D is the number of double absences. Matrices consist of i rows and k species. Methods that only work on binary data will result in an error if non-binary data is passed. However, binary data can be passed to all methods, and sometimes give equivalent results (i.e. passing binary data to method 'bray' is identical to using method 'sorensen').
+	In the case of binary 0/1 data, the two rows are converted to a contingency table, where A is the number of double presences, B and C are the number of single presences in :math:`x_1` and :math:`x_2`, respectively, and D is the number of double absences. Matrices consist of i rows and k species. Methods that only work on binary data will result in an error if non-binary data is passed. However, binary data can be passed to all methods, and sometimes give equivalent results (i.e. passing binary data to method 'bray' is identical to using method 'sorensen').
 
 	**Parameters**
 
@@ -161,9 +160,8 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 
 	Calculate the Bray-Curtis dissimilarity among rows of the 'varespec' data::
 
-		import pandas.rpy.common as com
 		import ecopy as ep
-		varespec = com.load_data('varespec', 'vegan')
+		varespec = ep.load_data('varespec')
 		brayDist = ep.distance(varespec, method='bray)
 
 	If attempting a binary method with non-binary data, an error will be raise::

@@ -37,9 +37,8 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 	
 	Example
 	--------
-	import pandas.rpy.common as com
-	from ecopy import transform
-	varespec = com.load_data('varespec', 'vegan')
+	import ecopy as ep
+	varespec = ep.load_data('varespec')
 
 	# divide each element by row total
 	transform(varespec, method='total', axis=1)

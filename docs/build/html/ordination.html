@@ -500,7 +500,7 @@ pc1.biplot()</pre>
 <p><em>absolute</em>: Conducts absolute MDS. Distances between points in ordination space should be as close as possible to observed distances.</p>
 <p><em>ratio&#8217;</em> Ordination distances are proportional to observed distances.</p>
 <p><em>linear</em>: Ordination distances are a linear function of observed distances. Uses the technique of Heiser (1991) to avoid negative ordination distances.</p>
-<p class="last"><em>monotone</em>: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. <strong>Uses isotonic regression from scikit-learn.</strong></p>
+<p class="last"><em>monotone</em>: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. <strong>Uses isotonic regression developed by Nelle Varoquaux and  Andrew Tulloch from scikit-learn.</strong></p>
 </dd>
 <dt>ntry: integer</dt>
 <dd>Number of random starts used to avoid local minima. The returned solution is the one with the lowest final stress.</dd>

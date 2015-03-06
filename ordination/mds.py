@@ -71,9 +71,8 @@ class MDS:
 
 	Example
 	--------
-	import pandas.rpy.common as com
 	import ecopy as ep
-	dunes = com.load_data('dune', 'vegan')
+	dunes = ep.load_data('dune')
 	dunes_T = ep.transform(dunes, 'wisconsin')
 	dunes_D = ep.distance(dunes_T, 'bray')
 	dunesMDS = ep.MDS(dunes_D, transform='monotone')
@@ -238,9 +237,9 @@ class MDS:
 			plt.show()
 		else:
 			if descriptors is None:
-				coordDict = {'Sites': self.scores}
+				coordDict = {'Objects': self.scores}
 			else:
-				coordDict = {'Sites': self.scores, 'Descriptors': dScores}
+				coordDict = {'Objects': self.scores, 'Descriptors': dScores}
 			return coordDict
 
 	def shepard(self):

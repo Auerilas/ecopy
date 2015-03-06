@@ -45,9 +45,8 @@ EcoPy contains several methods for estimating species diversity:
 
 	Calculate Shannon diversity of the 'varespec' dataset from R::
 
-		import pandas.rpy.common as com
 		import ecopy as ep
-		varespec = com.load_data('varespec', 'vegan')
+		varespec = ep.load_data('varespec')
 		shannonH = ep.diversity(varespec, 'shannon')
 
 .. py:function:: rarefy(x, method='rarefy', size=None, breakNA=True)
@@ -80,9 +79,8 @@ EcoPy contains several methods for estimating species diversity:
 
 	Calculate rarefied species richness for the BCI dataset::
 
-		import pandas.rpy.common as com
 		import ecopy as ep
-		varespec = com.load_data('BCI', 'vegan')
+		varespec = ep.load_data('BCI')
 		rareRich = ep.rarefy(varespec, 'rarefy')
 
 	Show rarefaction curves for each site::

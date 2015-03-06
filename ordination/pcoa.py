@@ -61,10 +61,9 @@ class pcoa:
 	
 	Example
 	--------
-	import pandas.rpy.common as com
 	import ecopy as ep
 
-	BCI = com.load_data('BCI', 'vegan')
+	BCI = ep.load_data('BCI')
 	brayD = ep.distance(BCI, method='bray', transform='sqrt')
 	pc1 = ep.pcoa(brayD)
 	print pc1.summary()
@@ -186,7 +185,7 @@ class pcoa:
 			[ax.text(x,y,s, color=siteCol, fontsize=siteSize, ha='center', va='center') for x,y,s in zip(self.U[:,xax-1], self.U[:,yax-1], self.siteLabs)]
 			if descriptors is not None:
 				ax.plot(dProj[:,0], dProj[:,1], 'ko', ms=0)
-				[ax.text(x,y,s, color=spCol, fontsize=spSize, ha='center', va='center's) for x,y,s in zip(dProj[:,0], dProj[:,1], dLabs)]
+				[ax.text(x,y,s, color=spCol, fontsize=spSize, ha='center', va='center') for x,y,s in zip(dProj[:,0], dProj[:,1], dLabs)]
 			ax.set_xlabel('PCoA Axis {!s}'.format(xax))
 			ax.set_ylabel('PCoA Axis {!s}'.format(yax))
 			py.show()

@@ -38,15 +38,14 @@ def rarefy(x, method='rarefy', size = None, breakNA=True):
 
 	Example
 	--------
-	import pandas.rpy.common as com
-	from ecopy import rarefy
-	varespec = com.load_data('BCI', 'vegan')
+	import ecopy as ep
+	varespec = ep.load_data('BCI')
 	
 	# calculate rarefied species richness
-	rarefy(BCI, 'rarefy')
+	rareRich = ep.rarefy(BCI, 'rarefy')
 
 	# draw rarefaction curves
-	rarefy(BCI, 'rarecurve')
+	ep.rarefy(BCI, 'rarecurve')
 	'''
 	listofmethods = ['rarefy', 'rarecurve']
 	if not isinstance(breakNA, bool):

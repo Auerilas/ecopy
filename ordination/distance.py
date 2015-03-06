@@ -83,9 +83,8 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 
 	Example
 	--------
-	import pandas.rpy.common as com
-	from ecopy import distance
-	varespec = com.load_data('varespec', 'vegan')
+	import ecopy as ep
+	varespec = ep.load_data('varespec')
 	distance(varespec, method='euclidean')
 
 	# for binary data

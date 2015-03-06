@@ -1,5 +1,12 @@
 Version History
 ==========
+0.0.6
+^^^^^
+- procrustes test of matrix associations
+- anosim class for analysis of similarity
+- mantel class for Mantel tests
+- load_data function for importing datasets
+
 0.0.5
 ^^^^^
 - poca class for princple coordinate analysis

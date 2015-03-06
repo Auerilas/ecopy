@@ -27,14 +27,14 @@ class pca:
 	evals: array of eigenvalues
 	evecs: array of eigenvectors
 	scores: array of observation scores along each component
-	correlation: correlation of each descriptor with each component
-	cumdesc: cumulative variance explained by each principle axis for each
-		descriptor. 
 
 	Methods
 	--------
 	summary_imp(): print a summary table of principle axes
 	summary_rot(): print a summary table of axes rotations
+	summary_desc():cumulative variance explained by each principle axis for each
+		descriptor. 
+	summary_corr(): correlation of each descriptor with each component
 	biplot(type = "distance", obsNames = False):
 		create a biplot of the first two components with a given scaling
 			type: denotes whether a distance biplot or correlation
@@ -43,10 +43,9 @@ class pca:
 
 	Example
 	--------
-	import pandas.rpy.common as com
-	from ecopy import pca
-	USArrests = com.load_data('USArrests')
-	prcomp = pca(USArrests, scale = True)
+	import ecopy as ep
+	USArrests = ep.load_data('USArrests')
+	prcomp = ep.pca(USArrests, scale = True)
 	prcomp.summar_imp()
 	prcomp.correlation
 	prcomp.biplot(scale = 1)
@@ -163,5 +162,5 @@ def eig_decomp(y):
 	evals = evals[idx]
 	evecs = evecs[:,idx]
 	scores = y.dot(evecs)
-	corr = np.diag(np.diag(covMat)).dot(evecs.T).dot(np.diag(evals**0.5)).T
+	corr = evecs.dot(np.diag(evals**0.5)).T.dot(np.diag(np.diag(covMat)**-0.5)).T
 	return evals, evecs, scores, corr

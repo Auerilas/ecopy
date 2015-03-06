@@ -40,11 +40,10 @@ def diversity(x, method='shannon', breakNA=True):
 
 	Example
 	--------
-	import pandas.rpy.common as com
-	from ecopy import diversity
-	varespec = com.load_data('varespec', 'vegan')
+	import ecopy as ep
+	varespec = ep.load_data('varespec'')
 	
-	diversity(varespec, 'shannon')
+	div = ep.diversity(varespec, 'shannon')
 	'''
 	listofmethods = ['shannon', 'simpson', 'invSimpson', 'dominance', 'spRich', 'even']
 	if not isinstance(breakNA, bool):

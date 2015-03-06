@@ -1,14 +1,15 @@
 EcoPy: Python for Ecological Data Analyses
 ******************************************
-**EcoPy** provides tools for ecological data analyses. In general, it focuses on multivariate data analysis, which can be useful in any field, but with particular attention to those methods widely used in ecology. `The homepage, with full documentation and examples, can be found here <http://ecologicalpython.wordpress.com/>`_
+**EcoPy** provides tools for ecological data analyses. In general, it focuses on multivariate data analysis, which can be useful in any field, but with particular attention to those methods widely used in ecology. `The homepage, with full documentation and examples, can be found here <http://ecopy.readthedocs.org>`_
 
 What's New
 =======
-0.0.5
+0.0.6
 -------
-- poca class for princple coordinate analysis
-- MDS class for multidimensional scaling (uses isotonic regression from scikit-learn)
-- small changes and fixes to previous functions
+- procrustes_test for procrustes test of matrix associations
+- load_data function for loading data
+- anosim class for analysis of similarity
+- mantel class for Mantel tests
 
 License
 =====
@@ -16,15 +17,14 @@ License
 
 Version
 =====
-0.0.4 - Under development
+0.0.6 - Under development
 
 Examples
 ======
 Transforming a site x species matrix, dividing by site totals::
 
-	import pandas.rpy.common as com
 	import ecopy as ep
-	varespec = com.load_data('varespec', 'vegan')
+	varespec = ep.load_data('varespec')
 	newMat = ep.transform(varespec, method='total', axis=1)
 
 Calculating Bray-Curtis dissimilarities on the new matrix::
@@ -33,7 +33,7 @@ Calculating Bray-Curtis dissimilarities on the new matrix::
 
 PCA on US Arrests data::
 	
-	USArrests = com.load_data('USArrests')
+	USArrests = ep.load_data('USArrests')
 	prcomp = ep.pca(USArrests, scaled = True)
 	prcomp.summary()
 	prcomp.biplot(scale = 0)
@@ -43,15 +43,10 @@ Full online documentation is a work in progress
 
 TO-DO
 ====
-- PCoA (MDS)
 - RDA
 - CCA (INCL. DETRENDED)
-- nMDS
-- ANOSIM
-- SIMPER
 - MINIMUM SPANNING TREE (PRIMM's)
 - PROCRUSTES ROTATION
 - LINEAR/SURFACE ENVIRONMENTAL FITTING
-- SPECIES POOLS (ACCUMULATION CURVES)
 - MAXENT WRAPPER
-- MANY MANY THINGS
+- MANY MANY OTHER THINGS

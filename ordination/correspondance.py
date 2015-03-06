@@ -55,10 +55,9 @@ class ca:
 
 	Example
 	--------
-	import pandas.rpy.common as com
 	import ecopy as ep
 
-	BCI = com.load_data('BCI', 'vegan')
+	BCI = ep.load_data('BCI')
 	bci_ca = ep.ca(BCI)
 	print bci_ca.summary()
 	bci_ca.biplot()
@@ -109,8 +108,8 @@ class ca:
 		self.evals = self.evals[:-1]
 		self.U = self.U[:,:-1]
 		self.Uhat = self.Uhat[:,:-1]
-		self.siteLabs = ['Site ' + str(x) for x in range(1, y.shape[0]+1)]
-		self.spLabs = ['Sp ' + str(x) for x in range(1, y.shape[1] + 1)]
+		self.siteLabs = ['Site ' + str(x) for x in range(y.shape[0])]
+		self.spLabs = ['Sp ' + str(x) for x in range(y.shape[1])]
 		if isinstance(x, DataFrame):
 			self.siteLabs = x.index
 			self.spLabs = x.columns

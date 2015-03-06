@@ -492,7 +492,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		*linear*: Ordination distances are a linear function of observed distances. Uses the technique of Heiser (1991) to avoid negative ordination distances.
 
-		*monotone*: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. **Uses isotonic regression from scikit-learn.**
+		*monotone*: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. **Uses isotonic regression developed by Nelle Varoquaux and  Andrew Tulloch from scikit-learn.**
 
 	ntry: integer
 		Number of random starts used to avoid local minima. The returned solution is the one with the lowest final stress.

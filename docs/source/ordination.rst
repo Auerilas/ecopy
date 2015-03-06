@@ -78,8 +78,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Principle components analysis of the USArrests data. First, load the data from R using pandas::
 
 		import ecopy as ep
-		import pandas.rpy.common as com
-		USArrests = com.load_dataset('USArrests')
+		USArrests = ep.load_data('USArrests')
 
 	Next, run the PCA::
 
@@ -107,11 +106,11 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Although the loadings are informative, showing the correlations of each variable with each axis might ease interpretation::
 
 		print arrests_PCA.summary_corr()
-		           PC1      PC2      PC3     PC4
-		Murder 0.843976 0.658584 -0.537400 1.022455
-		Assault 0.580192 0.187021 -0.266773 -0.739593
-		UrbanPop 0.166116 -0.521178 -0.225724 0.079942
-		Rape 0.226312 -0.069680 0.340563 0.037074
+		                          PC1       PC2       PC3       PC4
+		Murder    0.843976  0.416035 -0.203760  0.270371
+		Assault   0.918443  0.187021 -0.160119 -0.309592
+		UrbanPop  0.438117 -0.868328 -0.225724  0.055753
+		Rape      0.855839 -0.166460  0.488319  0.037074
 
 	Then, look to see how much of the variance among predictors is explained by the first two axes::
 
@@ -323,8 +322,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	In a bigger example, run CA on the BCI dataset. **NOTE: This is an example where** :math:`r < c`::
 
-		import pandas.rpy.common as com
-		BCI = com.load_data('BCI', 'vegan')
+		BCI = ep.load_data('BCI')
 		bci_ca = ep.ca(BCI)
 		bci_ca.biplot(showSp=False)
 
@@ -433,10 +431,9 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	Run PCoA on the 'BCI' data::
 
-		import pandas.rpy.common as com
 		import ecopy as ep
 
-		BCI = com.load_data('BCI', 'vegan')
+		BCI = ep.load_data('BCI')
 		brayD = ep.distance(BCI, method='bray', transform='sqrt')
 		pc1 = ep.pcoa(brayD)
 		print pc1.summary()[['PCoA Axis 1', 'PCoA Axis 2']]
@@ -455,7 +452,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	Attempting to show species on the above biplot results in a messy graph. To better illustrate its use, run PCoA on the USArrests data::
 
-		USA = com.load_data('USArrests')
+		USA = ep.load_data('USArrests')
 		# standardize columns first
 		USA = USA.apply(lambda x: (x - x.mean())/x.std(), axis=0)
 		eucD = ep.distance(USA, 'euclidean')
@@ -492,7 +489,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		*linear*: Ordination distances are a linear function of observed distances. Uses the technique of Heiser (1991) to avoid negative ordination distances.
 
-		*monotone*: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. **Uses isotonic regression from scikit-learn.**
+		*monotone*: Constrains ordination distances simply to be ranked the same as observed distance. Typically referred to as non-metric multidimensional scaling. **Uses isotonic regression developed by Nelle Varoquaux and  Andrew Tulloch from scikit-learn.**
 
 	ntry: integer
 		Number of random starts used to avoid local minima. The returned solution is the one with the lowest final stress.
@@ -572,9 +569,8 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	Conduct nMDS on the 'dune' data::
 
-		import pandas.rpy.common as com
 		import ecopy as ep
-		dunes = com.load_data('dune', 'vegan')
+		dunes = ep.load_data('dune')
 		dunes_T = ep.transform(dunes, 'wisconsin')
 		dunes_D = ep.distance(dunes_T, 'bray')
 		dunesMDS = ep.MDS(dunes_D, transform='monotone')

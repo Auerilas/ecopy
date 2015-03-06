@@ -33,12 +33,9 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		'spearman' performs Mantel test on standardized ranks.
 
 	tail: ['both' | 'greater' | 'lower']
-		
-		'greater' tests the one-tailed hypothesis that correlation is 
- 			greater than predicted. 
+		'greater' tests the one-tailed hypothesis that correlation is greater than predicted. 
  		
- 		'lower' tests hypothsis that correlation
- 			is lower than predicted. 
+ 		'lower' tests hypothsis that correlation is lower than predicted. 
  		
  		'both' is a two-tailed test
 

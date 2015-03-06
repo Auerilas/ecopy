@@ -365,8 +365,11 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Which model should be used for permutations.
 
 		*1*: Permutes within columns of **L** only (that is, shuffles species among sites)
+
 		*2*: Permutes entire rows of **L** (that is, shuffles entire species assemblages)
+		
 		*3*: Permutes within rows of **L** (that is, shuffles the distribution of individuals within a site)
+		
 		*4*: Permutes entire columns of **L** (that is, shuffles a species' distribution among traits, while site distributions are kept constant)
 
 	test: ['both' | 'greater' | 'lower']

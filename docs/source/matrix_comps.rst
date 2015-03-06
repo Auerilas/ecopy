@@ -29,13 +29,16 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	test: ['pearson' | 'spearman']
 		'pearson' performs Mantel test on standardized variables.
+	
 		'spearman' performs Mantel test on standardized ranks.
 
 	tail: ['both' | 'greater' | 'lower']
 		'greater' tests the one-tailed hypothesis that correlation is 
  			greater than predicted. 
+ 		
  		'lower' tests hypothsis that correlation
  			is lower than predicted. 
+ 		
  		'both' is a two-tailed test
 
  	nperm: int
@@ -127,15 +130,15 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 		Permuted R-statistics for factor1
 
-	. py:attribute:: r_perm2
+	.. py:attribute:: r_perm2
 
 		Permuted R-statistics for factor1
 
-	. py:attribute:: R_obs1
+	.. py:attribute:: R_obs1
 
 		Observed R-statistic for factor1
 
-	. py:attribute:: R_obs2
+	.. py:attribute:: R_obs2
 
 		Observed R-statistic for factor2
 	
@@ -153,9 +156,9 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 		Prints a summary output table
 
-	.. py:classmethod:: summary()
+	.. py:classmethod:: plot()
 
-		Prints a summary output table
+		Plots a histogram of R values
 
 	**Examples**
 
@@ -189,10 +192,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 		t1.plot()
 
-		.. figure::  images/anosimFig.png
-			:figwidth: 75 %
-			:width: 75 %
-			:align:   center
+	.. figure::  images/anosimFig.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center
 
 .. py:function:: simper(data, factor, spNames=None)
 

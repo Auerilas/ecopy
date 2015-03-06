@@ -485,7 +485,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		*absolute*: Conducts absolute MDS. Distances between points in ordination space should be as close as possible to observed distances.
 
-   		*ratio'* Ordination distances are proportional to observed distances.
+   		*ratio*: Ordination distances are proportional to observed distances.
 
 		*linear*: Ordination distances are a linear function of observed distances. Uses the technique of Heiser (1991) to avoid negative ordination distances.
 
@@ -518,6 +518,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		The observed distance matrix
 
 	.. py:attribute:: transform
+		
 		Which transformation was used
 
 	**Methods**

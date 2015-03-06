@@ -68,6 +68,8 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	**Examples**
 
+	Load the data::
+
 		import ecopy as ep
 		v1 = ep.load_data('varespec')
 		v2 = ep.load_data('varechem')
@@ -154,11 +156,13 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	**Examples**
 
+	Load the data::
+
 		import ecopy as ep
 		data1 = ep.load_data('dune')
 		data2 = com.load_data('dune_env')
 
-	Calculate Bray-Curtis dissimilarity on the 'dune' data, save the 'Management' factor as factor1 and generate factor2
+	Calculate Bray-Curtis dissimilarity on the 'dune' data, save the 'Management' factor as factor1 and generate factor2::
 
 		duneDist = ep.distance(data1, 'bray')
 		group1 = data2['Management']
@@ -211,6 +215,8 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		List of species names. If data is a pandas.DataFrame, then spNames is inferred as the column names. If data is a np.ndarray, then spNames is given integer values unless this argument is provided
 
 	**Examples**
+
+	Conduct SIMPER on the ANOSIM data from above::
 
 		import ecopy as ep
 		
@@ -304,6 +310,8 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	**Examples**
 
+	Load the data and run the Mantel test::
+
 		import ecopy as ep
 
 		d1 = ep.load_data('varespec')
@@ -362,6 +370,8 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Returns a pandas.DataFrame of output
 
 	**Examples**
+
+	Run fourth corner analysis on the aviurba data from R's ade4 package::
 
 		import ecopy as ep
 

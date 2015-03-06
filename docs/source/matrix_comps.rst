@@ -332,10 +332,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	.. math::
 
-	\begin{bmatrix}
-		\mathbf{L} & \mathbf{R} \\
-		\mathbf{Q'} & \mathbf{D}
-	\end{bmatrix}
+		\begin{bmatrix}
+			\mathbf{L} & \mathbf{R} \\
+			\mathbf{Q'} & \mathbf{D}
+		\end{bmatrix}
 
 	In a simple case, **R** and **Q** contain one environmental variable and one species trait. An expanded correspondance matrix is created following Dray and Legendre (2008). The association between **R** and **Q** is the calculated as follows:
 

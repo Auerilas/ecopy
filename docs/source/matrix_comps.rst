@@ -5,7 +5,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	- :py:class:`Mantel` (Mantel test)
 	- :py:class:`anosim` (Analysis of similarity)
-	- :py:function:`simper` (Percentage similarity calculations)
+	- :py:func:`simper` (Percentage similarity calculations)
 	- :py:class:`procrustes_test` (Procrustes test of matrix correlations)
 	- :py:class:`corner4` (Fourth corner analysis)
 

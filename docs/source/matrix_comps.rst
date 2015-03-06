@@ -361,7 +361,15 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	nperm: int
 		Number of permutations in the test
 
-	test: ['both', 'greater', 'lower']
+	model: [1 | 2 | 3 | 4]
+		Which model should be used for permutations.
+
+		*1*: Permutes within columns of **L** only (that is, shuffles species among sites)
+		*2*: Permutes entire rows of **L** (that is, shuffles entire species assemblages)
+		*3*: Permutes within rows of **L** (that is, shuffles the distribution of individuals within a site)
+		*4*: Permutes entire columns of **L** (that is, shuffles a species' distribution among traits, while site distributions are kept constant)
+
+	test: ['both' | 'greater' | 'lower']
 		Which tail of the permutation distribution should be tested against the observed statistic
 
 	p_adjustment: [None, 'bonferroni', 'holm', 'fdr']:

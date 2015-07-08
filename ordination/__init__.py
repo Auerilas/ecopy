@@ -4,3 +4,4 @@ from pcoa import pcoa
 from distance import distance
 from transform import transform
 from mds import MDS
+from hillsmith import hillsmith

@@ -4,13 +4,13 @@ EcoPy: Python for Ecological Data Analyses
 
 What's New
 =======
-0.0.6
+0.0.7
 -------
-- procrustes_test for procrustes test of matrix associations
-- load_data function for loading data
-- anosim class for analysis of similarity
-- mantel class for Mantel tests
-- corner4 class for fourth corner analysis
+- CCA
+- RDA
+- RLQ analysis
+- Hill and Smith ordination
+- weighted means, variances, and scale functions
 
 License
 =====
@@ -18,7 +18,7 @@ License
 
 Version
 =====
-0.0.6 - Under development
+0.0.7 - Under development
 
 Examples
 ======
@@ -44,8 +44,6 @@ Full online documentation is a work in progress
 
 TO-DO
 ====
-- RDA
-- CCA (INCL. DETRENDED)
 - MINIMUM SPANNING TREE (PRIMM's)
 - PROCRUSTES ROTATION
 - LINEAR/SURFACE ENVIRONMENTAL FITTING

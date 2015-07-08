@@ -8,6 +8,9 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	- :py:func:`simper` (Percentage similarity calculations)
 	- :py:class:`procrustes_test` (Procrustes test of matrix correlations)
 	- :py:class:`corner4` (Fourth corner analysis)
+	- :py:class:`rlq` (RLQ analysis)
+	- :py:class:`rda` (RDA analysis)
+	- :py:class:`cca` (CCA analysis)
 
 .. py:class:: Mantel(d1, d2, test='pearson', tail='both', nperm=999)
 
@@ -413,3 +416,359 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		42    veg.cover - breeding             0.033
 		43   veg.cover - migratory             1.000
 	
+.. py:class:: rlq(R, L, Q, ndim=2)
+
+	Conducts RLQ analysis which examines associations between matrices **R** (site x environment) and **Q** (species x traits) as mediated by matrix **L** (site by species). In general, a matrix **D** is constructed by:
+
+	 .. math::
+
+		\mathbf{D} = \mathbf{R'}\mathbf{D_{row}}\mathbf{L}\mathbd{D_{col}}\mathbf{Q}
+
+	where :math:`\mathbf{D_{row}}` and :math:`\mathbf{D_{col}}` are diagonal matrices of row and column weights derived from matrix **L**. **L** is first transformed by dividing the matrix by the total number of individuals in the matrix. Column and row weights are given by the sum of columns and rows of the transformed matrix. Matrix **L** is then transformed by diving each column by the corresponding column weight, dividing each row by the corresponding row weight, and subtracting 1 from all elements. This transformed **L** matrix is used in the above equation to generate matrix **D**.
+
+	**NOTE**: Both **R** and **Q** can contain a mix of factor and quantitative variables. A dummy dataframe is constructed for both **R** and **Q** as in the Hill and Smith ordination procedure.
+
+	Matrix **D** is then subject to eigen decomposition, giving site (environment) and species (trait) scores, as well as loading vectors for both environmental and trait variables.
+
+	**Parameters**
+
+	R:  pandas.DataFrame
+		A site x environment matrix for ordination, where objects are rows and descriptors/variables as columns. Can have mixed data types (both quantitative and qualitative). In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
+
+	L:  pandas.DataFrame
+		A site x species for ordination, where objects are rows and descriptors/variables as columns.
+
+	Q:  pandas.DataFrame
+		A species x trait matrix for ordination, where objects are rows and descriptors/variables as columns. Can have mixed data types (both quantitative and qualitative). In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
+
+	ndim: int
+		Number of axes and components to save
+
+	**Attributes**
+
+	.. py:attribute:: traitVecs
+		
+		A pandas.DataFrame of trait loadings
+		
+	.. py:attribute:: envVecs
+		
+		A pandas.DataFrame of environmental loadings
+
+	.. py:attribute:: normedTraits
+		
+		Species coordinates along each axis
+
+	.. py:attribute:: normedEnv
+		
+		Site coordinates along each axis
+
+	.. py:attribute:: evals
+		
+		Eigenvalues for all axes (not just saved ones)
+
+	**Methods**
+
+	.. py:classmethod:: summary()
+
+		Returns a data frame containing information about the principle axes.
+
+	.. py:classmethod:: biplot(xax=1, yax=2)
+
+		Create a biplot. The plot contains four subplots, one each for species scores, site scores, trait vectors, and environment vectors. Species scores are plotted from normedTraits, site scores are plotted from normedEnv, trait vectors are plotted from traitVecs, and environmental vectors are plotted from envVecs. Users can mix and match which vectors to overlay with which points manually using these four attributes.
+
+		xax: integer
+			Specifies which PC axis to plot on the x-axis
+
+		yax: integer 
+			Specifies which PC axis to plot on the y-axis
+
+	**Examples**
+
+	RLQ analysis of the aviurba data::
+
+		vi_sp = ep.load_data('avi_sp')
+		avi_env = ep.load_data('avi_env')
+		avi_traits = ep.load_data('avi_traits')
+
+		rlq_test = ep.rlq(avi_env, avi_sp, avi_traits, ndim=2)
+		print rlq_test.summary().iloc[:,:3]
+
+			            Axis 1    Axis 2    Axis 3
+		Std. Dev  0.691580  0.376631  0.272509
+		Prop Var  0.657131  0.194894  0.102031
+		Cum Var   0.657131  0.852026  0.954056
+
+		rlq_test.biplot()
+
+	.. figure::  images/rlq.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center
+
+.. py:class:: rda(Y, X, scale_y=True, scale_x=False, design_x=False, varNames_y=None, varNames_x=None, rowNames=None , pTypes=None)
+
+	Conducts RDA analysis which examines the relationship between sites (rows) based on their species compositions (columns). This information is contained in matrix **Y**. However, the relationships between sites are constrained by environmental predictors contained in matrix **X**.
+
+	RDA performs a multivariate regression of **Y** against **X**, yielding linear predictors **B**:
+
+	 .. math::
+
+		\mathbf{B} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}
+
+	These linear predictors are used to generated predicted values for each species at each site:
+
+	.. math::
+
+		\mathbf{\hat{Y}} = \mathbf{XB}
+
+	The variance-covariance matrix of :math:`\mathbf{\hat{Y}}` is then subject to eigen-analysis, yielding eigenvalues **L** and eigenvectors **U** of the predicted species values. Three new matrices are calculated:
+
+	.. math::
+
+		\mathbf{F} = \mathbf{YU}
+		\mathbf{Z} = \mathbf{\hat{Y}U}
+		\mathbf{C} = \mathbf{BU}
+
+	Species scores are given by :math:`\mathbf{U}\mathbf{L}^{-0.5}`. Site scores are given by :math:`\mathbf{F}\mathbf{L}^{-0.5}`. The scores of each predictor are given in matrix **C**.
+
+	The residuals from the regression are then subject to PCA to ordinate the remaining, unconstrained variance.
+
+	**Parameters**
+
+	Y:  pandas.DataFrame or numpy.ndarray
+		
+		A site x species for ordination, where objects are rows and descriptors/variables as columns.
+
+	X:  pandas.DataFrame or numpy.ndarray
+		
+		A site x environment matrix for ordination, where objects are rows and descriptors/variables as columns. Only the pandas.DataFrame can have mixed data types (both quantitative and qualitative). In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
+
+	scale_x: [True | False]
+
+		Whether or not the matrix Y should be standardized by columns.
+
+	scale_y: [True | False]
+
+		Whether or not the matrix X should be standardized by columns.
+
+	design_x: [True | False]
+
+		Whether or not X has already been transformed to a design matrix. This enables the user to formulate more complicated regressions that include interactions or higher order variables.
+
+	varNames_y: list
+
+		A list of variables names for each column of Y. If None, then the column names of Y are used.
+
+	varNames_x: list
+
+		A list of variables names for each column of X. If None, then the column names of X are used.
+
+	rowNames: list
+
+		A list of site names for each row. If none, then the index values of Y are used.
+
+	pTypes: list
+
+		A list denoting whether variables in X are quantitative ('q') or factors ('f'). Can usually be ignored.
+
+	**Attributes**
+
+	.. py:attribute:: spScores
+		
+		A pandas.DataFrame of species scores on each RDA axis
+		
+	.. py:attribute:: linSites
+		
+		A pandas.DataFrame of linearly constrained site scores
+
+	.. py:attribute:: siteScores
+		
+		A pandas.DataFrame of site scores on each RDA axis
+
+	.. py:attribute:: predScores
+		
+		A pandas.DataFrame of predictor scores on each RDA axis
+
+	.. py:attribute:: RDA_evals
+		
+		Eigenvalues for each RDA axis
+
+	.. py:attribute:: corr
+		
+		Correlation of each predictor with each RDA axis
+
+	.. py:attribute:: resid_evals
+		
+		Eigenvalues for residual variance
+
+	.. py:attribute:: resid_spScores
+		
+		A pandas.DataFrame of species scores on PCA of residual variance
+
+	.. py:attribute:: resid_siteScores
+		
+		A pandas.DataFrame of site scores on PCA of residual variance
+
+	.. py:attribute:: imp
+		
+		Summary of importance of each RDA and PCA axis
+
+	**Methods**
+
+	.. py:classmethod:: summary()
+
+		Returns a data frame containing summary information.
+
+	.. py:classmethod:: triplot(xax=1, yax=2)
+
+		Creates a triplot of species scores, site scores, and predictor variable loadings. If predictors are factors, they are represented by points. Quantitative predictors are represented by arrows.
+
+		xax: integer
+			Specifies which RDA axis to plot on the x-axis
+
+		yax: integer 
+			Specifies which RDA axis to plot on the y-axis
+
+	**Examples**
+
+	import ecopy as ep
+
+	dune = ep.load_data('dune')
+	dune_env = ep.load_data('dune_env')
+
+	RDA = ep.rda(dune, dune_env[['A1', 'Management']])
+	RDA.triplot()
+
+	.. figure::  images/rda.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center
+
+.. py:class:: cca(Y, X, varNames_y=None, varNames_x=None, rowNames=None, scaling=1)
+
+	Conducts CCA analysis which examines the relationship between sites (rows) based on their species compositions (columns). This information is contained in matrix **Y**. However, the relationships between sites are constrained by environmental predictors contained in matrix **X**.
+
+	CCA first transforms the species matrix **Y** into matrix :math:`\bar{\mathbf{Q}}` as in correspondance analysis. The predictor matrix **X** is then standardized using the row weights from matrix **Y** to calculate the mean and standard deviation of each column, resulting in a new matrix :math:`\mathbf{X}_{scale}`. This matrix, along with a diagonal matrix of row weghts **D** is used in a multivariate regression of :math:`\bar{\mathbf{Q}}` against :math:`\mathbf{X}_{scale}`, yielding linear predictors **B**:
+
+	 .. math::
+
+		\mathbf{B} = (\mathbf{X}_{scale}'\mathbf{DX}_{scale})^{-1}\mathbf{X}_{scale}'\mathbf{D^{0.5}Y}
+
+	These linear predictors are used to generated predicted values for each species at each site:
+
+	.. math::
+
+		\mathbf{\hat{Y}} = \mathbf{D^{0.5}X_{scale}B}
+
+	The cross-product matrix of :math:`\mathbf{\hat{Y}}` is then subject to eigen-analysis, yielding eigenvalues **L** and eigenvectors **U** of the predicted species values. Five new matrices are calculated using diagonal matrices of row :math:`\mathbf{D}_{r}` and column :math:`\mathbf{D}_{c}` weights:
+
+	.. math::
+
+		\hat{\mathbf{U}} = \bar{\mathbf{Q}}\mathbf{UL^{-0.5}}
+		\mathbf{V} = \mathbf{D_c^{-0.5}U}
+		\hat{\mathbf{V}} = \mathbf{D_r^{-0.5}}\hat{\mathbf{U}}
+		\mathbf{F} = \hat{\mathbf{V}}\mathbf{L^{0.5}}
+		\hat{\mathbf{F}} = \mathbf{VL^{0.5}}
+
+	In scaling type 1, species scores are given by **V** and site scores are given by **F**. Fitted site scores are given by :math:`\mathbf{D_r}\hat{\mathbf{Y}}U`. To calculate the predictor scores, the fitted site scores are standardized using row weights as was done for :math:`\mathbf{X}_{scale}`, yielding :math:`\mathbf{Z}_{scale}`. Predictor variable scores are then calculated as :math:`\mathbf{X}_{scale}'\mathbf{D_rZ}_{scale}\mathbf{L^{0.5}}`.
+
+	In scaling type 2, species scores are given by :math:`\hat{\mathbf{F}}` and site scores are given by :math:`\hat{\mathbf{V}}`. Fitted site scores are given by :math:`\mathbf{D_r}\hat{\mathbf{Y}}\mathbf{UL^{-0.5}}`. To calculate the predictor scores, the fitted site scores are standardized using row weights as was done for :math:`\mathbf{X}_{scale}`, yielding :math:`\mathbf{Z}_{scale}`. Predictor variable scores are then calculated as :math:`\mathbf{X}_{scale}'\mathbf{D_rZ}_{scale}`.
+
+	Residuals from the constrained ordination are available in order to subject them to CA.
+
+	**Parameters**
+
+	Y:  pandas.DataFrame or numpy.ndarray
+		
+		A pandas.DataFrame or numpy.ndarray containing species abundance data (site x species)
+
+	X:  pandas.DataFrame or numpy.ndarray
+		
+		A pandas.DataFrame or numpy.ndarray containing predictor variables for constrained ordination (site x variable).
+
+	varNames_y: list
+
+		A list of variables names for each column of Y. If None, then the column names of Y are used.
+
+	varNames_x: list
+
+		A list of variables names for each column of X. If None, then the column names of X are used.
+
+	rowNames: list
+
+		A list of site names for each row. If none, then the index values of Y are used.
+
+	scaling: [1 | 2]
+
+		Which scaling should be used. See above.
+
+	**Attributes**
+
+	.. py:attribute:: r_w
+		
+		Row weights 
+		
+	.. py:attribute:: c_w
+		
+		Column weights
+
+	.. py:attribute:: evals
+		
+		Constrained eigenvalues
+
+	.. py:attribute:: U
+		
+		Constrained eigenvectors
+
+	.. py:attribute:: resid
+		
+		A pandas.DataFrame of residuals from the constrained ordination
+
+	.. py:attribute:: spScores
+		
+		A pandas.DataFrame of species scores
+
+	.. py:attribute:: siteScores
+		
+		A pandas.DataFrame of site scores
+
+	.. py:attribute:: siteFitted
+		
+		A pandas.DataFrame of constrained site scores
+
+	.. py:attribute:: varScores
+		
+		A pandas.DataFrame variable scores
+
+	**Methods**
+
+	.. py:classmethod:: summary()
+
+		Returns summary information of each CA axis.
+
+	.. py:classmethod:: triplot(xax=1, yax=2)
+
+		Creates a triplot of species scores, site scores, and predictor variable loadings. 
+
+		xax: integer
+			Specifies which RDA axis to plot on the x-axis
+
+		yax: integer 
+			Specifies which RDA axis to plot on the y-axis
+
+	**Examples**
+
+	import ecopy as ep
+
+	varespec = ep.load_data('varespec')
+	varechem = ep.load_data('varechem')
+
+	cca_fit = ep.cca(varespec, varechem)
+	CCA.triplot()
+
+	.. figure::  images/cca.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center
+
+

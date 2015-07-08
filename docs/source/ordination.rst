@@ -7,6 +7,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	- :py:class:`ca` (Correspondance Analysis)
 	- :py:class:`pcoa` (Principle Coordinates Analysis)
 	- :py:class:`MDS` (Multidimensional Scaling)
+	- :py:class:`hillsmith` (Hill and Smith Ordination)
 
 .. py:class:: pca(x, scale=True, varNames=None)
 
@@ -75,7 +76,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	**Examples**
 
-	Principle components analysis of the USArrests data. First, load the data from R using pandas::
+	Principle components analysis of the USArrests data. First, load the data::
 
 		import ecopy as ep
 		USArrests = ep.load_data('USArrests')
@@ -130,7 +131,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		:width: 75 %
 		:align:   center
 
-.. py:class:: ca(x, siteNames=None, spNames=None)
+.. py:class:: ca(x, siteNames=None, spNames=None, scaling=1)
 
 	Takes an input matrix and performs principle simple correspondence analysis. It will accept either pandas.DataFrames or numpy.ndarrays. Data MUST be 0's or positive numbers. **NOTE:** Will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns on object of class :py:class:`ca`.
 
@@ -161,6 +162,37 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	spNames: list
 		A list of species names. If left blank, species names are taken as the column names of the pandas.DataFrame or the column index from the numpy.ndarray.
 	
+	type: [1 | 2]
+		Which type of scaling to use when calculating site and species scores. 1 produces a site biplot, 2 produces a species biplot. In biplots, only the first two axes are shown. The plots are constructed as follows:
+
+		Four matrices are constructed. Outer species (column) locations on CA axes :math:`\mathbf{V}` are given by the species (column) weights multiplied by the species (column) eigenvalues:
+
+		.. math::
+
+			\mathbf{V} = \mathbf{D_k}^{-0.5}\mathbf{U}
+
+		where :math:`\mathbf{D_k}` is a diagonal matrix of species (column) weights `w_k`.  Likewise, outer site (row) locations are given by:
+
+		.. math::
+
+			\mathbf{\hat{V}} = \mathbf{D_i}^{-0.5}\mathbf{\hat{U}}
+
+		Inner site locations :math:`\mathbf{F}` are given as:
+
+		.. math::
+
+			\mathbf{F} = \mathbf{\hat{V}}\mathbf{\Lambda^{0.5}}
+
+		Inner species locations are given as:
+
+		.. math::
+
+			\mathbf{\hat{F}} = \mathbf{V}\mathbf{\Lambda^{0.5}}
+
+		Scaling 1 Biplot: Scaling 1 shows the relationships among sites within the centroids of the species. This plot is useful for examining relationships among sites and how sites are composed of species. In this, the first two columns of inner site locations :math:`\mathbf{F}` are plotted against the first two columns of the outer species locations :math:`\mathbf{V}`. NOTE: If :math:`r < c` in the original matrix, this will be :math:`\mathbf{\hat{F}}` and :math:`\mathbf{\hat{V}}`.
+
+		Scaling 2 Biplot: Scaling 2 shows the relationships among species within the centroids of the sites. This plot is useful for examining relationships among species and how species are distributed among sites. In this, the first two columns of inner species locations :math:`\mathbf{\hat{F}}`  are plotted against the first two columns of the outer site locations :math:`\mathbf{\hat{V}}`. NOTE: If :math:`r < c` in the original matrix, this will be :math:`\mathbf{F}` and :math:`\mathbf{V}`.
+
 	**Attributes**
 
 	.. py:attribute:: w_col
@@ -187,6 +219,14 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		The same for cumDesc_Sp, but for each site. Normally calculated for :math:`\mathbf{\hat{U}}` unless :math:`r < c`, then calculated on :math:`\mathbf{U}`.
 
+	.. py:attritbute: siteScores
+
+		Site scores along each CA axis. All considerations for matrix transposition and scaling have been taken into account.
+
+	.. py:attribute: spScores
+
+		Species scores along each CA axis. All considerations for matrix transposition and scaling have been taken into account.
+
 	**Methods**
 
 	.. py:classmethod:: summary()
@@ -196,9 +236,6 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	.. py:classmethod:: biplot(coords=False, type=1, xax=1, yax=2, showSp=True, showSite=True, spCol='r', siteCol='k', spSize=12, siteSize=12, xlim=None, ylim=None)
 
 		Produces a biplot of the given CA axes.
-
-		coords: [True | False]
-			If True, returns a dictionary of plotted coordinates. Type 1 plots can be reproduced using F and V, Type 2 plots can be reproduced using Fhat and Vhat (see below). Note: This only returns the axes specified by xax and yax (see below).
 
 		xax: integer 
 			Specifies CA axis to plot on the x-axis
@@ -229,40 +266,6 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		ylim: list
 			A list of y-axis limits to override default
-
-		type: [1 | 2]
-			Which type of biplot to produce. 1 produces a site biplot, 2 produces a species biplot. In biplots, only the first two axes are shown. The plots are constructed as follows:
-
-			Four matrices are constructed. Outer species (column) locations on CA axes :math:`\mathbf{V}` are given by the species (column) weights multiplied by the species (column) eigenvalues:
-
-			.. math::
-
-				\mathbf{V} = \mathbf{D_k}^{-0.5}\mathbf{U}
-
-			where :math:`\mathbf{D_k}` is a diagonal matrix of species (column) weights `w_k`.  Likewise, outer site (row) locations are given by:
-
-			.. math::
-
-				\mathbf{\hat{V}} = \mathbf{D_i}^{-0.5}\mathbf{\hat{U}}
-
-			Inner site locations :math:`\mathbf{F}` are given as:
-
-			.. math::
-
-				\mathbf{F} = \mathbf{\hat{V}}\mathbf{\Lambda^{0.5}}
-
-			Inner species locations are given as:
-
-			.. math::
-
-				\mathbf{\hat{F}} = \mathbf{V}\mathbf{\Lambda^{0.5}}
-
-			Type 1 Biplot: Type 1 shows the relationships among sites within the centroids of the species. This plot is useful for examining relationships among sites and how sites are composed of species. In this, the first two columns of inner site locations :math:`\mathbf{F}` are plotted against the first two columns of the outer species locations :math:`\mathbf{V}`. NOTE: If :math:`r < c` in the original matrix, this will be :math:`\mathbf{\hat{F}}` and :math:`\mathbf{\hat{V}}`.
-
-			Type 2 Biplot: Type 2 shows the relationships among species within the centroids of the sites. This plot is useful for examining relationships among species and how species are distributed among sites. In this, the first two columns of inner species locations :math:`\mathbf{\hat{F}}`  are plotted against the first two columns of the outer site locations :math:`\mathbf{\hat{V}}`. NOTE: If :math:`r < c` in the original matrix, this will be :math:`\mathbf{F}` and :math:`\mathbf{V}`.
-
-			coords: [True | False]
-				If True, then return a dictionary of the :math:`\mathbf{F}`, :math:`\mathbf{\hat{F}}`, :math:`\mathbf{V}`, and :math:`\mathbf{\hat{V}}` matrices so the user can customize plots. See above for description of these matrices. Dictionary keys are 'F', 'Fhat', 'V', and 'Vhat'. NOTE: Any adjustments for matrix transposition have already taken place, so 'F' gives site inner coordinates, 'V' gives species outer coordinates, 'Fhat' gives species inner coordinates, and 'Vhat' gives site outer coordinates regardless of matrix shape. Type 1 plot can always be reproduced using 'F' (sites) and 'V' (species) and Type 2 plot can always be reproduced using 'Fhat' (species) and 'Vhat' (sites).
 
 	**Examples**
 
@@ -603,7 +606,85 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		:width: 75 %
 		:align: center
 
+.. py:class:: hillsmith(mat, wt_r=None, ndim=2)
 
+	Takes an input matrix and performs ordination described by Hill and Smith (1976). Returns on object of class :py:class:`hillsmith`, with several methods and attributes. NOTE: This will NOT work of rows < columns or with missing values.
+
+	**Parameters**
+
+	mat:  pandas.DataFrame
+		A matrix for ordination, where objects are rows and descriptors/variables as columns. Can have mixed data types (both quantitative and qualitative). If all columns are quantitative, this method is equivalent to PCA. If all columns are qualitative, this method is equivalent to MCA. Should not be used with ordered factors. In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
+
+	wt_r: list or numpy.ndarray
+		Optional vector of row weights
+
+	ndim: int
+		Number of axes and components to save
+
+	**Attributes**
+
+	.. py:attribute:: evals
+		
+		Eigenvalues in order of largest to smallest
+		
+	.. py:attribute:: pr_axes
+		
+		The principle axes of each column
+
+	.. py:attribute:: row_coords
+		
+		Row coordinates along each principle axis
+
+	.. py:attribute:: pr_components
+		
+		The principle components of each row
+
+	.. py:attribute:: column_coords
+		
+		Column coordinates along each principle component
+
+	**Methods**
+
+	.. py:classmethod:: summary()
+
+		Returns a data frame containing information about the principle axes.
+
+	.. py:classmethod:: biplot(invert=False, xax=1, yax=2, obsNames=True)
+
+		Create a biplot using a specified transformation.
+
+		invert: [True|Fasle]
+			If False (default), plots the row coordinates as points and the principle axes of each column as arrows. If True, plots the column coordinates as points and the principle components of each row as arrows.
+
+		xax: integer
+			Specifies which PC axis to plot on the x-axis
+
+		yax: integer 
+			Specifies which PC axis to plot on the y-axis
+
+		obsNames: [True | False]
+			Denotes whether to plot a scatterplot of points (False) or to actually show the names of the observations, as taken from the DataFrame index (True).
+
+	**Examples**
+
+	Hill and Smith analysis of the dune_env data::
+
+		import ecopy as ep
+		dune_env = ep.load_data('dune_env')
+		dune_env = dune_env[['A1', 'Moisture', 'Manure', 'Use', 'Management']]
+		print ep.hillsmith(dune_env).summary().iloc[:,:2]
+
+					Axis 1    Axis 2
+			Std. Dev  1.594392  1.363009
+			Prop Var  0.317761  0.232224
+			Cum Var   0.317761  0.549985
+
+		ep.hillsmith(dune_env).biplot(obsNames=False, invert=False)
+
+	.. figure::  images/hs_biplot.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center
 
 	
 

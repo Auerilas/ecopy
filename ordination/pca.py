@@ -35,8 +35,10 @@ class pca:
 	summary_desc():cumulative variance explained by each principle axis for each
 		descriptor. 
 	summary_corr(): correlation of each descriptor with each component
-	biplot(type = "distance", obsNames = False):
+	biplot(xax=1, yax=2, type = "distance", obsNames = False):
 		create a biplot of the first two components with a given scaling
+			xax: which component to put on the x-axis
+			yax: which component to put on the y-axis
 			type: denotes whether a distance biplot or correlation
 				biplot should be used
 			obsNames: tells whether to plot the names of each observation (False by default)
@@ -53,7 +55,7 @@ class pca:
 	'''
 	def __init__(self, x, scale = True, varNames = None):
 		if not isinstance(x, (DataFrame, np.ndarray)):
-			msg = 'Data must either be pandas.DataFrame or nump.ndarray'
+			msg = 'Data must either be pandas.DataFrame or numpy.ndarray'
 			raise ValueError(msg)
 		if isinstance(x, DataFrame):
 			if x.isnull().any().any():
@@ -92,7 +94,7 @@ class pca:
 		props = self.evals/np.sum(self.evals)
 		cums = np.cumsum(self.evals)/np.sum(self.evals)
 		names = ['PC' + str(i) for i in range(1, self.evecs.shape[1]+1)]
-		imp = DataFrame(np.vstack((sd, props, cums)), index = ['Std Dev', 'Proportion', 'Cum Prop'])
+		imp = DataFrame(np.vstack((sd, props, cums)), index = ['Std Dev', 'Prop Var', 'Cum Var'])
 		imp.columns = names
 		return imp
 
@@ -163,4 +165,4 @@ def eig_decomp(y):
 	evecs = evecs[:,idx]
 	scores = y.dot(evecs)
 	corr = evecs.dot(np.diag(evals**0.5)).T.dot(np.diag(np.diag(covMat)**-0.5)).T
-	return evals, evecs, scores, corr
+	return np.real(evals), np.real(evecs), scores, corr

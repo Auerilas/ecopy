@@ -1,5 +1,13 @@
 Version History
 ==========
+0.0.7
+^^^^^
+- CCA
+- RDA
+- RLQ analysis
+- Hill and Smith ordination
+- weighted mean, variance, scaling
+
 0.0.6
 ^^^^^
 - procrustes test of matrix associations

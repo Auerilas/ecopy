@@ -11,7 +11,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 .. py:class:: pca(x, scale=True, varNames=None)
 
-	Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class 'pca', with several methods and attributes. This function uses eigenanalysis of covariance matrices rather than SVD decomposition. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class :py:class:`pca`.
+	Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class 'pca', with several methods and attributes. This function uses SVD decomposition. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class :py:class:`pca`.
 
 	**Parameters**
 
@@ -47,10 +47,6 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	.. py:classmethod:: summary_rot()
 
 		Returns a data frame containing information on axes rotations (i.e. the eigenvectors).
-
-	.. py:classmethod:: summary_corr()
-
-		 Returns a data frame containing the correlation of each variable (column) with each principle axis. For example, the correlation of variable *i* with axis *k* is calculated as :math:`r_{ik} = u_{ik} \sqrt{\lambda_k} / \sqrt{s_i^2}` where :math:`\lambda_k` is the eigenvalue (i.e. variance) associated with axis *k* and :math:`s_i^2` is the variance of variable *i*.
 
 	.. py:classmethod:: summary_desc()
 
@@ -104,15 +100,6 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		UrbanPop 0.278191 -0.872806 -0.378016 0.133878
 		Rape 0.543432 -0.167319 0.817778 0.089024
 
-	Although the loadings are informative, showing the correlations of each variable with each axis might ease interpretation::
-
-		print arrests_PCA.summary_corr()
-		                          PC1       PC2       PC3       PC4
-		Murder    0.843976  0.416035 -0.203760  0.270371
-		Assault   0.918443  0.187021 -0.160119 -0.309592
-		UrbanPop  0.438117 -0.868328 -0.225724  0.055753
-		Rape      0.855839 -0.166460  0.488319  0.037074
-
 	Then, look to see how much of the variance among predictors is explained by the first two axes::
 
 		print arrests_PCA.summary_desc()
@@ -162,7 +149,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	spNames: list
 		A list of species names. If left blank, species names are taken as the column names of the pandas.DataFrame or the column index from the numpy.ndarray.
 	
-	type: [1 | 2]
+	scaling: [1 | 2]
 		Which type of scaling to use when calculating site and species scores. 1 produces a site biplot, 2 produces a species biplot. In biplots, only the first two axes are shown. The plots are constructed as follows:
 
 		Four matrices are constructed. Outer species (column) locations on CA axes :math:`\mathbf{V}` are given by the species (column) weights multiplied by the species (column) eigenvalues:

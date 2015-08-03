@@ -2,6 +2,8 @@ EcoPy: Python for Ecological Data Analyses
 ******************************************
 **EcoPy** provides tools for ecological data analyses. In general, it focuses on multivariate data analysis, which can be useful in any field, but with particular attention to those methods widely used in ecology. `The homepage, with full documentation and examples, can be found here <http://ecopy.readthedocs.org>`_
 
+Install via 'pip install ecopy'
+
 What's New
 =======
 0.0.7
@@ -15,11 +17,11 @@ What's New
 
 License
 =====
-**EcoPy** is distributed under the GNU GPL
+**EcoPy** is distributed under the MIT license
 
 Version
 =====
-0.0.7 - Under development
+0.0.7a1 - Alpha launch
 
 Examples
 ======

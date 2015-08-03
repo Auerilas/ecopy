@@ -11,7 +11,7 @@ Current Version - 0.0.7
 Installing EcoPy
 =============
 
-Need to do (PIP eventually)
+pip install ecopy
 
 Documentation
 ^^^^^^^^^^^^^^

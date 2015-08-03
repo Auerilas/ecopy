@@ -1,6 +1,7 @@
 MANIFEST.in
 README.rst
-setup.cfg
+setup.py
+version.py
 ecopy/__init__.py
 ecopy/utils.py
 ecopy.egg-info/PKG-INFO

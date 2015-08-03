@@ -632,13 +632,15 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	**Examples**
 
-	import ecopy as ep
+	RDA on dune data::
 
-	dune = ep.load_data('dune')
-	dune_env = ep.load_data('dune_env')
+		import ecopy as ep
 
-	RDA = ep.rda(dune, dune_env[['A1', 'Management']])
-	RDA.triplot()
+		dune = ep.load_data('dune')
+		dune_env = ep.load_data('dune_env')
+
+		RDA = ep.rda(dune, dune_env[['A1', 'Management']])
+		RDA.triplot()
 
 	.. figure::  images/rda.png
 		:figwidth: 75 %
@@ -759,13 +761,15 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	**Examples**
 
-	import ecopy as ep
+	CCA on varespec data::
 
-	varespec = ep.load_data('varespec')
-	varechem = ep.load_data('varechem')
+		import ecopy as ep
 
-	cca_fit = ep.cca(varespec, varechem)
-	CCA.triplot()
+		varespec = ep.load_data('varespec')
+		varechem = ep.load_data('varechem')
+
+		cca_fit = ep.cca(varespec, varechem)
+		CCA.triplot()
 
 	.. figure::  images/cca.png
 		:figwidth: 75 %
@@ -867,22 +871,24 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	**Examples**
 
-	import ecopy as ep
-	import numpy as np
+	CCor analysis of random data::
 
-	Y1 = np.random.normal(size=20*5).reshape(20, 5)
-	Y2 = np.random.normal(size=20*3).reshape(20, 3)
+		import ecopy as ep
+		import numpy as np
 
-	cc = ep.ccor(Y1, Y2)
-	cc.summary()
+		Y1 = np.random.normal(size=20*5).reshape(20, 5)
+		Y2 = np.random.normal(size=20*3).reshape(20, 3)
 
-	Constrained variance = 1.37
-	Constrained variance explained be each axis
-	['0.722', '0.464', '0.184']
-	Proportion constrained variance
-	['0.527', '0.338', '0.135']
+		cc = ep.ccor(Y1, Y2)
+		cc.summary()
 
-	cc.biplot()
+		Constrained variance = 1.37
+		Constrained variance explained be each axis
+		['0.722', '0.464', '0.184']
+		Proportion constrained variance
+		['0.527', '0.338', '0.135']
+
+		cc.biplot()
 
 	.. figure::  images/ccor.png
 		:figwidth: 75 %

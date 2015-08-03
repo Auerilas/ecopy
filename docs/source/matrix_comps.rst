@@ -780,7 +780,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	 .. math::
 
-		\mathbf{K} = \mathbf{S}_{11}^' \mathbf{S}_{12} \mathbf{S}_{22}^'
+		\mathbf{K} = \mathbf{S}_{11}^t \mathbf{S}_{12} \mathbf{S}_{22}^t
 
 	where :math:`\mathbf{S}_{11}^'` is the Cholesky decomposition of :math:`\mathbf{S}_{11}` and same for :math:`\mathbf{S}_{22}^'`.
 

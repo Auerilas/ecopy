@@ -869,6 +869,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	import ecopy as ep
 	import numpy as np
+
 	Y1 = np.random.normal(size=20*5).reshape(20, 5)
 	Y2 = np.random.normal(size=20*3).reshape(20, 3)
 
@@ -882,6 +883,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	['0.527', '0.338', '0.135']
 
 	cc.biplot()
+
 	.. figure::  images/ccor.png
 		:figwidth: 75 %
 		:width: 75 %

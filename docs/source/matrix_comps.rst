@@ -780,7 +780,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	 .. math::
 
-		\mathbf{K} = \mathbf{S}_{11}'\mathbf{S}_{12}\mathbf{S}_{22}^'
+		\mathbf{K} = \mathbf{S}_{11}^' \mathbf{S}_{12} \mathbf{S}_{22}^'
 
 	where :math:`\mathbf{S}_{11}^'` is the Cholesky decomposition of :math:`\mathbf{S}_{11}` and same for :math:`\mathbf{S}_{22}^'`.
 
@@ -791,8 +791,6 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		\mathbf{\text{Scores}_1} = \mathbf{Y1C1}
 
 	and the same for **Y2**. Variable loadings are the correlation between the original matrix and the scores.
-
-	The cross-product matrix of :math:`\mathbf{\hat{Y}}` is then subject to eigen-analysis, yielding eigenvalues **L** and eigenvectors **U** of the predicted species values. Five new matrices are calculated using diagonal matrices of row :math:`\mathbf{D}_{r}` and column :math:`\mathbf{D}_{c}` weights:
 
 	**Parameters**
 
@@ -876,7 +874,6 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	Y2 = np.random.normal(size=20*3).reshape(20, 3)
 	cc = ep.ccor(Y1, Y2)
 	cc.summary()
-
 	Constrained variance = 1.37
 	Constrained variance explained be each axis
 	['0.722', '0.464', '0.184']
@@ -884,7 +881,6 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	['0.527', '0.338', '0.135']
 
 	cc.biplot()
-
 	.. figure::  images/ccor.png
 		:figwidth: 75 %
 		:width: 75 %

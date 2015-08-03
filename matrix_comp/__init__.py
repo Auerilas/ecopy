@@ -6,3 +6,4 @@ from fourthcorner import corner4
 from rlq import rlq
 from rda import rda
 from cca import cca
+from ccor import ccor

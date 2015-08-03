@@ -11,6 +11,7 @@ What's New
 - RLQ analysis
 - Hill and Smith ordination
 - weighted means, variances, and scale functions
+- CCor
 
 License
 =====
@@ -44,7 +45,7 @@ Full online documentation is a work in progress
 
 TO-DO
 ====
-- MINIMUM SPANNING TREE (PRIMM's)
+- MINIMUM SPANNING TREE
 - PROCRUSTES ROTATION
 - LINEAR/SURFACE ENVIRONMENTAL FITTING
 - MAXENT WRAPPER

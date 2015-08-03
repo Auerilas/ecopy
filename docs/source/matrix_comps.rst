@@ -11,6 +11,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	- :py:class:`rlq` (RLQ analysis)
 	- :py:class:`rda` (RDA analysis)
 	- :py:class:`cca` (CCA analysis)
+	- :py:class:`ccor` (CCor analysis)
 
 .. py:class:: Mantel(d1, d2, test='pearson', tail='both', nperm=999)
 
@@ -670,7 +671,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		\mathbf{F} = \hat{\mathbf{V}}\mathbf{L^{0.5}}
 		\hat{\mathbf{F}} = \mathbf{VL^{0.5}}
 
-	In scaling type 1, species scores are given by **V** and site scores are given by **F**. Fitted site scores are given by :math:`\mathbf{D_r}\hat{\mathbf{Y}}U`. To calculate the predictor scores, the fitted site scores are standardized using row weights as was done for :math:`\mathbf{X}_{scale}`, yielding :math:`\mathbf{Z}_{scale}`. Predictor variable scores are then calculated as :math:`\mathbf{X}_{scale}'\mathbf{D_rZ}_{scale}\mathbf{L^{0.5}}`.
+	In scaling type 1, species scores are given by **V** and site scores are given by **F**. Fitted site scores are given by :math:`\mathbf{D_r}\hat{\mathbf{Y}}\mathbf{U}`. To calculate the predictor scores, the fitted site scores are standardized using row weights as was done for :math:`\mathbf{X}_{scale}`, yielding :math:`\mathbf{Z}_{scale}`. Predictor variable scores are then calculated as :math:`\mathbf{X}_{scale}'\mathbf{D_rZ}_{scale}\mathbf{L^{0.5}}`.
 
 	In scaling type 2, species scores are given by :math:`\hat{\mathbf{F}}` and site scores are given by :math:`\hat{\mathbf{V}}`. Fitted site scores are given by :math:`\mathbf{D_r}\hat{\mathbf{Y}}\mathbf{UL^{-0.5}}`. To calculate the predictor scores, the fitted site scores are standardized using row weights as was done for :math:`\mathbf{X}_{scale}`, yielding :math:`\mathbf{Z}_{scale}`. Predictor variable scores are then calculated as :math:`\mathbf{X}_{scale}'\mathbf{D_rZ}_{scale}`.
 
@@ -751,10 +752,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Creates a triplot of species scores, site scores, and predictor variable loadings. 
 
 		xax: integer
-			Specifies which RDA axis to plot on the x-axis
+			Specifies which CA axis to plot on the x-axis
 
 		yax: integer 
-			Specifies which RDA axis to plot on the y-axis
+			Specifies which Ca axis to plot on the y-axis
 
 	**Examples**
 
@@ -771,4 +772,120 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		:width: 75 %
 		:align:   center
 
+.. py:class:: ccor(self, Y1, Y2, varNames_1=None, varNames_2=None, stand_1=False, stand_2=False, siteNames=None)
 
+	Conducts canonical correlation analysis (CCor) which examines the relationship between matrices **Y1** and **Y2**. CCor first calculates the variance and covariance matrices for both **Y1** and **Y2**, where :math:`\mathbf{S}_{11}` is the variance-covariance matrix of **Y1**, :math:`\mathbf{S}_{22}` is the variance-covariance matrix of **Y2**, and :math:`\mathbf{S}_{12}` is the covariance matrix of **Y1** and **Y2**.
+
+	A new matrix **K** is calculated as 
+
+	 .. math::
+
+		\mathbf{K} = \mathbf{S}_{11}'\mathbf{S}_{12}\mathbf{S}_{22}^'
+
+	where :math:`\mathbf{S}_{11}^'` is the Cholesky decomposition of :math:`\mathbf{S}_{11}` and same for :math:`\mathbf{S}_{22}^'`.
+
+	CCor then uses SVD to calculate matrices **V**, **W**, and **U**, where **V** contains the left-hand eigenvectors, **W** contains the singular values, and **U** contains the right-hand eigenvectors. New matrices **C1** and **C2** are derived by **Y1V** and **Y2U**, respectively. Scores for matrices **Y1** are then
+
+	.. math::
+
+		\mathbf{\text{Scores}_1} = \mathbf{Y1C1}
+
+	and the same for **Y2**. Variable loadings are the correlation between the original matrix and the scores.
+
+	The cross-product matrix of :math:`\mathbf{\hat{Y}}` is then subject to eigen-analysis, yielding eigenvalues **L** and eigenvectors **U** of the predicted species values. Five new matrices are calculated using diagonal matrices of row :math:`\mathbf{D}_{r}` and column :math:`\mathbf{D}_{c}` weights:
+
+	**Parameters**
+
+	Y1:  pandas.DataFrame or numpy.ndarray
+		
+		A pandas.DataFrame or numpy.ndarray containing one set of variables.
+
+	Y2:  pandas.DataFrame or numpy.ndarray
+		
+		A pandas.DataFrame or numpy.ndarray containing a second set of variables.
+
+	varNames_1: list
+
+		A list of variables names for each column of Y1. If None, then the column names of Y1 are used.
+
+	varNames_2: list
+
+		A list of variables names for each column of Y2. If None, then the column names of Y22 are used.
+
+	siteNames: list
+
+		A list of site names for each row. If none, then the index values of Y1 are used.
+
+	stand_1: [True | False]
+
+		Whether to standardize **Y1**.
+
+	stand_2: [True | False]
+
+		Whether to standardize **Y2**.
+
+	**Attributes**
+
+	.. py:attribute:: Scores1
+		
+		Site scores from matrix 1
+
+	.. py:attribute:: Scores2
+		
+		Site scores from matrix 2
+
+	.. py:attribute:: loadings1
+		
+		Variable loadings from matrix 1
+
+	.. py:attribute:: loadings2
+		
+		Variable loadings from matrix 2
+
+	.. py:attribute:: evals
+
+		Eigenvalues
+		
+	
+
+	**Methods**
+
+	.. py:classmethod:: summary()
+
+		Returns summary information of each CA axis.
+
+	.. py:classmethod:: biplot(matrix=1, xax=1, yax=2)
+
+		Creates a biplot of site scores and predictor variable loadings. 
+
+		matrix: [1 | 2]
+			Which matrix, **Y1** or **Y2** to plot
+
+		xax: integer
+			Specifies which CCor axis to plot on the x-axis
+
+		yax: integer 
+			Specifies which CCor axis to plot on the y-axis
+
+	**Examples**
+
+	import ecopy as ep
+	import numpy as np
+
+	Y1 = np.random.normal(size=20*5).reshape(20, 5)
+	Y2 = np.random.normal(size=20*3).reshape(20, 3)
+	cc = ep.ccor(Y1, Y2)
+	cc.summary()
+
+	Constrained variance = 1.37
+	Constrained variance explained be each axis
+	['0.722', '0.464', '0.184']
+	Proportion constrained variance
+	['0.527', '0.338', '0.135']
+
+	cc.biplot()
+
+	.. figure::  images/ccor.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center

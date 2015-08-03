@@ -780,9 +780,9 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	 .. math::
 
-		\mathbf{K} = \mathbf{S}_{11}^t \mathbf{S}_{12} \mathbf{S}_{22}^t
+		\mathbf{K} = \mathbf{S}_{11}^c \mathbf{S}_{12} \mathbf{S}_{22}^c
 
-	where :math:`\mathbf{S}_{11}^'` is the Cholesky decomposition of :math:`\mathbf{S}_{11}` and same for :math:`\mathbf{S}_{22}^'`.
+	where :math:`\mathbf{S}_{11}^c` is the Cholesky decomposition of :math:`\mathbf{S}_{11}` and same for :math:`\mathbf{S}_{22}^c`.
 
 	CCor then uses SVD to calculate matrices **V**, **W**, and **U**, where **V** contains the left-hand eigenvectors, **W** contains the singular values, and **U** contains the right-hand eigenvectors. New matrices **C1** and **C2** are derived by **Y1V** and **Y2U**, respectively. Scores for matrices **Y1** are then
 

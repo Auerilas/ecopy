@@ -277,11 +277,11 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 .. py:class:: procrustes_test(mat1, mat2, nperm=999)
 
-	Conducts a procrustes test of matrix associations on two raw object x descriptor matrices. Returns an object of class :py:class:`procrustes_test`. First, both matrices are column-centered. Then, each matrix is divided by the square root of its sum-of-squares. The test statistic :math:`m12^2` is calculated as:
+	Conducts a procrustes test of matrix associations on two raw object x descriptor matrices. Returns an object of class :py:class:`procrustes_test`. First, both matrices are column-centered. Then, each matrix is divided by the square root of its sum-of-squares. The test statistic :math:`m_{12}^2` is calculated as:
 
 	.. math::
 
-		m12^2 = 1 - (Trace \mathbf{W})^2
+		m_{12}^2 = 1 - (Trace \mathbf{W})^2
 
 	:math:`\mathbf{W}` is the diagonal matrix of eigenvalues for :math:`\mathbf{X'Y}`, which are the two transformed matrices. Then, rows of **X** are randomly permuted and the test statistic recalculated. The *p*-value is the the proportion of random test statistics less than the observed statistic.
 
@@ -423,7 +423,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	 .. math::
 
-		\mathbf{D} = \mathbf{R'}\mathbf{D_{row}}\mathbf{L}\mathbd{D_{col}}\mathbf{Q}
+		\mathbf{D} = \mathbf{R'}\mathbf{D_{row}}\mathbf{L}\mathbf{D_{col}}\mathbf{Q}
 
 	where :math:`\mathbf{D_{row}}` and :math:`\mathbf{D_{col}}` are diagonal matrices of row and column weights derived from matrix **L**. **L** is first transformed by dividing the matrix by the total number of individuals in the matrix. Column and row weights are given by the sum of columns and rows of the transformed matrix. Matrix **L** is then transformed by diving each column by the corresponding column weight, dividing each row by the corresponding row weight, and subtracting 1 from all elements. This transformed **L** matrix is used in the above equation to generate matrix **D**.
 

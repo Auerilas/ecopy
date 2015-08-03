@@ -595,7 +595,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 .. py:class:: hillsmith(mat, wt_r=None, ndim=2)
 
-	Takes an input matrix and performs ordination described by Hill and Smith (1976). Returns on object of class :py:class:`hillsmith`, with several methods and attributes. NOTE: This will NOT work of rows < columns or with missing values.
+	Takes an input matrix and performs ordination described by Hill and Smith (1976). Returns on object of class :py:class:`hillsmith`, with several methods and attributes. NOTE: This will NOT work when rows < columns or with missing values.
 
 	**Parameters**
 

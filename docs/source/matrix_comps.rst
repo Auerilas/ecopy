@@ -869,11 +869,12 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	import ecopy as ep
 	import numpy as np
-
 	Y1 = np.random.normal(size=20*5).reshape(20, 5)
 	Y2 = np.random.normal(size=20*3).reshape(20, 3)
+
 	cc = ep.ccor(Y1, Y2)
 	cc.summary()
+
 	Constrained variance = 1.37
 	Constrained variance explained be each axis
 	['0.722', '0.464', '0.184']

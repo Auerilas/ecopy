@@ -34,7 +34,6 @@ class pca:
 	summary_rot(): print a summary table of axes rotations
 	summary_desc():cumulative variance explained by each principle axis for each
 		descriptor. 
-	summary_corr(): correlation of each descriptor with each component
 	biplot(xax=1, yax=2, type = "distance", obsNames = False):
 		create a biplot of the first two components with a given scaling
 			xax: which component to put on the x-axis
@@ -48,8 +47,7 @@ class pca:
 	import ecopy as ep
 	USArrests = ep.load_data('USArrests')
 	prcomp = ep.pca(USArrests, scale = True)
-	prcomp.summar_imp()
-	prcomp.correlation
+	prcomp.summary_imp()
 	prcomp.biplot(scale = 1)
 	prcomp.biplot(scale = 0.5, obsNames = True)
 	'''
@@ -77,7 +75,7 @@ class pca:
 			y = np.apply_along_axis(standardize, 0, y)
 		else:
 			y = np.apply_along_axis(lambda z: z - np.mean(z), 0, y)
-		self.evals, self.evecs, self.scores, self.correlation = eig_decomp(y)
+		self.evals, self.evecs, self.scores = eig_decomp(y)
 		if isinstance(x, DataFrame):
 			self.varNames = x.columns
 		else:
@@ -103,12 +101,6 @@ class pca:
 		rot = DataFrame(self.evecs, index=self.varNames)
 		rot.columns = names
 		return rot
-
-	def summary_corr(self):
-		names = ['PC' + str(i) for i in range(1, self.evecs.shape[1]+1)]
-		corr = DataFrame(self.correlation, index=self.varNames)
-		corr.columns = names
-		return corr
 
 	def summary_desc(self):
 		names = ['PC' + str(i) for i in range(1, self.evecs.shape[1]+1)]
@@ -158,11 +150,9 @@ def standardize(a):
 	return (a - np.mean(a))/np.std(a, ddof = 1)
 
 def eig_decomp(y):
-	covMat = np.cov(y, rowvar=0)
-	evals, evecs = np.linalg.eig(covMat)
-	idx = evals.argsort()[::-1]
-	evals = evals[idx]
-	evecs = evecs[:,idx]
+	V, W, U = np.linalg.svd(y)
+	N = y.shape[0]
+	evecs = U.T
+	evals = W**2/(N-1)
 	scores = y.dot(evecs)
-	corr = evecs.dot(np.diag(evals**0.5)).T.dot(np.diag(np.diag(covMat)**-0.5)).T
-	return np.real(evals), np.real(evecs), scores, corr
+	return np.real(evals), np.real(evecs), scores

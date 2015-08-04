@@ -6,14 +6,9 @@ Install via 'pip install ecopy'
 
 What's New
 =======
-0.0.7
+0.0.8
 -------
-- CCA
-- RDA
-- RLQ analysis
-- Hill and Smith ordination
-- weighted means, variances, and scale functions
-- CCor
+- Updated PCA to use SVD instead of eigen decomposition
 
 License
 =====
@@ -21,7 +16,7 @@ License
 
 Version
 =====
-0.0.7a1 - Alpha launch
+0.0.8
 
 Examples
 ======

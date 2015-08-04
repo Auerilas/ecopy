@@ -1,12 +1,18 @@
 Version History
 ==========
+0.0.8
+^^^^^
+- Updated PCA to use SVD instead of eigen decomposition
+
 0.0.7
 ^^^^^
+- CCor
 - CCA
 - RDA
 - RLQ analysis
 - Hill and Smith ordination
 - weighted mean, variance, scaling
+
 
 0.0.6
 ^^^^^

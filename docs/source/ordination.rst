@@ -11,12 +11,12 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 .. py:class:: pca(x, scale=True, varNames=None)
 
-	Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class 'pca', with several methods and attributes. This function uses SVD decomposition. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class :py:class:`pca`.
+	Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class 'pca', with several methods and attributes. This function uses SVD and can operate when rows < columns. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class :py:class:`pca`.
 
 	**Parameters**
 
 	x: a numpy.ndarray or pandas.DataFrame
-		A matrix for ordination, where objects are rows and descriptors/variables as columns. Can be either a pandas.DataFrame or numpy. ndarray
+		A matrix for ordination, where objects are rows and descriptors/variables as columns. Can be either a pandas.DataFrame or numpy. ndarray.
 
 	scale: [True | False]
 		Whether or not the columns should be standardized prior to PCA. If 'True', the PCA then operates on a correlation matrix, which is appropriate if variables are on different measurement scales. If variables are on the same scale, use 'False' to have PCA operate on the covariance matrix.
@@ -28,11 +28,11 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	.. py:attribute:: evals
 		
-		Eigenvalues in order of largest to smallest
+		Eigenvalues in order of largest to smallest.
 		
 	.. py:attribute:: evecs
 		
-		Normalized eigenvectors corresponding to each eigenvalue (i.e. the principle axes)
+		Normalized eigenvectors corresponding to each eigenvalue (i.e. the principle axes).
 
 	.. py:attribute:: scores
 		
@@ -50,7 +50,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	.. py:classmethod:: summary_desc()
 
-		Returns a data frame containing the cumulative variance explained for each predictor along each principle axis
+		Returns a data frame containing the cumulative variance explained for each predictor along each principle axis.
 
 	.. py:classmethod:: biplot(xax=1, yax=2, type='distance', obsNames=False)
 
@@ -192,25 +192,25 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	.. py:attribute:: U
 		
-		Column (species) eigenvectors (see above note on transposition)
+		Column (species) eigenvectors (see above note on transposition).
 
 	.. py:attribute:: Uhat
 		
-		Row (site) eigenvectors (see above note on transposition)
+		Row (site) eigenvectors (see above note on transposition).
 
 	.. py:attribute:: cumDesc_Sp
 
 		pandas.DataFrame of the cumulative contribution of each eigenvector to each species. Matrix :math:`\mathbf{U}` is scaled by eigenvalues :math:`\mathbf{U_2} = \mathbf{U\Lambda}^{0.5}`. Then, the cumulative sum of each column is divided by the column total for every row. If :math:`r < c` in the original data, then this operation is performed on :math:`\mathbf{\hat{U}}` automatically.
 
-	.. py:attribute: cumDesc_Site
+	.. py:attribute:: cumDesc_Site
 
 		The same for cumDesc_Sp, but for each site. Normally calculated for :math:`\mathbf{\hat{U}}` unless :math:`r < c`, then calculated on :math:`\mathbf{U}`.
 
-	.. py:attritbute: siteScores
+	.. py:attritbute:: siteScores
 
 		Site scores along each CA axis. All considerations for matrix transposition and scaling have been taken into account.
 
-	.. py:attribute: spScores
+	.. py:attribute:: spScores
 
 		Species scores along each CA axis. All considerations for matrix transposition and scaling have been taken into account.
 
@@ -225,34 +225,34 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		Produces a biplot of the given CA axes.
 
 		xax: integer 
-			Specifies CA axis to plot on the x-axis
+			Specifies CA axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies CA axis to plot on the y-axis (Default=2)
+			Specifies CA axis to plot on the y-axis.
 
 		showSp: [True | False]
-			Whether or not to show species in the plot
+			Whether or not to show species in the plot.
 
 		showSite: [True | False]
-			Whether or not to show sites in the plot
+			Whether or not to show sites in the plot.
 
 		spCol: string
-			Color of species text
+			Color of species text.
 
 		siteCol: string
-			Color of site text
+			Color of site text.
 
 		spSize: integer
-			Size of species text
+			Size of species text.
 
 		siteSize: integer
-			Size of site text
+			Size of site text.
 
 		xlim: list
-			A list of x-axis limits to override default
+			A list of x-axis limits to override default.
 
 		ylim: list
-			A list of y-axis limits to override default
+			A list of y-axis limits to override default.
 
 	**Examples**
 
@@ -352,7 +352,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	.. py:attribute:: evals
 		
-		Eigenvalues of each principle coordinate axis
+		Eigenvalues of each principle coordinate axis.
 		
 	.. py:attribute:: U
 		
@@ -376,10 +376,10 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 			 If True, returns a dictionary of the plotted axes, where 'Objects' gives the coordinates of objects and 'Descriptors' gives the coordinates of the descriptors, if any.
 
 		xax: integer 
-			Specifies CA axis to plot on the x-axis
+			Specifies PCoA axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies CA axis to plot on the y-axis (Default=2)
+			Specifies PCoA axis to plot on the y-axis.
 
 		descriptors:  numpy.ndarray or pandas.DataFrame
 			An n x m matrix of descriptors to plot on the biplot. These can be the original descriptors used to calculate distances among objects or an entirely new set. Descriptors must be quantitative. It will work for binary descriptors, but may be meaningless.
@@ -396,22 +396,22 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 				\mathbf{Y_{proj}} = \sqrt{n-1}\mathbf{S\Lambda^{-0.5}}
 
-			Matrix :math:`Y_{proj}` contains the coordinates of each descriptor and is what is returns as 'Descriptors' if coords=True.
+			Matrix :math:`\mathbf{Y_{proj}}` contains the coordinates of each descriptor and is what is returned as 'Descriptors' if coords=True.
 
 		descripNames: list
 			A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.
 
 		spCol: string
-			Color of species text
+			Color of species text.
 
 		siteCol: string
-			Color of site text
+			Color of site text.
 
 		spSize: integer
-			Size of species text
+			Size of species text.
 
 		siteSize: integer
-			Size of site text
+			Size of site text.
 
 	.. py:classmethod:: shepard(xax=1, yax=2)
 		
@@ -461,14 +461,14 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	**Parameters**
 
-	distmat: np.nndarray or pandas.DataFrame
+	distmat: np.ndarray or pandas.DataFrame
 	 	A square-symmetric distance matrix.
 
 	siteNames:  list
-		A list of names for each object. If none, takes on integer values or the index of the pandas.DataFrame
+		A list of names for each object. If none, takes on integer values or the index of the pandas.DataFrame.
 
 	naxes: integer
-		Number of ordination axes. Default = 2
+		Number of ordination axes.
 
 	transform: ['absolute' | 'ratio' | 'linear' | 'monotone']
 		Which transformation should be used during scaling.
@@ -497,19 +497,19 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	.. py:attribute:: scores
 		
-		Final scores for each object along the ordination axes
+		Final scores for each object along the ordination axes.
 		
 	.. py:attribute:: stress
 		
-		Final stress
+		Final stress.
 
 	.. py:attribute:: obs
 		
-		The observed distance matrix
+		The observed distance matrix.
 
 	.. py:attribute:: transform
 		
-		Which transformation was used
+		Which transformation was used.
 
 	**Methods**
 
@@ -521,28 +521,28 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 			 If True, returns a dictionary of the plotted axes, where 'Objects' gives the coordinates of objects and 'Descriptors' gives the coordinates of the descriptors, if any.
 
 		xax: integer 
-			Specifies CA axis to plot on the x-axis
+			Specifies MDS axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies CA axis to plot on the y-axis (Default=2)
+			Specifies MDS axis to plot on the y-axis.
 
 		descriptors:  numpy.ndarray or pandas.DataFrame
-			A matrix of the original descriptors used to create the distance matrix. Descriptors (*i.e.* species) scores are calculated as the weighted average of site scores
+			A matrix of the original descriptors used to create the distance matrix. Descriptors (*i.e.* species) scores are calculated as the weighted average of site scores.
 
 		descripNames: list
 			A list containing the names of each descriptor. If None, inherits from the column names of the pandas.DataFrame or assigned integer values.
 
 		spCol: string
-			Color of species text
+			Color of species text.
 
 		siteCol: string
-			Color of site text
+			Color of site text.
 
 		spSize: integer
-			Size of species text
+			Size of species text.
 
 		siteSize: integer
-			Size of site text
+			Size of site text.
 
 	.. py:classmethod:: shepard(xax=1, yax=2)
 		
@@ -595,7 +595,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 .. py:class:: hillsmith(mat, wt_r=None, ndim=2)
 
-	Takes an input matrix and performs ordination described by Hill and Smith (1976). Returns on object of class :py:class:`hillsmith`, with several methods and attributes. NOTE: This will NOT work when rows < columns or with missing values.
+	Takes an input matrix and performs ordination described by Hill and Smith (1976). Returns an object of class :py:class:`hillsmith`, with several methods and attributes. NOTE: This will NOT work when rows < columns or with missing values.
 
 	**Parameters**
 
@@ -603,32 +603,32 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		A matrix for ordination, where objects are rows and descriptors/variables as columns. Can have mixed data types (both quantitative and qualitative). If all columns are quantitative, this method is equivalent to PCA. If all columns are qualitative, this method is equivalent to MCA. Should not be used with ordered factors. In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
 
 	wt_r: list or numpy.ndarray
-		Optional vector of row weights
+		Optional vector of row weights.
 
 	ndim: int
-		Number of axes and components to save
+		Number of axes and components to save.
 
 	**Attributes**
 
 	.. py:attribute:: evals
 		
-		Eigenvalues in order of largest to smallest
+		Eigenvalues in order of largest to smallest.
 		
 	.. py:attribute:: pr_axes
 		
-		The principle axes of each column
+		The principle axes of each column.
 
 	.. py:attribute:: row_coords
 		
-		Row coordinates along each principle axis
+		Row coordinates along each principle axis.
 
 	.. py:attribute:: pr_components
 		
-		The principle components of each row
+		The principle components of each row.
 
 	.. py:attribute:: column_coords
 		
-		Column coordinates along each principle component
+		Column coordinates along each principle component.
 
 	**Methods**
 
@@ -644,10 +644,10 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 			If False (default), plots the row coordinates as points and the principle axes of each column as arrows. If True, plots the column coordinates as points and the principle components of each row as arrows.
 
 		xax: integer
-			Specifies which PC axis to plot on the x-axis
+			Specifies which PC axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies which PC axis to plot on the y-axis
+			Specifies which PC axis to plot on the y-axis.
 
 		obsNames: [True | False]
 			Denotes whether to plot a scatterplot of points (False) or to actually show the names of the observations, as taken from the DataFrame index (True).

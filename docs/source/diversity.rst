@@ -13,7 +13,7 @@ EcoPy contains several methods for estimating species diversity:
 	**Parameters**
 	
 	x: numpy.ndarray or pandas.DataFrame (*required*)
-		A site x species matrix, where sites are rows and columns are species.
+		A site *x* species matrix, where sites are rows and columns are species.
 
 	method: ['shannon' | 'simpson' | 'invSimpson' | 'dominance' | 'spRich' | 'even']
 		*shannon*: Calculates Shannon's H
@@ -32,7 +32,7 @@ EcoPy contains several methods for estimating species diversity:
 
 		*invSimpson*: Inverse of Simpson's D
 
-		*dominance* Dominance index. :math:`\max p_k`
+		*dominance*: Dominance index. :math:`\max p_k`
 
 		*spRich*: Species richness (# of non-zero columns)
 
@@ -73,7 +73,7 @@ EcoPy contains several methods for estimating species diversity:
 
 			S_n - \frac{\sum_1^i \binom{N-N_i}{size}}{\binom{N}{size}}
 
-		where :math:`S_n` is the total number of species in the matrix and *size* ranges from 0 to the total number of individuals in each site
+		where :math:`S_n` is the total number of species in the matrix and *size* ranges from 0 to the total number of individuals in each site.
 
 	**Example**
 

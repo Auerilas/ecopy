@@ -1,19 +1,19 @@
 Matrix Transformations
 ===================
 
-EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices have observations as rows (*i.e.* sites) and descriptors as columns (*i.e.* species). Although designed for site x species analyses, these techniques can apply to any matrix.
+EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices have observations as rows (*i.e.* sites) and descriptors as columns (*i.e.* species). Although designed for site *x* species analyses, these techniques can apply to any matrix.
 
 	- :py:func:`transform`
 	- :py:func:`distance`
 
 .. py:function:: transform(x, method='wisconsin', axis=1, breakNA=True)
 
-	Takes an input matrix, performs a transformation, and returns an output matrix. It will accept with pandas.DataFrame or numpy.ndarray, and will return an object of the same class. Matrices consist of *i* rows and *k* columns.
+	Takes an input matrix, performs a transformation, and returns an output matrix. It will accept either a pandas.DataFrame or numpy.ndarray, and will return an object of the same class. Matrices consist of *i* rows and *k* columns.
 
 	**Parameters**
 
 	x: a numpy.ndarray or pandas.DataFrame (*required*)
-		A site x species matrix, where sites are rows and columns are species.
+		A site *x* species matrix, where sites are rows and columns are species.
 
 	method: ['total' | 'max' | 'normalize', 'range', 'standardize', 'hellinger', 'log', 'logp1', 'pa', 'wisconsin']
 		*total*: Divides each observation by row or column sum.
@@ -41,10 +41,10 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 		*wisconsin*: First divides an observation by the max of the column, then the sum of the row. That is, it applies 'max' down columns then 'total' across rows. 
 
 	axis: [0 | 1]
-		Axis for the transformation
+		Axis for the transformation.
 
 	breakNA: [True | False]
-		Whether NA values should halt the transformation
+		Whether NA values should halt the transformation.
 
 	**Example**
 
@@ -58,12 +58,12 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 
 	Takes an input matrix and returns a square-symmetric array of distances among rows. **NOTE:** Be sure the appropriate transformation has already been applied. This function contains a variety of both similarity (S) and distance (D) metrics. However, for consistency all similarities are converted to distances D = 1 - S. Methods annotated with SIMILARITY follow this procedure.
 
-	In the case of binary 0/1 data, the two rows are converted to a contingency table, where A is the number of double presences, B and C are the number of single presences in :math:`x_1` and :math:`x_2`, respectively, and D is the number of double absences. Matrices consist of i rows and k species. Methods that only work on binary data will result in an error if non-binary data is passed. However, binary data can be passed to all methods, and sometimes give equivalent results (i.e. passing binary data to method 'bray' is identical to using method 'sorensen').
+	In the case of binary 0/1 data, the two rows are converted to a contingency table, where A is the number of double presences, B and C are the number of single presences in :math:`x_1` and :math:`x_2`, respectively, and D is the number of double absences. Matrices consist of *i* rows and *k* species. Methods that only work on binary data will result in an error if non-binary data is passed. However, binary data can be passed to all methods, and sometimes give equivalent results (i.e. passing binary data to method 'bray' is identical to using method 'sorensen').
 
 	**Parameters**
 
 	x: a numpy.ndarray or pandas.DataFrame (*required*)
-		A site x species matrix, where sites are rows and columns are species.
+		A site *x* species matrix, where sites are rows and columns are species.
 
 	method: ['euclidean' | 'chord' | 'manhattan' | 'meanChar' | 'whittaker' | 'canberra' | 'hellinger' | 'mod_gower' | 'bray' | 'kulcznski' | 'gower' | 'simple' | 'rogers' | 'sokal' | 'jaccard' | 'sorensen']
 		Note, some methods do not allow negative values.
@@ -72,7 +72,7 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 
 		*chord*: Euclidean distance of normalized rows.
 
-		*manhattahn*: 'City-block' distance
+		*manhattan*: 'City-block' distance
 
 		.. math::
 
@@ -118,7 +118,7 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 
 			S_{1,2} = \frac{1}{M} (1 - \sum_1^k \frac{ |x_{1k} - x_{2k}| }{\max x_k - \min x_k} )
 
-		The denominator is the maximum of column k minus the minimum of column k in the entire matrix. Double zeroes are excluded in this calculation.
+		The denominator is the maximum of column *k* minus the minimum of column *k* in the entire matrix. Double zeroes are excluded in this calculation.
 
 		*simple*: simple matching of BINARY data (SIMILARITY)
 
@@ -154,7 +154,7 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 		Determines the final transformation of the distance metric. "1" returns the raw distance D. "sqrt" returns sqrt(D). Sometimes sqrt(D) has more desirable properties, depending on the subsequent analyses (see Legendre and Legendre - Numerical Ecology).
 
 	breakNA: [True | False]
-		Whether null values should halt the process
+		Whether null values should halt the process.
 
 	**Examples**
 

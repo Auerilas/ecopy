@@ -41,7 +41,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
  		
  		'lower' tests hypothsis that correlation is lower than predicted. 
  		
- 		'both' is a two-tailed test
+ 		'both' is a two-tailed test.
 
  	nperm: int
 	 	Number of permutations for the test.
@@ -50,29 +50,29 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	.. py:attribute:: r_obs 
 
-		Observed correlation statistic
+		Observed correlation statistic.
 	
 	.. py:attribute:: pval 
 
-		p-value for the given hypothesis
+		p-value for the given hypothesis.
 
 	.. py:attribute:: tail 
 
-		The tested hypothesis
+		The tested hypothesis.
 
 	.. py:attribute:: test
 
-		 Which of the statistics used, 'pearson' or 'spearman'
+		 Which of the statistics used, 'pearson' or 'spearman'.
 	
 	.. py:attribute:: perm 
 
-		Number of permutations
+		Number of permutations.
 
 	**Methods**
 
 	.. py:classmethod:: summary()
 
-		Prints a summary output table
+		Prints a summary output table.
 
 	**Examples**
 
@@ -130,37 +130,37 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	.. py:attribute:: r_perm1
 
-		Permuted R-statistics for factor1
+		Permuted R-statistics for factor1.
 
 	.. py:attribute:: r_perm2
 
-		Permuted R-statistics for factor1
+		Permuted R-statistics for factor1.
 
 	.. py:attribute:: R_obs1
 
-		Observed R-statistic for factor1
+		Observed R-statistic for factor1.
 
 	.. py:attribute:: R_obs2
 
-		Observed R-statistic for factor2
+		Observed R-statistic for factor2.
 	
 	.. py:attribute:: pval 
 
-		List of p-values for factor1 and factor2
+		List of p-values for factor1 and factor2.
 	
 	.. py:attribute:: perm 
 
-		Number of permutations
+		Number of permutations.
 
 	**Methods**
 
 	.. py:classmethod:: summary()
 
-		Prints a summary output table
+		Prints a summary output table.
 
 	.. py:classmethod:: plot()
 
-		Plots a histogram of R values
+		Plots a histogram of R values.
 
 	**Examples**
 
@@ -209,18 +209,18 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	The denominator is the total number of individuals in both sites, :math:`y_{ik}` is the number of individuals of species *i* in site *k*, and :math:`y_{ij}` is the number of individuals in site *j*. This is performed for every pairwise combination of sites across two groups and then averaged to yield the mean percentage similarity of the species. This function also calculates the standard deviation of the percentage similarity, the signal to noise ratio (mean / sd) such that a higher ratio indicates more consistent difference, the percentage contribution of each species to the overall difference, and the cumulative percentage difference.
 
-	The output is a multi-indexed DataFrame, with the first index providing the comparison and the second index providing the species. The function lists the index comparison names as it progresses for reference
+	The output is a multi-indexed DataFrame, with the first index providing the comparison and the second index providing the species. The function lists the index comparison names as it progresses for reference.
 
 	**Parameters**
 
 	data:  numpy.ndarray or pandas.DataFrame
-		A site x species matrix.
+		A site *x* species matrix.
 
 	factor: numpy.nadarray or pandas.Series or pandas.DataFrame or list
 		Grouping factor.
 
 	spNames: list
-		List of species names. If data is a pandas.DataFrame, then spNames is inferred as the column names. If data is a np.ndarray, then spNames is given integer values unless this argument is provided
+		List of species names. If data is a pandas.DataFrame, then spNames is inferred as the column names. If data is a np.ndarray, then spNames is given integer values unless this argument is provided.
 
 	**Examples**
 
@@ -294,27 +294,27 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		A raw object x descriptor (site x descriptor) matrix.
 
 	nperm: int
-		Number of permutations in the test
+		Number of permutations in the test.
 
 	**Attributes**
 
 	.. py:attribute:: m12_obs
 
-		Observed m12 squared statistic
+		Observed :math:`m_{12}^2` statistic.
 	
 	.. py:attribute:: pval 
 
-		p-value
+		p-value.
 	
 	.. py:attribute:: perm 
 
-		Number of permutations
+		Number of permutations.
 
 	**Methods**
 
 	.. py:classmethod:: summary()
 
-		Prints a summary output table
+		Prints a summary output table.
 
 	**Examples**
 
@@ -363,21 +363,21 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		A species x trait matrix containing trait measurements for each species. pandas.Series NOT allowed.
 
 	nperm: int
-		Number of permutations in the test
+		Number of permutations in the test.
 
 	model: [1 | 2 | 3 | 4]
 		Which model should be used for permutations.
 
-		*1*: Permutes within columns of **L** only (that is, shuffles species among sites)
+		*1*: Permutes within columns of **L** only (that is, shuffles species among sites).
 
-		*2*: Permutes entire rows of **L** (that is, shuffles entire species assemblages)
+		*2*: Permutes entire rows of **L** (that is, shuffles entire species assemblages).
 		
-		*3*: Permutes within rows of **L** (that is, shuffles the distribution of individuals within a site)
+		*3*: Permutes within rows of **L** (that is, shuffles the distribution of individuals within a site).
 		
-		*4*: Permutes entire columns of **L** (that is, shuffles a species' distribution among traits, while site distributions are kept constant)
+		*4*: Permutes entire columns of **L** (that is, shuffles a species' distribution among traits, while site distributions are kept constant).
 
 	test: ['both' | 'greater' | 'lower']
-		Which tail of the permutation distribution should be tested against the observed statistic
+		Which tail of the permutation distribution should be tested against the observed statistic.
 
 	p_adjustment: [None, 'bonferroni', 'holm', 'fdr']:
 		Which adjustment should be used for multiple comparisons. 'bonferroni' uses Bonferronni correction, 'holm' uses the Bonferroni-Holm correction, and 'fdr' uses the False Discovery Rate correction.
@@ -386,7 +386,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	.. py:classmethod:: summary()
 
-		Returns a pandas.DataFrame of output
+		Returns a pandas.DataFrame of output.
 
 	**Examples**
 
@@ -443,29 +443,29 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		A species x trait matrix for ordination, where objects are rows and descriptors/variables as columns. Can have mixed data types (both quantitative and qualitative). In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
 
 	ndim: int
-		Number of axes and components to save
+		Number of axes and components to save.
 
 	**Attributes**
 
 	.. py:attribute:: traitVecs
 		
-		A pandas.DataFrame of trait loadings
+		A pandas.DataFrame of trait loadings.
 		
 	.. py:attribute:: envVecs
 		
-		A pandas.DataFrame of environmental loadings
+		A pandas.DataFrame of environmental loadings.
 
 	.. py:attribute:: normedTraits
 		
-		Species coordinates along each axis
+		Species coordinates along each axis.
 
 	.. py:attribute:: normedEnv
 		
-		Site coordinates along each axis
+		Site coordinates along each axis.
 
 	.. py:attribute:: evals
 		
-		Eigenvalues for all axes (not just saved ones)
+		Eigenvalues for all axes (not just saved ones).
 
 	**Methods**
 
@@ -478,10 +478,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Create a biplot. The plot contains four subplots, one each for species scores, site scores, trait vectors, and environment vectors. Species scores are plotted from normedTraits, site scores are plotted from normedEnv, trait vectors are plotted from traitVecs, and environmental vectors are plotted from envVecs. Users can mix and match which vectors to overlay with which points manually using these four attributes.
 
 		xax: integer
-			Specifies which PC axis to plot on the x-axis
+			Specifies which PC axis to plot on the x-axis,
 
 		yax: integer 
-			Specifies which PC axis to plot on the y-axis
+			Specifies which PC axis to plot on the y-axis.
 
 	**Examples**
 
@@ -537,82 +537,73 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	**Parameters**
 
 	Y:  pandas.DataFrame or numpy.ndarray
-		
-		A site x species for ordination, where objects are rows and descriptors/variables as columns.
+		A site *x* species for ordination, where objects are rows and descriptors/variables as columns.
 
 	X:  pandas.DataFrame or numpy.ndarray
-		
 		A site x environment matrix for ordination, where objects are rows and descriptors/variables as columns. Only the pandas.DataFrame can have mixed data types (both quantitative and qualitative). In order to account for factors, this method creates dummy variables for each factor and then assigns weights to each dummy column based on the number of observations in each column.
 
 	scale_x: [True | False]
-
 		Whether or not the matrix Y should be standardized by columns.
 
 	scale_y: [True | False]
-
 		Whether or not the matrix X should be standardized by columns.
 
 	design_x: [True | False]
-
 		Whether or not X has already been transformed to a design matrix. This enables the user to formulate more complicated regressions that include interactions or higher order variables.
 
 	varNames_y: list
-
 		A list of variables names for each column of Y. If None, then the column names of Y are used.
 
 	varNames_x: list
-
 		A list of variables names for each column of X. If None, then the column names of X are used.
 
 	rowNames: list
-
 		A list of site names for each row. If none, then the index values of Y are used.
 
 	pTypes: list
-
 		A list denoting whether variables in X are quantitative ('q') or factors ('f'). Can usually be ignored.
 
 	**Attributes**
 
 	.. py:attribute:: spScores
 		
-		A pandas.DataFrame of species scores on each RDA axis
+		A pandas.DataFrame of species scores on each RDA axis.
 		
 	.. py:attribute:: linSites
 		
-		A pandas.DataFrame of linearly constrained site scores
+		A pandas.DataFrame of linearly constrained site scores.
 
 	.. py:attribute:: siteScores
 		
-		A pandas.DataFrame of site scores on each RDA axis
+		A pandas.DataFrame of site scores on each RDA axis.
 
 	.. py:attribute:: predScores
 		
-		A pandas.DataFrame of predictor scores on each RDA axis
+		A pandas.DataFrame of predictor scores on each RDA axis.
 
 	.. py:attribute:: RDA_evals
 		
-		Eigenvalues for each RDA axis
+		Eigenvalues for each RDA axis.
 
 	.. py:attribute:: corr
 		
-		Correlation of each predictor with each RDA axis
+		Correlation of each predictor with each RDA axis.
 
 	.. py:attribute:: resid_evals
 		
-		Eigenvalues for residual variance
+		Eigenvalues for residual variance.
 
 	.. py:attribute:: resid_spScores
 		
-		A pandas.DataFrame of species scores on PCA of residual variance
+		A pandas.DataFrame of species scores on PCA of residual variance.
 
 	.. py:attribute:: resid_siteScores
 		
-		A pandas.DataFrame of site scores on PCA of residual variance
+		A pandas.DataFrame of site scores on PCA of residual variance.
 
 	.. py:attribute:: imp
 		
-		Summary of importance of each RDA and PCA axis
+		Summary of importance of each RDA and PCA axis.
 
 	**Methods**
 
@@ -625,10 +616,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Creates a triplot of species scores, site scores, and predictor variable loadings. If predictors are factors, they are represented by points. Quantitative predictors are represented by arrows.
 
 		xax: integer
-			Specifies which RDA axis to plot on the x-axis
+			Specifies which RDA axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies which RDA axis to plot on the y-axis
+			Specifies which RDA axis to plot on the y-axis.
 
 	**Examples**
 
@@ -682,66 +673,60 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	**Parameters**
 
 	Y:  pandas.DataFrame or numpy.ndarray
-		
-		A pandas.DataFrame or numpy.ndarray containing species abundance data (site x species)
+		A pandas.DataFrame or numpy.ndarray containing species abundance data (site *x* species).
 
 	X:  pandas.DataFrame or numpy.ndarray
-		
-		A pandas.DataFrame or numpy.ndarray containing predictor variables for constrained ordination (site x variable).
+		A pandas.DataFrame or numpy.ndarray containing predictor variables for constrained ordination (site *x* variable).
 
 	varNames_y: list
-
 		A list of variables names for each column of Y. If None, then the column names of Y are used.
 
 	varNames_x: list
-
 		A list of variables names for each column of X. If None, then the column names of X are used.
 
 	rowNames: list
-
 		A list of site names for each row. If none, then the index values of Y are used.
 
 	scaling: [1 | 2]
-
 		Which scaling should be used. See above.
 
 	**Attributes**
 
 	.. py:attribute:: r_w
 		
-		Row weights 
+		Row weights. 
 		
 	.. py:attribute:: c_w
 		
-		Column weights
+		Column weights.
 
 	.. py:attribute:: evals
 		
-		Constrained eigenvalues
+		Constrained eigenvalues.
 
 	.. py:attribute:: U
 		
-		Constrained eigenvectors
+		Constrained eigenvectors.
 
 	.. py:attribute:: resid
 		
-		A pandas.DataFrame of residuals from the constrained ordination
+		A pandas.DataFrame of residuals from the constrained ordination.
 
 	.. py:attribute:: spScores
 		
-		A pandas.DataFrame of species scores
+		A pandas.DataFrame of species scores.
 
 	.. py:attribute:: siteScores
 		
-		A pandas.DataFrame of site scores
+		A pandas.DataFrame of site scores.
 
 	.. py:attribute:: siteFitted
 		
-		A pandas.DataFrame of constrained site scores
+		A pandas.DataFrame of constrained site scores.
 
 	.. py:attribute:: varScores
 		
-		A pandas.DataFrame variable scores
+		A pandas.DataFrame variable scores.
 
 	**Methods**
 
@@ -754,10 +739,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Creates a triplot of species scores, site scores, and predictor variable loadings. 
 
 		xax: integer
-			Specifies which CA axis to plot on the x-axis
+			Specifies which CA axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies which Ca axis to plot on the y-axis
+			Specifies which Ca axis to plot on the y-axis.
 
 	**Examples**
 
@@ -808,15 +793,15 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	varNames_1: list
 
-		A list of variables names for each column of Y1. If None, then the column names of Y1 are used.
+		A list of variables names for each column of **Y1**. If None, then the column names of **Y1** are used.
 
 	varNames_2: list
 
-		A list of variables names for each column of Y2. If None, then the column names of Y22 are used.
+		A list of variables names for each column of **Y2**. If None, then the column names of **Y2** are used.
 
 	siteNames: list
 
-		A list of site names for each row. If none, then the index values of Y1 are used.
+		A list of site names for each row. If none, then the index values of **Y1** are used.
 
 	stand_1: [True | False]
 
@@ -830,23 +815,23 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 	.. py:attribute:: Scores1
 		
-		Site scores from matrix 1
+		Site scores from matrix 1.
 
 	.. py:attribute:: Scores2
 		
-		Site scores from matrix 2
+		Site scores from matrix 2.
 
 	.. py:attribute:: loadings1
 		
-		Variable loadings from matrix 1
+		Variable loadings from matrix 1.
 
 	.. py:attribute:: loadings2
 		
-		Variable loadings from matrix 2
+		Variable loadings from matrix 2.
 
 	.. py:attribute:: evals
 
-		Eigenvalues
+		Eigenvalues.
 		
 	
 
@@ -861,13 +846,13 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		Creates a biplot of site scores and predictor variable loadings. 
 
 		matrix: [1 | 2]
-			Which matrix, **Y1** or **Y2** to plot
+			Which matrix, **Y1** or **Y2** to plot.
 
 		xax: integer
-			Specifies which CCor axis to plot on the x-axis
+			Specifies which CCor axis to plot on the x-axis.
 
 		yax: integer 
-			Specifies which CCor axis to plot on the y-axis
+			Specifies which CCor axis to plot on the y-axis.
 
 	**Examples**
 

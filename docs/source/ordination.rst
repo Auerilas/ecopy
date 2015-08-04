@@ -206,7 +206,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		The same for cumDesc_Sp, but for each site. Normally calculated for :math:`\mathbf{\hat{U}}` unless :math:`r < c`, then calculated on :math:`\mathbf{U}`.
 
-	.. py:attritbute:: siteScores
+	.. py:attribute:: siteScores
 
 		Site scores along each CA axis. All considerations for matrix transposition and scaling have been taken into account.
 

@@ -1,4 +1,6 @@
-from version import version as __version__
+__version__ = '0.0.8'
+
+
 from .regression import *
 from .ordination import *
 from .diversity import *

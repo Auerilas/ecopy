@@ -1,49 +1,77 @@
-from setuptools import setup
-from os import path
+#!/usr/bin/env python
 
-here = path.abspath(path.dirname(__file__))
+import logging
+import sys
+import pprint
+from setuptools import setup, find_packages
+from setuptools.extension import Extension
 
-DESCRIPTION = 'EcoPy: Ecological Data Analysis in Python'
-LONG_DESCRIPTION = """\
-EcoPy is a module for multivariate data analysis in Python. It is built on numpy, pandas, and in some instances, scipy.
+# Set up the logging environment
+logging.basicConfig()
+log = logging.getLogger()
 
-Some features of EcoPy are:
-- Principle components analysis
-- Correspondance analysis
-- Redundancy analysis
-- ANOSIM/SIMPER
-- Numerous other techniques
-"""
+# Handle the -W all flag
+if 'all' in sys.warnoptions:
+    log.level = logging.DEBUG
 
-def check_dependencies():
-    install_requires = []
+# Parse the verison from the ecopy module
+with open('ecopy/__init__.py') as f:
+    for line in f:
+        if line.find('__version__') >= 0:
+            version = line.split('=')[1].strip()
+            version = version.strip('"')
+            version = version.strip("'")
+            continue
 
-    try:
-        import numpy
-    except ImportError:
-        install_requires.append('numpy')
-    try:
-        import scipy
-    except ImportError:
-        install_requires.append('scipy')
-    try:
-        import matplotlib
-    except ImportError:
-        install_requires.append('matplotlib')
-    try:
-        import pandas
-    except ImportError:
-        install_requires.append('pandas')
+with open('VERSION.txt', 'w') as f:
+    f.write(version)
 
-    return install_requires
+# Use Cython if available
+try:
+    from Cython.Build import cythonize
+except:
+    log.critical(
+        'Cython.Build.cythonize not found. '
+        'Cython is required to build from a repo.')
+    sys.exit(1)
 
-install_requires = check_dependencies()
+# Use README.rst as the long description
+with open('README.rst') as f:
+    readme = f.read()
 
-setup(
+# Extension options
+include_dirs = []
+try:
+    import numpy
+    include_dirs.append(numpy.get_include())
+except ImportError:
+    log.critical('Numpy and its headers are required to run setup(). Exiting')
+    sys.exit(1)
+
+opts = dict(
+    include_dirs=include_dirs,
+)
+log.debug('opts:\n%s', pprint.pformat(opts))
+
+# Build extension modules 
+ext_modules = cythonize([
+    Extension(
+        'ecopy.regression.isoFunc', ['ecopy/regression/isoFunc.pyx'], **opts),
+])
+
+# Dependencies
+install_requires = [
+    'numpy>=1.7',
+    'scipy>=0.14',
+    'matplotlib>=1.3.1',
+    'pandas>=0.13',
+]
+
+setup_args = dict(
     name='ecopy',
-    version= '0.0.7a1',
-    description = DESCRIPTION,
-    long_description = LONG_DESCRIPTION,
+    version=version,
+    description='EcoPy: Ecological Data Analysis in Python',
+    long_description=readme,
     url='https://github.com/Auerilas/ecopy',
     author='Nathan Lemoine',
     author_email='lemoine.nathan@gmail.com',
@@ -55,6 +83,10 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
     ],
-    packages=['ecopy', 'ecopy.base_funcs', 'ecopy.diversity', 'ecopy.matrix_comp', 'ecopy.ordination', 'ecopy.regression'],
+    keywords=['ordination', 'ecology', 'multivariate data analysis'],
+    ext_modules=ext_modules,
     install_requires=install_requires,
+    packages=find_packages(),
 )
+
+setup(**setup_args)

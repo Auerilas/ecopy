@@ -1,7 +1,6 @@
 import numpy as np
 from pandas import DataFrame, get_dummies
 import matplotlib.pyplot as plt
-from ..base_funcs import wt_scale
 
 class rda:
 	"""

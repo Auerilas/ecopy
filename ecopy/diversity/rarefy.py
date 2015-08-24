@@ -39,7 +39,7 @@ def rarefy(x, method='rarefy', size = None, breakNA=True):
 	Example
 	--------
 	import ecopy as ep
-	varespec = ep.load_data('BCI')
+	BCI = ep.load_data('BCI')
 	
 	# calculate rarefied species richness
 	rareRich = ep.rarefy(BCI, 'rarefy')

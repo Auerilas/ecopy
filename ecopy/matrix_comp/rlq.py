@@ -177,7 +177,7 @@ def dummyMat(matrix, rows, columns, row_w):
 	modNames = ['0']
 	for col in range(columns):
 		if columnType[col]=='q':
-			modMat = np.hstack((modMat, wt_scale(matrix.iloc[:,col], row_w).reshape(rows, 1)))
+			modMat = np.hstack((modMat, wt_scale(matrix.iloc[:,col], row_w, bias=1).reshape(rows, 1)))
 			modNames.append(matrix.columns[col])
 			weights = np.append(weights, 1)
 		elif columnType[col]=='f':

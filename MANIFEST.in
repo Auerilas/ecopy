@@ -1,1 +1,3 @@
 include version.py
+include ecopy/regressino/isoFunc.pyx
+global-include *.pyx

@@ -127,7 +127,7 @@ class hillsmith:
 		columnID = 0
 		for column in range(nc):
 			if columnType[column]=='q':
-				modMat = np.hstack((modMat, wt_scale(df.iloc[:,column], wt=wt_r).reshape(nr, 1)))
+				modMat = np.hstack((modMat, wt_scale(df.iloc[:,column], wt=wt_r, bias=1).reshape(nr, 1)))
 				modNames.append(df.columns[column])
 				wt_c = np.append(wt_c, 1)
 				columnIndex = np.append(columnIndex, columnID)

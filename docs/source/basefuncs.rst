@@ -30,7 +30,7 @@ EcoPy contains several basic functions:
 		import ecopy as ep
 		print ep.wt_mean([1,3,5], [1,2,1])
 
-.. py:function:: wt_var(x, wt=None)
+.. py:function:: wt_var(x, wt=None, bias=0)
 	
 	Calculates as weighted variance. Returns a float.
 
@@ -48,6 +48,9 @@ EcoPy contains several basic functions:
 	wt: numpy.ndarray or list
 		A vector of weights. If this vector does not sum to 1, this will be transformed internally by dividing each weight by the sum of weights
 
+	bias: [0 | 1]
+		Whether or not to calculate unbiased (0) or biased (1) variance. Biased variance is given by the equation above. Unbiased variance is the biased variance multiplied by :math:`\frac{1}{1-\sum w^2}`.
+
 	**Example**
 
 	Weighted variance::
@@ -55,7 +58,7 @@ EcoPy contains several basic functions:
 		import ecopy as ep
 		print ep.wt_var([1,3,5], [1,2,1])
 
-.. py:function:: wt_var(x, wt=None)
+.. py:function:: wt_scale(x, wt=None, bias=0)
 	
 	Returns a vector of scaled, weighted observations.
 
@@ -72,6 +75,9 @@ EcoPy contains several basic functions:
 
 	wt: numpy.ndarray or list
 		A vector of weights. If this vector does not sum to 1, this will be transformed internally by dividing each weight by the sum of weights
+
+	bias: [0 | 1]
+		Whether or not the weighted standard deviation :math:`\sigma_w` should be calculated from the biased or unbiased variance, as above
 
 	**Example**
 

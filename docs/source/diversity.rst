@@ -80,8 +80,8 @@ EcoPy contains several methods for estimating species diversity:
 	Calculate rarefied species richness for the BCI dataset::
 
 		import ecopy as ep
-		varespec = ep.load_data('BCI')
-		rareRich = ep.rarefy(varespec, 'rarefy')
+		BCI = ep.load_data('BCI')
+		rareRich = ep.rarefy(BCI, 'rarefy')
 
 	Show rarefaction curves for each site::
 

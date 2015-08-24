@@ -41,7 +41,7 @@ def diversity(x, method='shannon', breakNA=True):
 	Example
 	--------
 	import ecopy as ep
-	varespec = ep.load_data('varespec'')
+	varespec = ep.load_data('varespec')
 	
 	div = ep.diversity(varespec, 'shannon')
 	'''
@@ -65,24 +65,7 @@ def diversity(x, method='shannon', breakNA=True):
 		if (x<0).any().any():
 			msg = 'DataFrame contains negative values'
 			raise ValueError(msg)
-		if method=='shannon':
-			div = x.apply(shannonFunc, axis=1)
-			return div
-		if method=='simpson':
-			div = x.apply(simpFunc, axis=1)
-			return div
-		if method=='invSimpson':
-			div = x.apply(simpInv, axis=1)
-			return div
-		if method=='dominance':
-			div = x.apply(dom, axis=1)
-			return div
-		if method=='spRich':
-			div = x.apply(richness, axis=1)
-			return div
-		if method=='even':
-			div = x.apply(evenFunc, axis=1)
-			return div
+		z = np.array(x, 'float')
 	if isinstance(x, np.ndarray):
 		if breakNA:
 			if np.isnan(np.sum(x)):
@@ -91,24 +74,25 @@ def diversity(x, method='shannon', breakNA=True):
 		if (x < 0).any():
 			msg = 'Array contains negative values'
 			raise ValueError(msg)
-		if method=='shannon':
-			div = np.apply_along_axis(shannonFunc, 1, x)
-			return div
-		if method=='simpson':
-			div = np.apply_along_axis(simpFunc, 1, x)
-			return div
-		if method=='invSimpson':
-			div = np.apply_along_axis(simpInv, 1, x)
-			return div
-		if method=='dominance':
-			div = np.apply_along_axis(dom, 1, x)
-			return div
-		if method=='spRich':
-			div = np.apply_along_axis(richness, 1, x)
-			return div
-		if method=='even':
-			div = np.apply_along_axis(evenFunc, 1, x)
-			return div
+		z = np.array(x, 'float')
+	if method=='shannon':
+		div = np.apply_along_axis(shannonFunc, 1, z)
+		return div
+	if method=='simpson':
+		div = np.apply_along_axis(simpFunc, 1, z)
+		return div
+	if method=='invSimpson':
+		div = np.apply_along_axis(simpInv, 1, z)
+		return div
+	if method=='dominance':
+		div = np.apply_along_axis(dom, 1, z)
+		return div
+	if method=='spRich':
+		div = np.apply_along_axis(richness, 1, z)
+		return div
+	if method=='even':
+		div = np.apply_along_axis(evenFunc, 1, z)
+		return div
 
 def shannonFunc(y):
 	notabs = ~np.isnan(y)

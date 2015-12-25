@@ -19,6 +19,7 @@ Documentation
 .. toctree::
    :maxdepth: 1
    
+   basefuncs
    diversity
    matrices
    ordination

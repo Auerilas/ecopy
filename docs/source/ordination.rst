@@ -8,10 +8,11 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	- :py:class:`pcoa` (Principle Coordinates Analysis)
 	- :py:class:`MDS` (Multidimensional Scaling)
 	- :py:class:`hillsmith` (Hill and Smith Ordination)
+	- :py:func:`ord_plot` (Ordination plotting)
 
 .. py:class:: pca(x, scale=True, varNames=None)
 
-	Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class 'pca', with several methods and attributes. This function uses SVD and can operate when rows < columns. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class :py:class:`pca`.
+	Takes an input matrix and performs principle components analysis. It will accept either pandas.DataFrames or numpy.ndarrays.  It returns on object of class :py:class: `pca`, with several methods and attributes. This function uses SVD and can operate when rows < columns. NOTE: PCA will NOT work with missing observations, as it is up to the user to decide how best to deal with those. Returns object of class :py:class:`pca`.
 
 	**Parameters**
 
@@ -84,7 +85,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Check the importance of the different axes by examining the standard deviations, which are the square root of the eigenvalues, and the proportions of variance explained by each axis::
 
 		impPC = arrests_PCA.summary_imp()
-		print impPC
+		print(impPC)
 		            PC1     PC2       PC3     PC4
 		Std Dev 1.574878 0.994869 0.597129 0.416449
 		Proportion 0.620060 0.247441 0.089141 0.043358
@@ -93,7 +94,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Next, examine the eigenvectors and loadings to determine which variables contribute to which axes::
 
 		rotPC = arrests_PCA.summary_rot()
-		print rotPC
+		print(rotPC)
 		         PC1       PC2     PC3        PC4
 		Murder 0.535899 0.418181 -0.341233 0.649228
 		Assault 0.583184 0.187986 -0.268148 -0.743407
@@ -102,7 +103,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	Then, look to see how much of the variance among predictors is explained by the first two axes::
 
-		print arrests_PCA.summary_desc()
+		print(arrests_PCA.summary_desc())
 		           PC1      PC2     PC3  PC4
 		Murder 0.712296 0.885382 0.926900 1
 		Assault 0.843538 0.878515 0.904153 1
@@ -271,7 +272,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Check the variance explained by each CA axis (there will only be two)::
 
 		CA_summary = lakes_CA.summary()
-		print CA_summary
+		print(CA_summary)
 		          CA Axis 1 CA Axis 2
 		Std. Dev 0.310053 0.202341
 		Prop. 0.701318 0.298682
@@ -280,7 +281,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Next, see how well the two axes explained variance in species and sites::
 
 		rotPC = arrests_PCA.summary_rot()
-		print rotPC
+		print(rotPC)
 		         PC1       PC2     PC3        PC4
 		Murder 0.535899 0.418181 -0.341233 0.649228
 		Assault 0.583184 0.187986 -0.268148 -0.743407
@@ -289,13 +290,13 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	Although the loadings are informative, showing the correlations of each variable with each axis might ease interpretation::
 
-		print lakes_CA.cumDesc_Sp
+		print(lakes_CA.cumDesc_Sp)
 		   CA Axis 1 CA Axis 2
 		Sp1 0.971877 1
 		Sp2 0.129043 1
 		Sp3 0.732340 1
 
-		print lakes_CA.cumDesc_site
+		print(lakes_CA.cumDesc_site)
 		    CA Axis 1 CA Axis 2
 		L1 0.684705 1
 		L2 0.059355 1
@@ -426,7 +427,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		BCI = ep.load_data('BCI')
 		brayD = ep.distance(BCI, method='bray', transform='sqrt')
 		pc1 = ep.pcoa(brayD)
-		print pc1.summary()[['PCoA Axis 1', 'PCoA Axis 2']]
+		print(pc1.summary()[['PCoA Axis 1', 'PCoA Axis 2']])
 
 		        PCoA Axis 1 PCoA Axis 2
 		Std. Dev 1.094943 0.962549
@@ -659,7 +660,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		import ecopy as ep
 		dune_env = ep.load_data('dune_env')
 		dune_env = dune_env[['A1', 'Moisture', 'Manure', 'Use', 'Management']]
-		print ep.hillsmith(dune_env).summary().iloc[:,:2]
+		print(ep.hillsmith(dune_env).summary().iloc[:,:2])
 
 					Axis 1    Axis 2
 			Std. Dev  1.594392  1.363009
@@ -673,6 +674,68 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		:width: 75 %
 		:align:   center
 
+.. py:function:: ord_plot(x, groups, y=None, colors=None, type='Hull', label=True, showPoints=True, xlab='Axis 1', ylab='Axis 2')
 	
+	Delineates different groups in ordination (or regular) space.
 
+	**Parameters**
+	
+	x: numpy.ndarray, pandas.DataFrame, pandas.Series (*required*)
+		Coordinates to be plotted. Can be either a one or two column matrix. If only one column, then y must be specified.
 
+	groups: list, pandas.DataFrame, pandas.Series (*required*)
+		Factor denoting group identification
+
+	y: numpy.ndarray, pandas.DataFrame, pandas.Series
+		y coordinates to be plotted. Can only have one column, and must be specified is x is only one column.
+
+	colors: string, list, pandas.Series, pandas.DataFrame
+		Gives custom colors for each group. Otherwise default colors are used.
+
+	type: ['Hull' | 'Line']
+		'Hull' produces a convex hull, whereas 'Line' produces lines connected to the centroid for each point.
+
+	label: [True | False]
+		Whether or not a label should be shown at the center of each group.
+
+	showPoints: [True | False]
+		Whether or not the points should be shown.
+
+	xlab: string
+		Label for the x-axis.
+
+	ylab: string
+		Label for the y-axis.
+
+	**Example**
+
+	Generate fake data simulating ordination results::
+
+		import numpy as np
+		import ecopy as ep
+		import matplotlib.pyplot as plt
+
+		nObs = 10
+		X = np.random.normal(0, 1, 10*2)
+		Y = np.random.normal(0, 1, 10*2)
+		GroupID = ['A']*nObs + ['B']*nObs
+
+		Z = np.vstack((X, Y)).T
+
+	Make a convex hull plot where groups are red and blue::
+
+		ep.ord_plot(x=Z, groups=GroupID, colors=['r', 'b'])
+
+	.. figure::  images/ord_plot_hull.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center
+
+	Make a line plot with coordinates in different matrices. Remove the points and the labels::
+
+		ep.ord_plot(x=X, y=Y, groups=GroupID, type='Line', xlab='PC1', ylab='PC2', showPoints=False, label=False)
+
+	.. figure::  images/ord_plot_line.png
+		:figwidth: 75 %
+		:width: 75 %
+		:align:   center

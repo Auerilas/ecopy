@@ -6,7 +6,7 @@ from scipy.stats import pearsonr
 from ..regression import isotonic
 from ..ordination import pca, pcoa
 
-class MDS:
+class MDS(object):
 	'''
 	Docstring for function ecopy.pca
 	====================

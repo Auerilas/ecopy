@@ -2,7 +2,7 @@ import numpy as np
 from pandas import DataFrame
 import matplotlib.pyplot as py
 
-class ca:
+class ca(object):
 	'''
 	Docstring for function ecopy.ca
 	====================
@@ -61,7 +61,7 @@ class ca:
 
 	BCI = ep.load_data('BCI')
 	bci_ca = ep.ca(BCI)
-	print bci_ca.summary()
+	print(bci_ca.summary())
 	bci_ca.biplot()
 	'''
 	def __init__(self, x, siteNames=None, spNames=None, scaling=1):

@@ -10,9 +10,17 @@ Install via 'pip install ecopy'
 
 What's New
 =======
-0.0.81
+0.0.9
 -------
-- Updated PCA to use SVD instead of eigen decomposition
+- missing data imputation methods
+- nls Python 3 compatibility
+- Gower's Euclidean distance for missing data
+- ord_plot function for convex hull or line plots of ordination results
+- Fully incorporated non-linear regression, including documentation
+- Added the ability to conduct partial Mantel tests in Mantel class
+- Global tests of RDA significance
+- Updated CCA to include correspondence analysis of residual (unconstrained) variance
+- Global tests of CCA significance
 
 License
 =====
@@ -20,7 +28,7 @@ License
 
 Version
 =====
-0.0.8
+0.0.9
 
 Examples
 ======

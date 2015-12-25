@@ -2,7 +2,7 @@ import numpy as np
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 
-class anosim:
+class anosim(object):
 	'''
 	Docstring for function ecopy.anosim
 	====================
@@ -50,7 +50,7 @@ class anosim:
 	group2map = {'SF': 'A', 'BF': 'A', 'HF': 'B', 'NM': 'B'}
 	group2 = group1.map(group2map)
 	t1 = ep.anosim(duneDist, group1, group2, nested=True, nperm=9999)
-	print t1.summary()
+	print(t1.summary())
 	t1.plot()
 	'''
 	def __init__(self, dist, factor1, factor2=None, nested=False, nperm=999):

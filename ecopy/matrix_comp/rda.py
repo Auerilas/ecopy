@@ -2,7 +2,7 @@ import numpy as np
 from pandas import DataFrame, get_dummies
 import matplotlib.pyplot as plt
 
-class rda:
+class rda(object):
 	"""
 	Docstring for function ecopy.rda
 	====================
@@ -51,6 +51,7 @@ class rda:
 	Methods
 	--------
 	summary(): Prints a summary output
+	anova(): Conducts an ANOVA to determine significance of the overall model
 	triplot(xax=1, yax=2):
 		Creates a triplot of species scores, site scores,
 			and predictor variable loadings. If predictors are factors,
@@ -68,10 +69,11 @@ class rda:
 	dune_env = ep.load_data('dune_env')
 
 	RDA = ep.rda(dune, dune_env[['A1', 'Management']])
-	print RDA.summary()
+	print(RDA.summary())
+	print(RDA.anova())
 	RDA.triplot()
 	"""
-	def __init__(self, Y, X, scale_y=True, scale_x=False, design_x=False, varNames_y=None, varNames_x=None, rowNames=None, pTypes=None):
+	def __init__(self, Y, X, scale_y=True, scale_x=False, design_x=False, varNames_y=None, varNames_x=None, rowNames=None, pTypes=None, sig=False):
 		tolerance = 1E-6
 		if not isinstance(Y, (DataFrame, np.ndarray)):
 			msg = 'Matrix Y must be a pandas.DataFrame or numpy.ndarray'
@@ -116,27 +118,27 @@ class rda:
 				rowNames = Y.index.values
 			elif isinstance(Y, np.ndarray):
 				rowNames = ['Site {0}'.format(x) for x in range(1, Y.shape[0]+1)]
-		y_mat = np.array(Y, dtype='float')
+		self.y_mat = np.array(Y, dtype='float')
 		if design_x:
-			x_mat = np.array(X, dtype='float')
+			self.x_mat = np.array(X, dtype='float')
 			if pTypes is None:
-				pTypes = ['q']*x_mat.shape[1]
+				pTypes = ['q']*self.x_mat.shape[1]
 		if not design_x and isinstance(X, DataFrame):
-			x_mat, varNames_x, pTypes = dummyMat(X, scale_x)
+			self.x_mat, varNames_x, pTypes = dummyMat(X, scale_x)
 		elif not design_x and isinstance(X, np.ndarray):
-			x_mat = np.array(X, dtype='float')
+			self.x_mat = np.array(X, dtype='float')
 			if pTypes is None:
-				pTypes = ['q']*x_mat.shape[1]
+				pTypes = ['q']*self.x_mat.shape[1]
 			msg = 'Warning: X is a numpy array but not a design matrix. Make sure that matrix X represents the model you wish to analyze. Use patsy.dmatrix if unsure'
 			print msg
 		if not set(pTypes).issubset(['f', 'q']):
 			msg = 'pTypes must contain only f or q characters'
 			raise ValueError(msg)
-		y_mat = np.apply_along_axis(lambda x: x-x.mean(), 0, y_mat)
+		self.y_mat = np.apply_along_axis(lambda x: x-x.mean(), 0, self.y_mat)
 		if scale_y:
-			y_mat = np.apply_along_axis(lambda x: x /x.std(ddof=1), 0, y_mat)
-		B = np.linalg.pinv(x_mat.T.dot(x_mat)).dot(x_mat.T).dot(y_mat)
-		yhat = x_mat.dot(B)
+			self.y_mat = np.apply_along_axis(lambda x: x /x.std(ddof=1), 0, self.y_mat)
+		B = np.linalg.pinv(self.x_mat.T.dot(self.x_mat)).dot(self.x_mat.T).dot(self.y_mat)
+		yhat = self.x_mat.dot(B)
 		yhat_cov = np.cov(yhat, rowvar=0)
 		evals, evecs = np.linalg.eig(yhat_cov)
 		evals = np.real(evals)
@@ -145,7 +147,7 @@ class rda:
 		evecs = evecs[:,idx]
 		RDA_evals = evals[evals>tolerance]
 		U = np.real(evecs[:,evals>tolerance])
-		F = y_mat.dot(U)
+		F = self.y_mat.dot(U)
 		Z = yhat.dot(U)
 		C = B.dot(U)
 		self.spScores = DataFrame(U.dot(np.diag(RDA_evals**0.5)), index=varNames_y)
@@ -159,14 +161,20 @@ class rda:
 		self.predScores.columns=RDA_names
 		self.RDA_evals = RDA_evals
 		self.pTypes = pTypes
-		self.corr = np.zeros((x_mat.shape[1], len(RDA_evals)))
-		for i in range(x_mat.shape[1]):
+		self.corr = np.zeros((self.x_mat.shape[1], len(RDA_evals)))
+		for i in range(self.x_mat.shape[1]):
 			for j in range(len(RDA_evals)):
-				self.corr[i,j] = np.corrcoef(x_mat[:,i], self.linSites.iloc[:,j])[0,1]
+				self.corr[i,j] = np.corrcoef(self.x_mat[:,i], self.linSites.iloc[:,j])[0,1]
 		self.corr = DataFrame(self.corr, index=varNames_x)
 		self.corr.columns = RDA_names
+		SSY = np.sum(self.y_mat**2)
+		SSYhat = np.sum(yhat**2)
+		self.R2 = SSYhat / SSY
+		self.n = self.y_mat.shape[0]
+		self.m = len(B)
+		self.R2a = 1. - (1. - self.R2)*((self.n-1.)/(self.n-self.m-1.))
 		
-		residuals = yhat - y_mat
+		residuals = yhat - self.y_mat
 		res_cov = np.cov(residuals, rowvar=0)
 		res_evals, res_evecs = np.linalg.eig(res_cov)
 		res_evals = np.real(res_evals[res_evals.argsort()[::-1]])
@@ -193,6 +201,34 @@ class rda:
 		print '\nTotal Variance = {0:.3}'.format(np.sum(self.RDA_evals) + np.sum(self.resid_evals))
 		print 'Constrained Variance = {0:.3}'.format(np.sum(self.RDA_evals))
 		print 'Residual Variance = {0:.3}'.format(np.sum(self.resid_evals))
+		print 'R2 = {0:.3}'.format(self.R2)
+		print 'Adjusted R2 = {0:.3}'.format(self.R2a)
+
+	def anova(self, nperm=999):
+		constrained = np.sum(self.RDA_evals)
+		resid = np.sum(self.resid_evals)
+		Fobs = (constrained/len(self.RDA_evals)) / (resid/len(self.resid_evals))
+		Fperm = np.empty(nperm)
+		for i in range(nperm):
+			idx = np.random.choice(self.n, self.n)
+			y_perm = self.y_mat[idx,:]
+			B = np.linalg.pinv(self.x_mat.T.dot(self.x_mat)).dot(self.x_mat.T).dot(y_perm)
+			yhat_perm = self.x_mat.dot(B)
+			cov_perm = np.cov(yhat_perm, rowvar=0)
+			evals_perm, evecs_perm = np.linalg.eig(cov_perm)
+			evals_perm = np.real(evals_perm)
+			evals_perm = evals_perm[evals_perm.argsort()[::-1]]
+			evals_perm = evals_perm[evals_perm>1E-6]
+			residuals = yhat_perm - self.y_mat
+			res_cov = np.cov(residuals, rowvar=0)
+			res_evals, res_evecs = np.linalg.eig(res_cov)
+			res_evals = np.real(res_evals[res_evals.argsort()[::-1]])
+			res_evals[res_evals > 1E-6]
+			constrained = np.sum(evals_perm)
+			resid = np.sum(res_evals)
+			Fperm[i] = (constrained / len(evals_perm)) / (resid/len(res_evals))
+		print 'Model F-statistic = {0:.3}'.format(Fobs)
+		print 'p = {0:.4}'.format(np.mean(Fperm > Fobs))
 
 	def triplot(self, xax=1, yax=2):
 		xplot = xax-1

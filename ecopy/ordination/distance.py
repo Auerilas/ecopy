@@ -33,6 +33,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 	method: a method used for calculating similarities
 		euclidean: calculates euclidean distance between rows (default)
 				sqrt(d1^2 + d2^2 + ... + dn^2)
+		gow_euclidean: calculates euclidean distance between rows, removing NAs
+				sqrt(delta*(x1-x2)**2/sum(delta))
+				where delta = 1 if both observations present, 0 otherwise
 		chord: calculates the chord distance between rows
 				this is the euclidean distance of normalized vectors
 		manhattan: manhattan distance between rows
@@ -91,7 +94,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 	varespec[varespec>0] = 1
 	distance(varespec, method='jaccard)
 	'''
-	listofmethods =['euclidean', 'simple', 'rogers', 'sokal', 'jaccard', 'sorensen', 'kulczynski', 'bray', 'gower', 'chord', 'manhattan', 'meanChar', 'whittaker', 'canberra', 'hellinger', 'mod_gower']
+	listofmethods =['euclidean', 'gow_euclidean', 'simple', 'rogers', 'sokal', 'jaccard', 'sorensen', 'kulczynski', 'bray', 'gower', 'chord', 'manhattan', 'meanChar', 'whittaker', 'canberra', 'hellinger', 'mod_gower']
 	if not isinstance(breakNA, bool):
 		msg = 'removaNA argument must be boolean'
 		raise ValueError(msg)
@@ -123,9 +126,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 	x = x.astype('float')
 	if method == 'euclidean':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -133,11 +136,24 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[i,j] = eucFunc(x1, x2, transform)
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
+	if method == 'gow_euclidean':
+		distMat = np.zeros((x.shape[0]. x.shape[0]))
+		for i in range(0, distMat.shape[0]):
+			distMat[i,i] = 0
+			for j in range(i+1, distMat.shape[0]):
+				x1 = x[i,:]
+				x2 = x[j,:]
+				delta = ~(np.isnan(x1) + np.isnan(x2))
+				delta = delta.astype(int)
+				x1[np.isnan(x1)] = -999
+				x2[np.isnan(x2)] = -999
+				distMat[i,j] = eucGow(x1, x2, delta, transform)
+				distMat[j,i] = distMat[i,j]
 	if method == 'simple':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -148,9 +164,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'rogers':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -161,9 +177,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'sokal':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -174,9 +190,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'jaccard':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -187,9 +203,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'sorensen':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -203,9 +219,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 			msg = 'Distances are meaningless for negative numbers'
 			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -218,9 +234,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 			msg = 'Distances are meaningless for negative numbers'
 			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -234,9 +250,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		R = np.apply_along_axis(lambda z: np.max(z) - np.min(z), 0, x)
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				R = R[~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
@@ -248,9 +264,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'chord':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -260,9 +276,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'manhattan':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -272,9 +288,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'meanChar':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -287,9 +303,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 			msg = 'Distances are meaningless for negative numbers'
 			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -302,9 +318,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 			msg = 'Distances are meaningless for negative numbers'
 			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -314,9 +330,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 		return(distMat)
 	if method == 'hellinger':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -329,9 +345,9 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 			msg = 'Distances are meaningless for negative numbers'
 			raise ValueError(msg)
 		distMat = np.zeros((x.shape[0], x.shape[0]))
-		for i in xrange(0, distMat.shape[0]):
+		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
-			for j in xrange(i+1, distMat.shape[0]):
+			for j in range(i+1, distMat.shape[0]):
 				x1 = x[i,~np.isnan(x[i,:])]
 				x2 = x[j,~np.isnan(x[i,:])]
 				x1 = x1[~np.isnan(x2)]
@@ -347,6 +363,14 @@ def eucFunc(d1, d2, t):
 		return eucD
 	if t == "sqrt":
 		return np.sqrt(eucD)
+
+def eucGow(d1, d2, Delta, t):
+	d = d1-d2
+	eucGow = np.sqrt(np.sum(Delta*d**2)/Delta.sum())
+	if t == "1":
+		return eucGow
+	if t == "sqrt":
+		return np.sqrt(eucGow)
 
 def matchMat(d1, d2):
 	A = float(np.sum((d1 == 1) & (d2 == 1)))

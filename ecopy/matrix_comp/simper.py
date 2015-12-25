@@ -31,7 +31,7 @@ def simper(data, factor, spNames=None):
 	data2 = ep.load_data('dune_env')
 	group1 = data2['Management']
 	fd = ep.simper(np.array(data1), group1, spNames=data1.columns)
-	print fd.ix['BF-NM']
+	print(fd.ix['BF-NM'])
 	'''
 	if not isinstance(data, (DataFrame, np.ndarray)):
 		msg = 'datamust be either numpy array or dataframe'

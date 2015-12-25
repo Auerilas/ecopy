@@ -2,7 +2,7 @@ import numpy as np
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 
-class ccor:
+class ccor(object):
 	"""
 	Docstring for function ecopy.ccor
 	====================
@@ -44,7 +44,15 @@ class ccor:
 
 	Example
 	--------
-	
+	import ecopy as ep
+	import numpy as np
+
+	Y1 = np.random.normal(size=20*5).reshape(20, 5)
+	Y2 = np.random.normal(size=20*3).reshape(20, 3)
+
+	cc = ep.ccor(Y1, Y2)
+	cc.summary()
+	cc.biplot()
 	"""
 	def __init__(self, Y1, Y2, varNames_1=None, varNames_2=None, stand_1=False, stand_2=False, siteNames=None):
 		if not isinstance(Y1, (DataFrame, np.ndarray)):

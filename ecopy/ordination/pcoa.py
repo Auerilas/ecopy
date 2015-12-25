@@ -3,7 +3,7 @@ from pandas import DataFrame
 import matplotlib.pyplot as py
 from warnings import warn
 
-class pcoa:
+class pcoa(object):
 	'''
 	Docstring for function ecopy.pcoa
 	====================
@@ -66,7 +66,7 @@ class pcoa:
 	BCI = ep.load_data('BCI')
 	brayD = ep.distance(BCI, method='bray', transform='sqrt')
 	pc1 = ep.pcoa(brayD)
-	print pc1.summary()
+	print(pc1.summary())
 	pc1.biplot()
 	pc1.shepard()
 	'''

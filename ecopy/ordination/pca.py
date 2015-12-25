@@ -2,7 +2,7 @@ import numpy as np
 from pandas import DataFrame
 import matplotlib.pyplot as py
 
-class pca:
+class pca(object):
 	'''
 	Docstring for function ecopy.pca
 	====================

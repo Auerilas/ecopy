@@ -3,7 +3,7 @@ from pandas import DataFrame, get_dummies
 import matplotlib.pyplot as plt
 from ..base_funcs import wt_scale
 
-class rlq:
+class rlq(object):
 	"""
 	Docstring for function ecopy.rlq
 	====================
@@ -53,7 +53,7 @@ class rlq:
 	sp = ep.load_data('avi_sp')
 
 	rlq_output = ep.rlq(env, sp, traits)
-	print rlq_ouput.summary().iloc[:,:3]
+	print(rlq_ouput.summary().iloc[:,:3])
 	rlq_output.biplot()
 	"""
 	def __init__(self, R, L, Q, ndim=2):

@@ -65,10 +65,17 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 	x: a numpy.ndarray or pandas.DataFrame (*required*)
 		A site *x* species matrix, where sites are rows and columns are species.
 
-	method: ['euclidean' | 'chord' | 'manhattan' | 'meanChar' | 'whittaker' | 'canberra' | 'hellinger' | 'mod_gower' | 'bray' | 'kulcznski' | 'gower' | 'simple' | 'rogers' | 'sokal' | 'jaccard' | 'sorensen']
+	method: ['euclidean' | 'gow_euclidean' | chord' | 'manhattan' | 'meanChar' | 'whittaker' | 'canberra' | 'hellinger' | 'mod_gower' | 'bray' | 'kulcznski' | 'gower' | 'simple' | 'rogers' | 'sokal' | 'jaccard' | 'sorensen']
 		Note, some methods do not allow negative values.
 
 		*euclidean*: Calculates euclidean distance between rows.
+
+		*gow_euclidean*: Calculates euclidean distance between rows, removing missing values.
+
+			.. math::
+				D_{1,2} = \sqrt{ \frac{ \sum_k^p \delta_k (x_{1k} - x_{2k})^2 }{\sum_k^p \delta_k} }
+
+			where :math:`\delta_k` =1 if the observation is present in both rows and 0 otherwise.
 
 		*chord*: Euclidean distance of normalized rows.
 

@@ -2,7 +2,7 @@ import numpy as np
 from pandas import DataFrame, factorize
 from scipy.stats import chisquare
 
-class corner4:
+class corner4(object):
 	"""
 	Docstring for function ecopy.corner4
 	====================
@@ -35,7 +35,7 @@ class corner4:
 	sp = ep.load_data('avi_sp')
 
 	test1 = ep.corner4(env, sp, traits, nperm=99, p_adjustment='fdr')
-	print test1.summary()
+	print(test1.summary())
 	"""
 	def __init__(self, R, L, Q, nperm=999, model=1, test='both', p_adjustment=None):
 		if not isinstance(R, (DataFrame)):

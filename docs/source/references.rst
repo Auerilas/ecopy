@@ -17,8 +17,16 @@ Hill (1974) Correspondance analysis: a neglected multivariate method. *Journal o
 
 Hill and Smith (1976) Principle component analysis of taxonomic data with multi-state discrete characters. *Taxon* 25:349-255.
 
+Legendre (2000) Comparison of permutation methods for the partial correlation and partial mantel tests. *Journal of Statistical Computation and Simulation* 67:37-73
+
 Legendre and Legendre (2012) Numerical Ecology. Third Edition.
 
-Pedregosa et al. (2001) Scikit-learn: marching learning in Python. *Journal of Machine Learning Research* 12"2825-2830.
+Little and Rubin (2002) Statistical analysis with missing data. Second Edition.
+
+Pedregosa et al. (2001) Scikit-learn: marching learning in Python. *Journal of Machine Learning Research* 12:2825-2830.
 
 ter Braak and Verdonschot (1995) Canonical correspondence analysis and related multivariate methods in ecology. *Aquatic Sciences* 57/3:255-289.
+
+van Buuren et al. (2006) Fully conditional specification in multivariate imputation. *Journal of Statistical Computation and Simulation* 76:1049-1064.
+
+van Vuuren (2012) Flexible imputation of missing data.

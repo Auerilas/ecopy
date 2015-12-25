@@ -1,4 +1,4 @@
-class nls:
+class nls(object):
 	'''
 	Docstring for function ecopy.nls
 	=================
@@ -32,21 +32,37 @@ class nls:
 
 	Methods
 	--------
-	AIC: returns AIC for the model. Takes argument k (2 by default)
-	summary: printed summary of model output
+	AIC(k=2): returns AIC for the model. Takes argument k (2 by default)
+	summary(): printed summary of model output
 
 	Example
 	-------
-	# Define the likelihood null model
-	def nullMod(params, mass, yObs):
-	    a = params[0]
-	    c = params[1]    
-	    yHat = a*mass**c
-	    err = yObs - yHat
-	    return(err)
+	import ecopy as ep
+	import numpy as np
+
+	# import the urchin data
+	urchins = ep.load_data('urchins')
+
+	# get the X and Y matrices
+	Y = np.array(urchins['Respiration'])*24
+	X = np.array(urchins[['UrchinMass', 'Temp']])
+
+	# define the least-squares model per the scipy.optimze methods
+	def tempMod(params, X, Y):
+		a = params[0]
+		b = params[1]
+		c = params[2]
+		mass = X[:,0]
+		temp = X[:,1]
+		yHat = a*mass**b*temp**c
+		err = Y - yHat
+		return(err)
+
 	# initial parameter estimates
-	p0 = {'a':1, 'b':1}
-	tMod = NLS(nullMod, p0, Data['Mass'], Data['Daily'] )
+	p0 = {'a':1, 'b':1, 'c': 1}
+
+	# model
+	tMod = ep.nls(tempMod, p0, X, Y)
 	tMod.summary()
 	tMod.AIC()
 	'''
@@ -96,23 +112,23 @@ class nls:
 		self.pvals = (1 - spst.t.cdf(np.abs(self.tvals), self.df))*2
 		# Get biased variance (MLE) and calculate log-likehood
 		self.s2b = self.RSS / self.nobs
-		self.logLik = -self.nobs/2 * np.log(2*np.pi) - self.nobs/2 * np.log(self.s2b) - 1/(2*self.s2b) * self.RSS
+		self.logLik = -self.nobs/2. * np.log(2.*np.pi) - self.nobs/2. * np.log(self.s2b) - 1./(2.*self.s2b) * self.RSS
 		del(self.mod1)
 		del(self.s2b)       
 	
 	# Get AIC. Add 1 to the df to account for estimation of standard error
 	def AIC(self, k=2):
-		print 'AIC: ', -2*self.logLik + k*(self.nparm + 1)
+		print('AIC: {0:5.4f}'.format(-2*self.logLik + k*(self.nparm + 1)))
 
 	# Print the summary
 	def summary(self):
-		print
-		print 'Non-linear least squares'
-		print 'Model: ' + self.func.func_name
-		print 'Parameters:'
-		print " \tEstimate \tStd. Error\tt-value\t\t\tP(>|t|)"
+		print('')
+		print('Non-linear least squares')
+		print('Model: ' + self.func.func_name)
+		print('Parameters:')
+		print('{0:^5} {1:^8} {2:^5} {3:^8} {4:^8}'.format(' ','Estimate', 'Std. Error', 't-value', 'P(>|t|)'))
 		for i in range( len(self.parmNames) ):
-			print "% -5s\t% 5.4f\t% 5.4f\t% 5.4f\t% 5.4f" % tuple( [self.parmNames[i], self.parmEsts[i], self.parmSE[i], self.tvals[i], self.pvals[i]] )                
-		print
-		print 'Residual Standard Error: % 5.4f' % self.RMSE
-		print 'Df: %i' % self.df
+			print('{0:<5} {1:^8} {2:^8.4f} {3:^8.4} {4:^8.4}'.format(self.parmNames[i], self.parmEsts[i], self.parmSE[i], self.tvals[i], self.pvals[i]))
+		print('')
+		print('Residual Standard Error: {0:5.4f}'.format(self.RMSE))
+		print('Df: {0}'.format(self.df))

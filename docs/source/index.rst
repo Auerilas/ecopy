@@ -6,7 +6,7 @@ EcoPy contains numerous numerical and statistical techniques for working with an
 Version
 =======
 
-Current Version - 0.0.8
+Current Version - 0.0.9
 
 Installing EcoPy
 =============
@@ -23,6 +23,7 @@ Documentation
    matrices
    ordination
    matrix_comps
+   regression
    references
    license
    changelog

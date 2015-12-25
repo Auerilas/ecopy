@@ -1,16 +1,17 @@
 from pandas import DataFrame
 import numpy as np
 
-class Mantel:
+class Mantel(object):
 	'''
 	Docstring for function ecopy.Mantel
 	====================
 	Conducts a Mantel test for association between two square, symmetric, non-negative
-		distance matrices
+		distance matrices. Allows for partial Mantel tests if given a third conditioning 
+		matrix
 
 	Use
 	----
-	Mantel(d1, d2, test='pearson', tail='both', nperm=999)
+	Mantel(d1, d2, d_condition=None, test='pearson', tail='both', nperm=999)
 
 	Returns an object of class Mantel
 
@@ -18,6 +19,7 @@ class Mantel:
 	----------
 	d1:  First distance matrix
 	d2: Second distance matrix for comparison
+	d_condition: Third distance matrix to condition correlations on (i.e. partial Mantel test)
 	test: 'pearson' operates on standardized variables, 
 		'spearman' operates on standardized ranks
  	tail: 'greater' tests the one-tailed hypothesis that correlation is 
@@ -49,9 +51,9 @@ class Mantel:
 	dist2 = ep.distance(v2, 'euclidean')
 
 	mant = ep.Mantel(dist1, dist2)
-	print mant.summary()
+	print(mant.summary())
 	'''
-	def __init__(self, d1, d2, test='pearson', tail='both', nperm=999):
+	def __init__(self, d1, d2, d_condition = None, test='pearson', tail='both', nperm=999):
 		if not isinstance(d1, (np.ndarray, DataFrame)):
 			msg = 'Matrix d1 must be a numpy.ndarray or pandas.DataFrame'
 		if not isinstance(d2, (np.ndarray, DataFrame)):
@@ -60,9 +62,6 @@ class Mantel:
 			d1 = np.array(d1)
 		if isinstance(d2, DataFrame):
 			d2 = np.array(d1)
-		if np.any(d1 < 0):
-			msg ='Matrix d1 cannot have negative values'
-			raise ValueError(msg)
 		if np.any(d2 < 0):
 			msg ='Matrix d2 cannot have negative values'
 			raise ValueError(msg)
@@ -91,6 +90,20 @@ class Mantel:
 			msg = 'nperm must be > 2'
 			raise ValueError(msg)
 		r_perm = np.empty(nperm)
+		if d_condition is not None:
+			if d_condition.shape[0] != d_condition.shape[1]:
+				msg = 'Conditioning matrix must be a square, symmetric distance matrix'
+				raise ValueError(msg)
+			if not np.allclose(d_condition.T, d_condition):
+				msg = 'Conditioning matrix must be a square, symmetric distance matrix'
+				raise ValueError(msg)
+			resMat = residCalc(d1, d_condition)
+			partR = partialMantel(resMat, d2, d_condition)
+			self.robs = partR[0,1] 
+			for i in range(nperm):
+				residMat_perm = permuteFunc(resMat)
+				r_star = partialMantel(residMat_perm, d2, d_condition)
+				r_perm[i] = r_star[0,1]
 		if test is 'pearson':
 			self.r_obs = manFunc_pears(d1, d2)
 			for i in range(nperm):
@@ -160,3 +173,43 @@ def permuteFunc(x):
 		xperm[j, idx[j]] = xperm[j, j]
 	np.fill_diagonal(xperm, 0)
 	return xperm
+
+def residCalc(y, z):
+	y2 = y.copy()
+	z2 = z.copy()
+	ui = np.triu_indices(y2.shape[0])
+	iy, ix = np.indices(y2.shape)
+	y2[ui] = np.nan
+	z2[ui] = np.nan
+	y_flat = y2.ravel()
+	z_flat = z2.ravel()
+	ix_flat = ix.ravel()
+	iy_flat = iy.ravel()
+	ix_flat = ix_flat[~np.isnan(y_flat)]
+	iy_flat = iy_flat[~np.isnan(y_flat)]
+	y_flat = y_flat[~np.isnan(y_flat)]
+	z_flat = z_flat[~np.isnan(z_flat)]
+	Z = np.array([np.ones(len(z_flat)), z_flat]).T
+	params = np.linalg.lstsq(Z, y_flat)[0]
+	Res = y_flat - Z.dot(params)
+	ResMat = np.zeros(y2.shape)
+	for i in range(len(ix_flat)):
+		ResMat[ix_flat[i], iy_flat[i]] = Res[i]
+	for i in range(y2.shape[0]):
+		for j in range(y2.shape[0]):
+			ResMat[j,i] = ResMat[i,j]
+	return ResMat
+
+def partialMantel(x, y, z):
+	R = np.eye(3)
+	d = [x, y, z]
+	for i in range(3):
+		for j in range(3):
+			R[i,j] = manFunc_pears(d[i], d[j])
+	R11 = R[:2, :2]
+	R12 = R[:2, 2].reshape(2, 1)
+	R21 = R12.T
+	Rpart = R11 - R12.dot(R21)
+	Dpart = np.diag(np.diag(Rpart)**-0.5)
+	R12_3 = Dpart.dot(Rpart).dot(Dpart)
+	return R12_3

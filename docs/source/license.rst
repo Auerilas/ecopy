@@ -1,7 +1,7 @@
 License
 ======
 
-EcoPy is distributed under the GNU GPL
+EcoPy is distributed under the MIT License
 
 Contact
 ======

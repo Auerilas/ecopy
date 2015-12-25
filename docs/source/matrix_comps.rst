@@ -13,7 +13,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	- :py:class:`cca` (CCA analysis)
 	- :py:class:`ccor` (CCor analysis)
 
-.. py:class:: Mantel(d1, d2, test='pearson', tail='both', nperm=999)
+.. py:class:: Mantel(d1, d2, d_condition=None, test='pearson', tail='both', nperm=999)
 
 	Takes two distance matrices for a Mantel test. Returns object of class :py:class:`Mantel`. Calculates the cross-product between lower triangle matrices, using either standardized variables or standardized ranks. The test statistics is the cross-product is divided by 
 
@@ -22,6 +22,8 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		\frac{n(n-1)}{2} - 1
 
 	where *n* is the number of objects.
+
+	If d_condition is provided, then :py:class:`Mantel` conducts a partial Mantel test holding d_condition constant (Legendre and Legendre 2012). Permutations are conducted using the residual matrix as described by Legendre (2000).
 
 	**Parameters**
 
@@ -91,7 +93,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	Conduct the Mantel test::
 
 		mant = ep.Mantel(dist1, dist2)
-		print mant.summary()
+		print(mant.summary())
 
 		Pearson Mantel Test
 		Hypothesis = both
@@ -180,7 +182,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 	Conduct the ANOSIM::
 
 		t1 = ep.anosim(duneDist, group1, group2, nested=True, nperm=9999)
-		print t1.summary()
+		print(t1.summary())
 
 		ANOSIM: Factor 1
 		Observed R = 0.299
@@ -241,7 +243,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		HF-SF
 		NM-SF
 
-		print fd.ix['BF-NM']
+		print(fd.ix['BF-NM'])
 
 		 sp_mean  sp_sd  ratio  sp_pct  cumulative
 		Lolipere     9.07   2.64   3.44   12.43       12.43
@@ -325,7 +327,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		d1 = ep.load_data('varespec')
 		d2 = ep.load_data('varechem')
 		d = ep.procrustes_test(d1, d2)
-		print d.summary()
+		print(d.summary())
 
 		m12 squared = 0.744
 		p = 0.00701
@@ -401,7 +403,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		fourcorn = ep.corner4(env, sp, traits, nperm=99, p_adjustment='fdr')
 		results = fourcorn.summary()
 
-		print results[['Comparison','adjusted p-value']]
+		print(results[['Comparison','adjusted p-value']])
 		                Comparison  adjusted p-value
 		0         farms - feed.hab             1.000
 		1       farms - feed.strat             1.000
@@ -492,7 +494,7 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		avi_traits = ep.load_data('avi_traits')
 
 		rlq_test = ep.rlq(avi_env, avi_sp, avi_traits, ndim=2)
-		print rlq_test.summary().iloc[:,:3]
+		print(rlq_test.summary().iloc[:,:3])
 
 			            Axis 1    Axis 2    Axis 3
 		Std. Dev  0.691580  0.376631  0.272509
@@ -611,6 +613,10 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 
 		Returns a data frame containing summary information.
 
+	.. py:classmethod:: anova(nperm=999)
+
+		Conducts a permutational test of global significance. The **F**-statistic is the ratio of contrained variance to unconstrained variance, where each is divided by their respective degrees of freedom. The original *Y* matrix is permuted by row and a distribution of **F**-statistics is built. The *p*-value is the proportion of permuted **F**-statistics that is greater than the observed.
+
 	.. py:classmethod:: triplot(xax=1, yax=2)
 
 		Creates a triplot of species scores, site scores, and predictor variable loadings. If predictors are factors, they are represented by points. Quantitative predictors are represented by arrows.
@@ -728,11 +734,23 @@ Ecopy contains several methods for comparing matrices. Some of these are similar
 		
 		A pandas.DataFrame variable scores.
 
+	.. py:attribute:: res_evals
+
+		Residual eigenvalues
+
+	.. py:attribute:: res_evecs
+
+		Residual eigenvectors
+
 	**Methods**
 
 	.. py:classmethod:: summary()
 
 		Returns summary information of each CA axis.
+
+	.. py:classmethod:: anova(nperm=999)
+
+		Conducts a permutational test of global CCA significance. The observed **F**-statistic is the ratio of constrained to unconstrained variance, each divided by their respective degrees of freedom. The original **Y** matrix is permuted by rows, CCA recomputed and a new **F**-statistic calculated for each permutation. The *p*-value is the proportion of permuted **F** values that are greater than the observed value.
 
 	.. py:classmethod:: triplot(xax=1, yax=2)
 

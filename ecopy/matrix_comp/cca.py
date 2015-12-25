@@ -1,8 +1,9 @@
 import numpy as np
 from pandas import DataFrame, get_dummies
 import matplotlib.pyplot as plt
+from ecopy import ca
 
-class cca:
+class cca(object):
 	"""
 	Docstring for function ecopy.cca
 	====================
@@ -35,11 +36,15 @@ class cca:
 	siteScores: A pandas.DataFrame of site scores
 	siteFitted: A pandas.DataFrame of constrained site scores
 	varScores: A pandas.DataFrame containing predictor loadings on each axis
+	res_evals: Eigenvalues for unconstrained axes
+	res_evecs: Eigenvectors for unconstrained axes
 
 	Methods
 	--------
-	summary(): Returns a dataframe of summary 
-		statistics for each axis
+	summary(): 
+		Returns a dataframe of summary statistics for each axis
+	anova(nperm=999):
+		Permutation test of global CCA significance
 	triplot(xax=1, yax=2):
 		Creates a triplot of components/axes. 
 			xax: which component to put on the x-axis
@@ -53,7 +58,8 @@ class cca:
 	varechem = ep.load_data('varechem')
 
 	cca_fit = ep.cca(varespec, varechem)
-	print cca_fit.summary()
+	print(cca_fit.summary())
+	print(cca_fit.anova())
 	cca_fit.triplot()
 	"""
 	def __init__(self, Y, X, varNames_y=None, varNames_x=None, rowNames=None, scaling=1):
@@ -144,7 +150,11 @@ class cca:
 		F = Vhat.dot(np.diag(self.evals**0.5))
 		Fhat = V.dot(np.diag(self.evals**0.5))
 		CAlist = ['CA Axis {0}'.format(i) for i in range(1, len(self.evals)+1)]
-		self.resid = DataFrame(Q_mat - Yhat, columns=varNames_y, index=rowNames)
+		self.resid = np.array(DataFrame(Q_mat - Yhat, columns=varNames_y, index=rowNames))
+		self.res_evals, self.res_evecs = np.linalg.eig(self.resid.T.dot(self.resid))
+		self.res_evals = np.real(self.res_evals[self.res_evals>1E-9])
+		self.y_mat = y_mat
+		self.x_mat = x_mat
 		if scaling==1:
 			Wrow = np.diag(self.r_w.flatten()**0.5)
 			self.spScores = DataFrame(V, columns=CAlist, index=varNames_y)
@@ -172,10 +182,61 @@ class cca:
 
 	def summary(self):
 		print 'Constrained variance = {0:.3}'.format(np.sum(self.evals))
-		print 'Constrained variance explained be each axis'
-		print [str(i) for i in np.round(self.evals, 3)]
-		print 'Proportion constrained variance'
-		print [str(i) for i in np.round(self.evals/self.evals.sum(), 3)]
+		print 'Unconstrained varience = {0:.3}'.format(np.sum(self.res_evals))
+		names = ['CCA {0}'.format(x) for x in range(1, len(self.evals)+1)]
+		data = np.vstack((np.round(self.evals, 3), np.round(self.evals/self.evals.sum(),3)))
+		SumTable1 = DataFrame(data, index = ['Variance', 'Prop. Variance'], columns=names)
+		print 'Constrained Axes'
+		print SumTable1
+		print '\n'
+		names2 = ['CA {0}'.format(x) for x in range(1, len(self.res_evals)+1)]
+		data2 = np.vstack((np.round(self.res_evals, 3), np.round(self.res_evals/self.res_evals.sum(),3)))
+		SumTable2 = DataFrame(data2, index = ['Variance', 'Prop. Variance'], columns=names2)
+		print 'Unconstrained Axes'
+		print SumTable2
+
+	def anova(self, nperm=999):
+		constrained = np.sum(self.evals)
+		unconstrained = np.sum(self.res_evals)
+		Fobs = (constrained/len(self.evals)) / (unconstrained/len(self.res_evals))
+		Fperm = np.empty(nperm)
+		for i in range(nperm):
+			n = self.y_mat.shape[0]
+			nrow = n
+			ncol_y = self.y_mat.shape[1]
+			ncol_x = self.x_mat.shape[1]
+			idx = np.random.choice(n, n, replace=False)
+			y_perm = self.y_mat[idx,:]
+			tot = y_perm.sum()
+			r_w = y_perm.sum(axis=1).reshape(1, nrow) / tot
+			c_w = y_perm.sum(axis=0).reshape(ncol_y, 1) / tot
+			x_mu = r_w.dot(self.x_mat)
+			x_mu =  x_mu.reshape(1, ncol_x)
+			ones = np.ones(nrow).reshape(nrow, 1)
+			mu_mat = ones.dot(x_mu)
+			D = self.x_mat - mu_mat
+			sd = np.sqrt(r_w.dot(D**2))
+			scale_mat = np.diag(1/sd.flatten())
+			x_scale = D.dot(scale_mat)
+			O_mat = y_perm  / tot
+			F_mat = r_w.T.dot(c_w.T)
+			Q_mat = (O_mat - F_mat) / np.sqrt(F_mat)
+			W = np.diag(r_w.flatten())
+			B = np.linalg.pinv(x_scale.T.dot(W).dot(x_scale)).dot(x_scale.T).dot(W**0.5).dot(Q_mat)
+			Yhat = (W**0.5).dot(x_scale).dot(B)
+			Syy = Yhat.T.dot(Yhat)
+			evals_perm, evecs = np.linalg.eig(Syy)
+			evals_perm = np.real(evals_perm[evals_perm.argsort()[::-1]])
+			evals_perm = evals_perm[evals_perm>1E-6]
+			resid = np.array(DataFrame(Q_mat - Yhat))
+			res_evals, res_evecs = np.linalg.eig(resid.T.dot(resid))
+			res_evals = np.real(res_evals[res_evals>1E-6])
+			c_perm = np.sum(evals_perm)
+			u_perm = np.sum(res_evals)
+			Fperm[i] = (c_perm/len(evals_perm)) / (u_perm/len(res_evals))
+		print 'Model F-statistic = {0:.3}'.format(Fobs)
+		print 'p = {0:.4}'.format(np.mean(Fperm > Fobs))
+
 
 	def triplot(self, xax=1, yax=2):
 		xplot = xax-1

@@ -1,7 +1,7 @@
 import numpy as np
 from pandas import DataFrame
 
-class procrustes_test:
+class procrustes_test(object):
 	"""
 	Docstring for function ecopy.procrustes_test
 	====================
@@ -39,7 +39,7 @@ class procrustes_test:
 	d2 = ep.load_data('varechem')
 
 	d = ep.procrustes_test(d1, d2)
-	print d.summary()
+	print(d.summary())
 	"""
 	def __init__(self, mat1, mat2, nperm=999):
 		if isinstance(mat1, DataFrame):

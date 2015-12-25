@@ -3,7 +3,7 @@ from pandas import DataFrame, get_dummies
 import matplotlib.pyplot as plt
 from ..base_funcs import wt_scale
 
-class hillsmith:
+class hillsmith(object):
 	'''
 	Docstring for function ecopy.hillsmith
 	====================
@@ -53,7 +53,7 @@ class hillsmith:
 	import ecopy as ep
 	dune_env = ep.load_data('dune_env')
 	dune_env = dune_env[['A1', 'Moisture', 'Manure', 'Use', 'Management']]
-	print ep.hillsmith(dune_env).summary().iloc[:,:2]
+	print(ep.hillsmith(dune_env).summary().iloc[:,:2])
 	ep.hillsmith(dune_env).biplot(obsNames=False, invert=False)
 	'''
 	def __init__(self, mat, wt_r=None, ndim=2):

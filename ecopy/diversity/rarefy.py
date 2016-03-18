@@ -12,7 +12,7 @@ def rarefy(x, method='rarefy', size = None, breakNA=True):
 
 	Use
 	----
-	ecopy.rarefy(x, method='rarefy', size=None, breakNA=True)
+	rarefy(x, method='rarefy', size=None, breakNA=True)
 
 	Parameters
 	----------

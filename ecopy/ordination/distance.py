@@ -22,7 +22,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 
 	Use
 	----
-	ecopy.distance(x, method='euclidean', transform="1", breakNA=True)
+	distance(x, method='euclidean', transform="1", breakNA=True)
 
 	Returns a numpy.ndarray square, symmetric matrix
 

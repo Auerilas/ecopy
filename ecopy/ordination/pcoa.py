@@ -90,7 +90,7 @@ class pcoa(object):
 		if y.shape[0] != y.shape[1]:
 			msg = 'Distance matrix must be square'
 			raise ValueError(msg)
-		if ~np.allclose(y.T, y):
+		if not np.allclose(y.T, y):
 			msg ='Distance matrix must be symmetric'
 			raise ValueError(msg)
 		A = -0.5*np.square(y.astype('float'))

@@ -65,6 +65,7 @@ install_requires = [
     'scipy>=0.14',
     'matplotlib>=1.3.1',
     'pandas>=0.13',
+    'patsy>=0.3.0'
 ]
 
 setup_args = dict(

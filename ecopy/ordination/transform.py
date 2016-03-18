@@ -9,7 +9,7 @@ def transform(x, method='wisconsin', axis=1, breakNA=True):
 
 	Use
 	----
-	ecopy.transform(x, method='wisconsin', axis=1, breakNA=True)
+	transform(x, method='wisconsin', axis=1, breakNA=True)
 
 	Returns either a numpy.ndarray or pandas.DataFrame, depending
 		on input

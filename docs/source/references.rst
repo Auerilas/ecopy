@@ -17,6 +17,8 @@ Hill (1974) Correspondance analysis: a neglected multivariate method. *Journal o
 
 Hill and Smith (1976) Principle component analysis of taxonomic data with multi-state discrete characters. *Taxon* 25:349-255.
 
+Jost (2007) Partitioning diversity into alpha and beta components. *Ecology* 88:2427-2439.
+
 Legendre (2000) Comparison of permutation methods for the partial correlation and partial mantel tests. *Journal of Statistical Computation and Simulation* 67:37-73
 
 Legendre and Legendre (2012) Numerical Ecology. Third Edition.

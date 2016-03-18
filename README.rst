@@ -10,17 +10,13 @@ Install via 'pip install ecopy'
 
 What's New
 =======
-0.0.9
--------
-- missing data imputation methods
-- nls Python 3 compatibility
-- Gower's Euclidean distance for missing data
-- ord_plot function for convex hull or line plots of ordination results
-- Fully incorporated non-linear regression, including documentation
-- Added the ability to conduct partial Mantel tests in Mantel class
-- Global tests of RDA significance
-- Updated CCA to include correspondence analysis of residual (unconstrained) variance
-- Global tests of CCA significance
+0.1.0
+--------
+- Updated the diversity function
+- div_partition function for calculating alpha, beta, and gamma diversity
+- spatial_median function for calculating multivariate medians
+- fixed an error in MDS function wherein nMDS was incorrect
+- beta_dispersion function for assessing homogeneity of variances for distance matrices
 
 License
 =====
@@ -28,7 +24,7 @@ License
 
 Version
 =====
-0.0.9
+0.1.0
 
 Examples
 ======

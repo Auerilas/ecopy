@@ -1,5 +1,13 @@
 Version History
 ==========
+0.1.0
+^^^^^
+- Updated the diversity function
+- div_partition function for calculating alpha, beta, and gamma diversity
+- spatial_median function for calculation multivariate medians
+- fixed a bug in MDS function that provided incorrect results when using monotone transformation
+- beta_dispersion function for assessing homogeneity of variances of distance matrices
+
 0.0.9
 ^^^^^
 - Missing data imputation

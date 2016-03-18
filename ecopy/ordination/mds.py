@@ -98,7 +98,7 @@ class MDS(object):
 		if distmat.shape[0] != distmat.shape[1]:
 			msg = 'distmat must be a square, symmetric distance matrix'
 			raise ValueError(msg)
-		if ~np.allclose(distmat.T, distmat):
+		if not np.allclose(distmat.T, distmat):
 			msg ='distmat must be a square, symmetric distance matrix'
 			raise ValueError(msg)
 		if siteNames is not None:
@@ -355,14 +355,13 @@ def linMDS(distmat, a, b, Z):
 def nMDS(distmat, Z, weights, Vp):
 	dZ = eucD(Z)
 	dZ[dZ==0] = 1E-5
-	bZ = Bcalc(weights, distmat, dZ)
-	Xu = Vp.dot(bZ).dot(Z)
-	dXu = eucD(Xu)
 	diss_f = distmat.ravel()
-	dhat_f = dXu.ravel()
+	dhat_f = dZ.ravel()
 	dhat = isotonic(dhat_f, diss_f)
 	dhat = dhat.prediction.reshape(distmat.shape)
-	stress = np.sqrt(np.tril((weights*(dXu - dhat)**2)).sum() / np.tril(weights*dXu**2).sum())
+	stress = np.sqrt(np.tril((weights*(dZ - dhat)**2)).sum() / np.tril(weights*dZ**2).sum())
+	bZ = Bcalc(weights, dhat, dZ)
+	Xu = Vp.dot(bZ).dot(Z)
 	return stress, Xu
 
 def scoreTrans(x, distmat):

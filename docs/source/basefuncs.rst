@@ -7,6 +7,7 @@ EcoPy contains several basic functions:
 	- :py:func:`wt_var`
 	- :py:func:`wt_scale`
 	- :py:func:`impute`
+	- :py:func:`spatial_median`
 
 .. py:function:: wt_mean(x, wt=None)
 	
@@ -141,6 +142,34 @@ EcoPy contains several basic functions:
 		imputedData = ep.impute(data, 'mice') 
 		imputedFrame = [pd.DataFrame(x, columns=data.columns) for x in imputedData]
 
-	Alternatively, replace the missing values with the column means:::
+	Alternatively, replace the missing values with the column means::
 
 		meanImpute = ep.impute(data, 'mean')
+
+.. py:function:: spatial_median(X)
+	
+	Calculates the spatial median of a multivariate dataset. The spatial median is defined as the multivariate point :math:`a` that minimizes:
+
+	.. math::
+
+		E||x-a||
+
+	where :math:`||x-a||` is the euclidean distance between the vector :math:`x` and :math:`a`. Minimization is achieved by minimization optimization using scipy.optimize.minimize and the 'BFGS' algorithm.
+
+	**Parameters**
+	
+	X: numpy.ndarray or pandas.DataFrame
+		A matrix of input observations
+
+	**Example**
+
+	Calculate the spatial median for a random matrix::
+
+		import ecopy as ep
+		from scipy.stats import multivariate_normal
+
+		np.random.seed(654321)
+		cov = np.diag([3.,5.,2.])
+		data = multivariate_normal.rvs([0,0,0], cov, (100,))
+		spatialMed = ep.spatial_median(data)
+

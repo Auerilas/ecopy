@@ -61,7 +61,7 @@ def simper(data, factor, spNames=None):
 		msg = 'Species names must equal number of columns in matrix'
 		raise ValueError(msg)
 	groupIDs = np.unique(g1)
-	print '\nComparison indices:'
+	print('\nComparison indices:')
 	i = 0
 	while i < len(groupIDs)-1:
 		t1 = X[g1==groupIDs[i],:]
@@ -94,7 +94,7 @@ def simper(data, factor, spNames=None):
 				finalDF = tempDF
 			else:
 				finalDF = finalDF.append(tempDF)
-			print comp
+			print(comp)
 			j += 1
 		i += 1
 	return finalDF

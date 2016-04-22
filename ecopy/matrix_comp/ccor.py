@@ -132,11 +132,11 @@ class ccor(object):
 		
 
 	def summary(self):
-		print 'Constrained variance = {0:.3}'.format(np.sum(self.evals))
-		print 'Constrained variance explained be each axis'
-		print [str(i) for i in np.round(self.evals, 3)]
-		print 'Proportion constrained variance'
-		print [str(i) for i in np.round(self.evals/self.evals.sum(), 3)]
+		print('Constrained variance = {0:.3}'.format(np.sum(self.evals)))
+		print('Constrained variance explained be each axis')
+		print([str(i) for i in np.round(self.evals, 3)])
+		print('Proportion constrained variance')
+		print([str(i) for i in np.round(self.evals/self.evals.sum(), 3)])
 
 	def biplot(self, matrix=1, xax=1, yax=2):
 		xplot = xax-1

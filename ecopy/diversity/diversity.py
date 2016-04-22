@@ -1,7 +1,7 @@
 import numpy as np
-from pandas import DataFrame 
+from pandas import DataFrame, Series
 
-def diversity(x, method='shannon', breakNA=True, num_equiv=True):
+def diversity(x, method='shannon', breakNA=True, num_equiv=True, samples=None):
 	'''
 	Docstring for function ecopy.diversity
 	========================
@@ -90,12 +90,12 @@ def diversity(x, method='shannon', breakNA=True, num_equiv=True):
 	if method=='gini-simpson':
 		div = np.apply_along_axis(giniFunc, 1, z)
 		if num_equiv:
-			div = 1.(1.-div)
+			div = 1./(1.-div)
 		return div
 	if method=='simpson':
 		div = np.apply_along_axis(simpson, 1, z)
 		if num_equiv:
-			div = 1./divpe
+			div = 1./div
 		return div
 	if method=='dominance':
 		div = np.apply_along_axis(dom, 1, z)

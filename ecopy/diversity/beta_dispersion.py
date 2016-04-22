@@ -37,7 +37,7 @@ def beta_dispersion(X, groups, test='anova', scores=False, center='median', n_it
 	dist = ep.distance(varespec, method='bray')
 
 	groups = ['grazed']*16 + ['ungrazed']*8
-	print ep.beta_dispersion(dist, groups, test='permute', center='median', scores=False)
+	print(ep.beta_dispersion(dist, groups, test='permute', center='median', scores=False))
 	'''
 	if not isinstance(X, (np.ndarray, DataFrame)):
 		msg = 'X must be a numpy.ndarray or pandas.DataFrame'

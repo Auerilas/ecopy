@@ -181,19 +181,19 @@ class cca(object):
 			self.varScores = DataFrame(x_scale.T.dot(Wrow).dot(scaled_Z), columns=CAlist, index=varNames_x)
 
 	def summary(self):
-		print 'Constrained variance = {0:.3}'.format(np.sum(self.evals))
-		print 'Unconstrained varience = {0:.3}'.format(np.sum(self.res_evals))
+		print('Constrained variance = {0:.3}'.format(np.sum(self.evals)))
+		print('Unconstrained varience = {0:.3}'.format(np.sum(self.res_evals)))
 		names = ['CCA {0}'.format(x) for x in range(1, len(self.evals)+1)]
 		data = np.vstack((np.round(self.evals, 3), np.round(self.evals/self.evals.sum(),3)))
 		SumTable1 = DataFrame(data, index = ['Variance', 'Prop. Variance'], columns=names)
-		print 'Constrained Axes'
-		print SumTable1
-		print '\n'
+		print('Constrained Axes')
+		print(SumTable1)
+		print('\n')
 		names2 = ['CA {0}'.format(x) for x in range(1, len(self.res_evals)+1)]
 		data2 = np.vstack((np.round(self.res_evals, 3), np.round(self.res_evals/self.res_evals.sum(),3)))
 		SumTable2 = DataFrame(data2, index = ['Variance', 'Prop. Variance'], columns=names2)
-		print 'Unconstrained Axes'
-		print SumTable2
+		print('Unconstrained Axes')
+		print(SumTable2)
 
 	def anova(self, nperm=999):
 		constrained = np.sum(self.evals)
@@ -234,8 +234,8 @@ class cca(object):
 			c_perm = np.sum(evals_perm)
 			u_perm = np.sum(res_evals)
 			Fperm[i] = (c_perm/len(evals_perm)) / (u_perm/len(res_evals))
-		print 'Model F-statistic = {0:.3}'.format(Fobs)
-		print 'p = {0:.4}'.format(np.mean(Fperm > Fobs))
+		print('Model F-statistic = {0:.3}'.format(Fobs))
+		print('p = {0:.4}'.format(np.mean(Fperm > Fobs)))
 
 
 	def triplot(self, xax=1, yax=2):

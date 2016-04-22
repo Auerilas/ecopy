@@ -130,7 +130,7 @@ class rda(object):
 			if pTypes is None:
 				pTypes = ['q']*self.x_mat.shape[1]
 			msg = 'Warning: X is a numpy array but not a design matrix. Make sure that matrix X represents the model you wish to analyze. Use patsy.dmatrix if unsure'
-			print msg
+			print(msg)
 		if not set(pTypes).issubset(['f', 'q']):
 			msg = 'pTypes must contain only f or q characters'
 			raise ValueError(msg)
@@ -198,11 +198,11 @@ class rda(object):
 
 
 	def summary(self, n=10):
-		print '\nTotal Variance = {0:.3}'.format(np.sum(self.RDA_evals) + np.sum(self.resid_evals))
-		print 'Constrained Variance = {0:.3}'.format(np.sum(self.RDA_evals))
-		print 'Residual Variance = {0:.3}'.format(np.sum(self.resid_evals))
-		print 'R2 = {0:.3}'.format(self.R2)
-		print 'Adjusted R2 = {0:.3}'.format(self.R2a)
+		print('\nTotal Variance = {0:.3}'.format(np.sum(self.RDA_evals) + np.sum(self.resid_evals)))
+		print('Constrained Variance = {0:.3}'.format(np.sum(self.RDA_evals)))
+		print('Residual Variance = {0:.3}'.format(np.sum(self.resid_evals)))
+		print('R2 = {0:.3}'.format(self.R2))
+		print('Adjusted R2 = {0:.3}'.format(self.R2a))
 
 	def anova(self, nperm=999):
 		constrained = np.sum(self.RDA_evals)
@@ -227,8 +227,8 @@ class rda(object):
 			constrained = np.sum(evals_perm)
 			resid = np.sum(res_evals)
 			Fperm[i] = (constrained / len(evals_perm)) / (resid/len(res_evals))
-		print 'Model F-statistic = {0:.3}'.format(Fobs)
-		print 'p = {0:.4}'.format(np.mean(Fperm > Fobs))
+		print('Model F-statistic = {0:.3}'.format(Fobs))
+		print('p = {0:.4}'.format(np.mean(Fperm > Fobs)))
 
 	def triplot(self, xax=1, yax=2):
 		xplot = xax-1

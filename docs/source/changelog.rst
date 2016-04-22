@@ -1,5 +1,11 @@
 Version History
 ==========
+0.1.1
+^^^^^
+- More Python 3.x compatibility
+- Fixed the transform function to not alter the original data matrix
+
+
 0.1.0
 ^^^^^
 - Updated the diversity function

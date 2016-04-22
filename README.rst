@@ -10,13 +10,11 @@ Install via 'pip install ecopy'
 
 What's New
 =======
-0.1.0
+0.1.1
 --------
-- Updated the diversity function
-- div_partition function for calculating alpha, beta, and gamma diversity
-- spatial_median function for calculating multivariate medians
-- fixed an error in MDS function wherein nMDS was incorrect
-- beta_dispersion function for assessing homogeneity of variances for distance matrices
+- More Python 3.x compatibility
+- Fixed the transform function to not alter the original data matrix
+
 
 License
 =====
@@ -24,7 +22,7 @@ License
 
 Version
 =====
-0.1.0
+0.1.1
 
 Examples
 ======

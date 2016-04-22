@@ -151,10 +151,10 @@ class corner4(object):
 
 	def summary(self):
 		if self.adj is None:
-			print '\nFour Corner Analysis - {0} Permutations\n'.format(self.nperm)
+			print('\nFour Corner Analysis - {0} Permutations\n'.format(self.nperm))
 			return self.results[['Comparison', 'Statistic', 'Observed Stat', 'tail', 'p-value']]
 		if self.adj is not None:
-			print '\nFour Corner Analysis - {0} Permutations\n{1} Correction\n'.format(self.nperm, self.adj)
+			print('\nFour Corner Analysis - {0} Permutations\n{1} Correction\n'.format(self.nperm, self.adj))
 			self.results['adjusted p-value'] = p_adjust(self.results['p-value'], self.adj)
 			return self.results[['Comparison', 'Statistic', 'Observed Stat', 'tail', 'p-value', 'adjusted p-value']]
 

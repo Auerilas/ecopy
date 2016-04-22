@@ -129,7 +129,7 @@ class MDS(object):
 					Z = Xu
 					stress1 = stress2
 					k += 1
-				print 'Finished at iteration {0}. Stress = {1}'.format(k, stress2)	
+				print('Finished at iteration {0}. Stress = {1}'.format(k, stress2))	
 				if stress2 < stressStore:
 					stressStore = stress2
 					coordStore = Z
@@ -152,7 +152,7 @@ class MDS(object):
 					Z = Xu
 					stress1 = stress2
 					k += 1
-				print 'Finished at iteration {0}. Stress = {1}'.format(k, stress2)
+				print('Finished at iteration {0}. Stress = {1}'.format(k, stress2))
 				if stress2 < stressStore:
 					stressStore = stress2
 					coordStore = Z
@@ -177,7 +177,7 @@ class MDS(object):
 					Z = pca(Xu).scores
 					stress1 = stress2
 					k += 1
-				print 'Finished at iteration {0}. Stress = {1}'.format(k, stress2)
+				print('Finished at iteration {0}. Stress = {1}'.format(k, stress2))
 				if stress2 < stressStore:
 					stressStore = stress2
 					coordStore = Z
@@ -200,7 +200,7 @@ class MDS(object):
 					Z = pca(Xu).scores
 					stress1 = stress2
 					k += 1
-				print 'Finished at iteration {0}. Stress = {1}'.format(k, stress2)
+				print('Finished at iteration {0}. Stress = {1}'.format(k, stress2))
 				if stress2 < stressStore:
 					stressStore = stress2
 					coordStore = Z
@@ -210,7 +210,7 @@ class MDS(object):
 		self.scores = pca(self.scores).scores
 		self.obs = distmat
 		self.transform = transform
-		print 'Final Stress = {0}'.format(self.stress)
+		print('Final Stress = {0}'.format(self.stress))
 
 	def biplot(self, xax=1, yax=2, siteNames=True, coords=False, descriptors=None, descripNames=None, spCol='r', siteCol='k', spSize=12, siteSize=12):
 		if descriptors is not None:

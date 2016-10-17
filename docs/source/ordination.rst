@@ -80,7 +80,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 	Next, run the PCA::
 
-		arrests_PCA = ep.pca(USArrests, scale=True)
+		arrests_PCA = ep.pca(USArrests.iloc[:,1:], scale=True)
 
 	Check the importance of the different axes by examining the standard deviations, which are the square root of the eigenvalues, and the proportions of variance explained by each axis::
 

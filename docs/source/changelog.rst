@@ -1,5 +1,10 @@
 Version History
 ==========
+0.1.2
+^^^^^
+- More Python 3.x compatibility
+- Typos in examples
+
 0.1.1
 ^^^^^
 - More Python 3.x compatibility

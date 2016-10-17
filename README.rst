@@ -4,16 +4,16 @@ EcoPy: Python for Ecological Data Analyses
 .. image:: https://zenodo.org/badge/17555/Auerilas/ecopy.svg
    :target: https://zenodo.org/badge/latestdoi/17555/Auerilas/ecopy
    
-**EcoPy** provides tools for ecological data analyses. In general, it focuses on multivariate data analysis, which can be useful in any field, but with particular attention to those methods widely used in ecology. `The homepage, with full documentation and examples, can be found here <http://ecopy.readthedocs.org>`_
+**EcoPy** provides tools for ecological data analyses. In general, it focuses on multivariate data analysis, which can be useful in any field, but with particular attention to those methods widely used in ecology. `The homepage, with full documentation and examples, can be found here <http://ecopy.readthedocs.io>`_
 
 Install via 'pip install ecopy'
 
 What's New
 =======
-0.1.1
+0.1.2
 --------
 - More Python 3.x compatibility
-- Fixed the transform function to not alter the original data matrix
+- Fix typos in code and examples
 
 
 License
@@ -22,7 +22,7 @@ License
 
 Version
 =====
-0.1.1
+0.1.2
 
 Examples
 ======
@@ -39,10 +39,9 @@ Calculating Bray-Curtis dissimilarities on the new matrix::
 PCA on US Arrests data::
 	
 	USArrests = ep.load_data('USArrests')
-	prcomp = ep.pca(USArrests, scaled = True)
-	prcomp.summary()
-	prcomp.biplot(scale = 0)
-	prcomp.biplot(scale = 1, obsNames = True)
+	prcomp = ep.pca(USArrests, scale = True)
+	prcomp.biplot(type = 'distance')
+	prcomp.biplot(type = 'correlation')
 
 Full online documentation is a work in progress
 

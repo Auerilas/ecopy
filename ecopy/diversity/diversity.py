@@ -1,7 +1,7 @@
 import numpy as np
 from pandas import DataFrame, Series
 
-def diversity(x, method='shannon', breakNA=True, num_equiv=True, samples=None):
+def diversity(x, method='shannon', breakNA=True, num_equiv=True):
 	'''
 	Docstring for function ecopy.diversity
 	========================
@@ -10,7 +10,7 @@ def diversity(x, method='shannon', breakNA=True, num_equiv=True, samples=None):
 
 	Use
 	----
-	diversity(x, method='shannon', breakNA=True)
+	diversity(x, method='shannon', breakNA=True, num_equiv=True)
 
 	Returns a numpy.ndarray or a pandas.Series
 

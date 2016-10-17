@@ -46,10 +46,12 @@ class pca(object):
 	--------
 	import ecopy as ep
 	USArrests = ep.load_data('USArrests')
-	prcomp = ep.pca(USArrests, scale = True)
+	prcomp = ep.pca(USArrests.iloc[:,1:], scale = True)
 	prcomp.summary_imp()
-	prcomp.biplot(scale = 1)
-	prcomp.biplot(scale = 0.5, obsNames = True)
+	prcomp.summary_rot()
+	prcomp.summary_desc()
+	prcomp.biplot(type = 'distance')
+	prcomp.biplot(type = 'correlation', obsNames = True)
 	'''
 	def __init__(self, x, scale = True, varNames = None):
 		if not isinstance(x, (DataFrame, np.ndarray)):

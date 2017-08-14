@@ -137,7 +137,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
 	if method == 'gow_euclidean':
-		distMat = np.zeros((x.shape[0]. x.shape[0]))
+		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in range(0, distMat.shape[0]):
 			distMat[i,i] = 0
 			for j in range(i+1, distMat.shape[0]):

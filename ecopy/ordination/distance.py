@@ -149,6 +149,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				x2[np.isnan(x2)] = -999
 				distMat[i,j] = eucGow(x1, x2, delta, transform)
 				distMat[j,i] = distMat[i,j]
+		return(distMat)
 	if method == 'simple':
 		distMat = np.zeros((x.shape[0], x.shape[0]))
 		for i in range(0, distMat.shape[0]):

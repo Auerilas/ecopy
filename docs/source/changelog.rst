@@ -1,5 +1,10 @@
 Version History
 ==========
+0.1.3
+^^^^^
+- Fixed an bug causing a float error
+- Fixed an bug caused by numpy not rounding Euclidean Distances of 0 to 0 (resulting in negative Euclidean distances that cannot be square-rooted)
+
 0.1.2
 ^^^^^
 - More Python 3.x compatibility

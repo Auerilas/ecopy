@@ -77,10 +77,11 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		import ecopy as ep
 		USArrests = ep.load_data('USArrests')
+		USArrests.set_index('State', inplace=True)
 
 	Next, run the PCA::
 
-		arrests_PCA = ep.pca(USArrests.iloc[:,1:], scale=True)
+		arrests_PCA = ep.pca(USArrests, scale=True)
 
 	Check the importance of the different axes by examining the standard deviations, which are the square root of the eigenvalues, and the proportions of variance explained by each axis::
 
@@ -261,6 +262,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 
 		import ecopy as ep
 		import numpy as np
+		import pandas as pd
 		Lakes = np.array([[10, 10, 20], [10, 15, 10], [15, 5, 5]])
 		Lakes = pd.DataFrame(Lakes, index = ['L1', 'L2', 'L3'])
 		Lakes.columns = ['Sp1', 'Sp2', 'Sp3']
@@ -279,16 +281,6 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 		Cum. Prop. 0.701318 1.000000
 
 	Next, see how well the two axes explained variance in species and sites::
-
-		rotPC = arrests_PCA.summary_rot()
-		print(rotPC)
-		         PC1       PC2     PC3        PC4
-		Murder 0.535899 0.418181 -0.341233 0.649228
-		Assault 0.583184 0.187986 -0.268148 -0.743407
-		UrbanPop 0.278191 -0.872806 -0.378016 0.133878
-		Rape 0.543432 -0.167319 0.817778 0.089024
-
-	Although the loadings are informative, showing the correlations of each variable with each axis might ease interpretation::
 
 		print(lakes_CA.cumDesc_Sp)
 		   CA Axis 1 CA Axis 2
@@ -444,6 +436,7 @@ Ecopy contains numerous methods for ordination, that is, plotting points in redu
 	Attempting to show species on the above biplot results in a messy graph. To better illustrate its use, run PCoA on the USArrests data::
 
 		USA = ep.load_data('USArrests')
+		USA.set_index('State', inplace=True)
 		# standardize columns first
 		USA = USA.apply(lambda x: (x - x.mean())/x.std(), axis=0)
 		eucD = ep.distance(USA, 'euclidean')

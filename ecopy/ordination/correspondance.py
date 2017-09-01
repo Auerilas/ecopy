@@ -185,8 +185,8 @@ class ca(object):
 			xmin = min(np.amin(self.siteScores.iloc[:,xax-1]), np.amin(self.spScores.iloc[:,xax-1]))
 			ymax = max(np.amax(self.siteScores.iloc[:,yax-1]), np.amax(self.spScores.iloc[:,yax-1]))
 			ymin = min(np.min(self.siteScores.iloc[:,yax-1]), np.min(self.spScores.iloc[:,yax-1]))
-		ax.set_xlim([xmin*1.15, xmax*1.15])
-		ax.set_ylim([ymin*1.15, ymax*1.15])
+			ax.set_xlim([xmin*1.15, xmax*1.15])
+			ax.set_ylim([ymin*1.15, ymax*1.15])
 		if xlim is not None:
 			if not isinstance(xlim, list):
 				msg = "xlim must be a list"

@@ -6,7 +6,7 @@ EcoPy contains numerous numerical and statistical techniques for working with an
 Version
 =======
 
-Current Version - 0.1.2
+Current Version - 0.1.2.2
 
 Installing EcoPy
 =============

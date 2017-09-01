@@ -295,7 +295,7 @@ class MDS(object):
 		
 
 def VTrans(weights):
-	V = - weights
+	V = -weights
 	np.fill_diagonal(V, 'nan')
 	np.fill_diagonal(V, np.nansum(-1*V, axis=1))
 	return np.linalg.pinv(V)
@@ -311,6 +311,7 @@ def eucD(X):
 	n = len(X)
 	one = np.ones((n, 1))
 	D = np.sum(X**2, 1).reshape(n, 1).dot(one.T) + one.dot(np.sum(X**2, 1).reshape(1, n)) - 2*X.dot(X.T)
+	D = np.round(D, 10)
 	D = np.sqrt(D)
 	return D
 

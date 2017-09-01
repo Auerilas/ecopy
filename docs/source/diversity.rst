@@ -102,7 +102,7 @@ EcoPy contains several methods for estimating species diversity:
 
 	Show rarefaction curves for each site::
 
-		ep.rarefy(varespec, 'rarecurve')
+		ep.rarefy(BCI, 'rarecurve')
 
 	.. figure::  images/rarecurve.png
 		:figwidth: 75 %

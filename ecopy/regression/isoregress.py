@@ -1,7 +1,7 @@
 import numpy as np
 from pandas import DataFrame, Series
 import matplotlib.pyplot as plt
-from isoFunc import _isotonic_regression
+from .isoFunc import _isotonic_regression
 
 class isotonic:
 	'''

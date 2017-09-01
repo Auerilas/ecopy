@@ -94,7 +94,7 @@ class pcoa(object):
 			msg ='Distance matrix must be symmetric'
 			raise ValueError(msg)
 		A = -0.5*np.square(y.astype('float'))
-		n = float(y.shape[0])
+		n = y.shape[0]
 		ones = np.ones(n)[np.newaxis].T
 		I = np.eye(n)
 		D = (I - ones.dot(ones.T)/n).dot(A).dot(I - ones.dot(ones.T)/n)

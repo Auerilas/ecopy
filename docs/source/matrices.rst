@@ -169,13 +169,13 @@ EcoPy makes it easy to prep matrices for analysis. It assumes that all matrices 
 
 		import ecopy as ep
 		varespec = ep.load_data('varespec')
-		brayDist = ep.distance(varespec, method='bray)
+		brayDist = ep.distance(varespec, method='bray')
 
 	If attempting a binary method with non-binary data, an error will be raise::
 
-		jacDist = ep.transform(varespec, method='jaccard')
+		jacDist = ep.distance(varespec, method='jaccard')
 
 		>>ValueError: For method jaccard, data must be binary
 
 		varespec2 = ep.transform(varespec, method='pa')
-		jacDist = distance(varespec2, method='jaccard')
+		jacDist = ep.distance(varespec2, method='jaccard')

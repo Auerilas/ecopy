@@ -10,10 +10,10 @@ Install via 'pip install ecopy'
 
 What's New
 =======
-0.1.2
+0.1.2.2
 --------
 - More Python 3.x compatibility
-- Fix typos in code and examples
+- Fix typos in code and examples on readthedocs. Thorough code check
 
 
 License
@@ -22,7 +22,7 @@ License
 
 Version
 =====
-0.1.2
+0.1.2.2
 
 Examples
 ======

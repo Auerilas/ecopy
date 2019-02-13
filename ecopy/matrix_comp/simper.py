@@ -87,7 +87,7 @@ def simper(data, factor, spNames=None):
 						'ratio': spRat,
 						'sp_pct': spPct}, 
 						index=[[comp]*len(spNames), spNames])
-			tempDF.sort(columns=['sp_pct'], inplace=True, ascending=False)
+			tempDF.sort_values(by=['sp_pct'], inplace=True, ascending=False)
 			tempDF['cumulative'] = np.cumsum(tempDF['sp_pct'])
 			tempDF = tempDF[['sp_mean', 'sp_sd', 'ratio', 'sp_pct', 'cumulative']]
 			if i==0 and j==i+1:

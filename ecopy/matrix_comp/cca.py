@@ -140,8 +140,8 @@ class cca(object):
 		idx = evals.argsort()[::-1]
 		self.evals = np.real(evals[idx])
 		self.U = np.real(evecs[:,idx])
-		self.evals = self.evals[self.evals>tolerance]
 		self.U = self.U[:,self.evals>tolerance]
+		self.evals = self.evals[self.evals>tolerance]
 		Uhat = Q_mat.dot(self.U).dot(np.diag(self.evals**-0.5))
 		Wcol = np.diag(self.c_w.flatten()**-0.5)
 		Wrow = np.diag(self.r_w.flatten()**-0.5)

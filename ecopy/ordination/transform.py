@@ -156,7 +156,7 @@ def maxTrans(y):
 	return y/np.nanmax(y)
 
 def normTrans(y):
-	denom = np.nansqrt(np.nansum(y**2))
+	denom = np.sqrt(np.nansum(y**2))
 	return y/denom
 
 def rangeTrans(y):

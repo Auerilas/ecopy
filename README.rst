@@ -14,6 +14,7 @@ What's New
 --------
 - Fixed compatibility problems in functions cca(), simper(), and transform()
 - Added Ochiai's binary coefficient to distance() function
+- Added bioenv() function
 
 0.1.2.2
 --------

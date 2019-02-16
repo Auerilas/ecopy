@@ -11,6 +11,7 @@ Install via 'pip install ecopy'
 What's New
 =======
 0.1.2.3
+--------
 - Fixed compatibility problems in functions cca(), simper(), and transform()
 - Added Ochiai's binary coefficient to distance() function
 

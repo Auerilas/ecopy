@@ -85,6 +85,11 @@ def bioenv(dist, vars_df, columns=None):
     except ValueError:
         raise TypeError("All specified columns in the data frame must be "
                         "numeric.")
+    
+    n = len(columns)
+    ntake = 2**n - 1
+    if n > 8:
+        print("%i possible subsets (this may take time...)" % ntake)
 
     # Scale the vars and extract the underlying numpy array from the data
     # frame. We mainly do this for performance as we'll be taking subsets of

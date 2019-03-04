@@ -66,6 +66,8 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				2A/(2A + B + C)
 		kulczynski: Kulczynski's coefficient (SIMILARITY)
 				0.5*(sum(min(xi,xj))/sum(xi) + sum(min(xi,xj))/sum(xj))
+		ochiai: Ochiai's coefficient for binary data (SIMILARITY)
+				A/sqrt((A + B)(A + C))
 		bray: Bray-Curtis coefficient (SIMILARITY)
 				2*sum(min(xi, xj))/(sum(xi) + sum(xj))
 		gower: Gower assymetrical coefficient (SIMILARITY)
@@ -94,7 +96,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 	varespec[varespec>0] = 1
 	distance(varespec, method='jaccard)
 	'''
-	listofmethods =['euclidean', 'gow_euclidean', 'simple', 'rogers', 'sokal', 'jaccard', 'sorensen', 'kulczynski', 'bray', 'gower', 'chord', 'manhattan', 'meanChar', 'whittaker', 'canberra', 'hellinger', 'mod_gower']
+	listofmethods =['euclidean', 'gow_euclidean', 'simple', 'rogers', 'sokal', 'jaccard', 'sorensen', 'kulczynski', 'bray', 'gower', 'chord', 'manhattan', 'meanChar', 'whittaker', 'canberra', 'hellinger', 'mod_gower', 'ochiai']
 	if not isinstance(breakNA, bool):
 		msg = 'removaNA argument must be boolean'
 		raise ValueError(msg)
@@ -119,7 +121,7 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 	if transform not in ['1', 'sqrt']:
 		msg = 'transform argument must be "1" or "sqrt"'
 		raise ValueError(msg)
-	if method in ['simple', 'rogers', 'sokal', 'jaccard', 'sorensen']:
+	if method in ['simple', 'rogers', 'sokal', 'jaccard', 'sorensen', 'ochiai']:
 		if np.any((x != 0) & (x != 1)):
 			msg = 'For method {0}, data must be binary'.format(method)
 			raise ValueError(msg)
@@ -356,6 +358,19 @@ def distance(x, method='euclidean', transform="1", breakNA=True):
 				distMat[i,j] = m_gowDist(x1, x2, transform)
 				distMat[j,i] = distMat[i,j]
 		return(distMat)
+	if method == 'ochiai':
+		distMat = np.zeros((x.shape[0], x.shape[0]))
+		for i in range(0, distMat.shape[0]):
+			distMat[i,i] = 0
+			for j in range(i+1, distMat.shape[0]):
+				x1 = x[i,~np.isnan(x[i,:])]
+				x2 = x[j,~np.isnan(x[i,:])]
+				x1 = x1[~np.isnan(x2)]
+				x2 = x2[~np.isnan(x2)]
+				A, B, C, D = matchMat(x1, x2)
+				distMat[i,j] = ochiaiSim(A, B, C, D, transform)
+				distMat[j,i] = distMat[i,j]
+		return(distMat)
 
 def eucFunc(d1, d2, t):
 	d = d1-d2
@@ -494,3 +509,10 @@ def m_gowDist(d1, d2, t):
 		return charD
 	if t == "sqrt":
 		return np.sqrt(charD)
+		
+def ochiaiSim(A, B, C, D, t):
+    S = A/np.sqrt((A + B) * (A + C))
+    if t == "1":
+        return 1 - S
+    if t == "sqrt":
+        return np.sqrt(1 - S)

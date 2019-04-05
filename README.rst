@@ -10,6 +10,12 @@ Install via 'pip install ecopy'
 
 What's New
 =======
+I'm back! I apologize for letting EcoPy languish for a few years. I was busy as a post-doc trying to secure my faculty position. Now I've done that, I can get back to running EcoPy and expanding it. I can't promise I will be devoted to the project at all times, but I am now able to spend more time on it. My hope is to recruit help so that EcoPy expands rapidly in the future.
+
+.. 0.1.2.4
+.. --------
+.. - Recompiled the isotonic regression using updated Cython for compatability with Python 3.7
+
 0.1.2.3
 --------
 - Fixed compatibility problems in functions cca(), simper(), and transform()
@@ -28,7 +34,7 @@ License
 
 Version
 =====
-0.1.2.2
+0.1.2.4
 
 Examples
 ======
@@ -53,8 +59,16 @@ Full online documentation is a work in progress
 
 TO-DO
 ====
-- MINIMUM SPANNING TREE
-- PROCRUSTES ROTATION
-- LINEAR/SURFACE ENVIRONMENTAL FITTING
-- MAXENT WRAPPER
-- MANY MANY OTHER THINGS
+# Incorporate DECORANA and TWINSPAN into EcoPy
+1. I have modified write_cep to handle integer row names (as is common in pandas dataframes)
+2. The pre-processing code all works for DECORANA
+3. **Need to get decorana fortran function working on UNIX systems (.exe binary only works for Windows)**
+4. **Need to get TWINSPAN functional**
+
+# Procrusted Rotation
+
+# Linear/surface environmental fitting
+
+# MaxEnt Wrapper
+
+# Clustering

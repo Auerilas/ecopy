@@ -59,17 +59,22 @@ Full online documentation is a work in progress
 
 TO-DO
 ====
-# Incorporate DECORANA and TWINSPAN into EcoPy
+Incorporate DECORANA and TWINSPAN into EcoPy
+---------------------------------------------
 
 1. I have modified write_cep to handle integer row names (as is common in pandas dataframes)
 2. The pre-processing code all works for DECORANA
 3. **Need to get decorana fortran function working on UNIX systems (.exe binary only works for Windows)**
 4. **Need to get TWINSPAN functional**
 
-# Procrusted Rotation
+Procrusted Rotation
+-------------------
 
-# Linear/surface environmental fitting
+Linear/surface environmental fitting
+-------------------------------------
 
-# MaxEnt Wrapper
+MaxEnt Wrapper
+--------------
 
-# Clustering
+Clustering
+----------

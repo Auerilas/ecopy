@@ -66,6 +66,9 @@ Incorporate DECORANA and TWINSPAN into EcoPy
 1. I have modified write_cep to handle integer row names (as is common in pandas dataframes)
 2. The pre-processing code all works for DECORANA
 3. **Need to get decorana fortran function working on UNIX systems (.exe binary only works for Windows)**
+
+	- This is going to be difficult because converting the decorana function to Python pulls in the numerical subroutines. There is, as yet, no way to simply pass the data file to a terminal command like used in CornPy. I would have to rewrite DECORANA, calling the Fortran subroutines. This is what 'vegan' does.
+
 4. **Need to get TWINSPAN functional**
 
 Procrusted Rotation
